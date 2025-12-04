@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - CoCoCo Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="images/icons/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#FF79C9">
+    <meta name="robots" content="noindex">
+</head>
+<body>
+    <!-- Header Placeholder -->
+    <div id="site-header"></div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Pricing</h1>
+            <p>Fair Pricing for All Your Needs</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+
+                <!-- Billing Toggle -->
+                <div class="billing-toggle">
+                    <span class="billing-option" id="monthly-label">Monthly</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="billing-switch">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="billing-option" id="yearly-label">Annual</span>
+                    <span class="savings-badge">get 1 month free</span>
+                </div>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Grow -->
+                <div class="pricing-card" data-plan="grow" data-setup="1500">
+                    <div class="card-header">
+                        <h2 data-config="pricing.grow.title">Grow</h2>
+                        <p class="plan-subtitle" data-config="pricing.grow.subtitle">Our fair pricing to support small manufacturers</p>
+                    </div>
+                    <div class="price">
+                        <span class="currency">€</span>
+                        <span class="amount" data-monthly="500" data-yearly="5500">500</span>
+                        <span class="period">/Monat</span>
+                    </div>
+                    <div class="price-savings hidden"></div>
+                    <div class="setup-fee">
+                        <span class="setup-label">Setup & Migration:</span>
+                        <span class="setup-amount">€1.500</span>
+                    </div>
+                    <button class="btn btn-outline plan-select-btn" data-config="pricing.grow.cta">Configure Support</button>
+                    
+                    <ul class="pricing-features">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Professional -->
+                <div class="pricing-card featured" data-plan="professional" data-setup="2500">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="card-header">
+                        <h2 data-config="pricing.professional.title">Professional</h2>
+                        <p class="plan-subtitle" data-config="pricing.professional.subtitle">For full production operations</p>
+                    </div>
+                    <div class="price">
+                        <span class="currency">€</span>
+                        <span class="amount" data-monthly="1000" data-yearly="11000">1.000</span>
+                        <span class="period">/Monat</span>
+                    </div>
+                    <div class="price-savings hidden"></div>
+                    <div class="setup-fee">
+                        <span class="setup-label">Setup & Migration:</span>
+                        <span class="setup-amount">€2.500</span>
+                    </div>
+                    <button class="btn btn-primary plan-select-btn" data-config="pricing.professional.cta">Configure Support</button>
+                    
+                    <ul class="pricing-features">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="pricing-card" data-plan="enterprise" data-setup="0">
+                    <div class="card-header">
+                        <h2 data-config="pricing.enterprise.title">Enterprise</h2>
+                        <p class="plan-subtitle" data-config="pricing.enterprise.subtitle">For multi-plant operations</p>
+                    </div>
+                    <div class="price">
+                        <span class="amount-custom">Custom Pricing</span>
+                    </div>
+                    <div class="setup-fee enterprise-setup">
+                        <span class="setup-note">✓ White-glove setup & migration included</span>
+                    </div>
+                    <button class="btn btn-outline plan-select-btn" data-config="pricing.enterprise.cta">Contact Sales</button>
+                    
+                    <ul class="pricing-features">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Mini -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Preisfragen</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Kann ich meinen Plan jederzeit ändern?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ja, Sie können Ihren Plan jederzeit upgraden oder downgraden. Upgrades sind sofort wirksam, bei Downgrades ändert sich der Plan zum nächsten Abrechnungszyklus.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Was passiert wenn ich mein Transaktionslimit überschreite?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Zusätzliche Transaktionen werden mit €0,05 pro Transaktion berechnet. Wir empfehlen ein Upgrade zum nächst höheren Plan für bessere Konditionen.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Gibt es eine Vertragsbindung?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nein, alle Pläne sind monatlich kündbar. Bei jährlicher Zahlung erhalten Sie 2 Monate gratis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="site-footer"></div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoCoCo Platform - The pioneering open platform for print</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0.0">
     <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
@@ -59,15 +59,15 @@
             <div class="cocore-header">
                 <div class="cocore-header-content">
                      <!--  <span class="section-badge pulse-badge">CoCoCo Platform</span> -->
-                    <div class="hero-badge">
-                    <div class="badge-scroll-container">
-                        <div class="badge-scroll-content" id="badgeScrollContent">
+                         <div class="hero-badge">
+                         <div class="badge-scroll-container">
+                            <div class="badge-scroll-content" id="badgeScrollContent">
                             <span class="badge-text">Connect</span>
                             <span class="badge-text">Combine</span>
                             <span class="badge-text">Collaborate</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        </div>
                     <h2 class="cocore-title">Your Print Ecosystem, <span class="highlight-text">Unified and Automated</span></h2>
                     <p class="cocore-tagline">Where Data and Insight Drive Print Success</p>
                 </div>
@@ -102,13 +102,15 @@
                     <div class="pulse-line"></div>
                     <h3 class="detail-title">The Heart of Seamless, Automated Print Ecosystems</h3>
                     <div class="pulse-line"></div>
+                    <!-- Mobile-only toggle button for detail content (Mehr anzeigen / Weniger) -->
+                    <button class="detail-toggle mobile-only" aria-expanded="false" aria-controls="detail-content">Show more</button>
                 </div>
                 
-                <div class="detail-content">
+                <div class="detail-content" id="detail-content">
                     <div class="detail-column">
-                        <div class="detail-icon-wrap">
-                            <span class="detail-icon">💓</span>
-                        </div>
+                            <div class="detail-icon-wrap">
+                                <img src="images/icons/heart_icon.png" alt="Pulse – Real-time insights" class="detail-icon" loading="lazy" decoding="async" />
+                            </div>
                         <p class="detail-text">
                             CoCoCo Platform is the foundational element that transforms your print ecosystem from a collection of isolated processes into a single, unified powerhouse. In an environment where speed and precision are crucial for success, CoCoCo Platform connects every machine, software, and team member through one secure and scalable system.
                         </p>
@@ -116,7 +118,7 @@
                     
                     <div class="detail-column">
                         <div class="detail-icon-wrap">
-                            <span class="detail-icon">⚡</span>
+                            <img src="images/icons/flash.png" alt="Automated workflows" class="detail-icon" loading="lazy" decoding="async" />
                         </div>
                         <p class="detail-text">
                             It is much more than just a data repository; CoCoCo Platform acts as the <strong>vital pulse</strong> that keeps your business alive and thriving. The platform automates complex workflows, enables real-time collaboration, and delivers actionable insights for smarter decision-making.
@@ -125,7 +127,7 @@
                     
                     <div class="detail-column">
                         <div class="detail-icon-wrap">
-                            <span class="detail-icon">🌊</span>
+                            <img src="images/icons/wave.png" alt="Data flow – Continuous integration" class="detail-icon" loading="lazy" decoding="async" />
                         </div>
                         <p class="detail-text">
                             By consolidating your entire production landscape, CoCoCo Platform ensures seamless data flow across all areas of your business. This gives you the visibility and control needed to respond quickly, boost efficiency, and encourage innovation at every stage of your print operation. With CoCoCo Platform, your organization moves beyond traditional silos, unlocking new potential and driving continuous improvement through advanced automation.
@@ -137,25 +139,25 @@
             <!-- Feature Cards -->
             <div class="cocore-features-grid">
                 <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon">💗</div>
+                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/heart_icon.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
                     <h3>Central Heartbeat</h3>
                     <p>Unifies all machines, software, and teams into one secure, rhythmic system that pulses with efficiency</p>
                     <a href="features.html" class="feature-card-link">Explore →</a>
                 </div>
                 <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon">⚡</div>
+                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/flash.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
                     <h3>Automated Rhythm</h3>
                     <p>Workflows that beat automatically, eliminating manual errors and keeping your production in perfect sync</p>
                     <a href="features.html" class="feature-card-link">Explore →</a>
                 </div>
                 <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon">📊</div>
+                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/pulse.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
                     <h3>Real-time Pulse</h3>
                     <p>Live data and insights that flow through your system like a steady pulse, enabling instant decisions</p>
                     <a href="features.html" class="feature-card-link">Explore →</a>
                 </div>
                 <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon">🔗</div>
+                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/connections.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
                     <h3>Vital Connections</h3>
                     <p>Seamless integration ensures continuous flow of information, keeping your entire ecosystem alive and connected</p>
                     <a href="features.html" class="feature-card-link">Explore →</a>
@@ -167,28 +169,43 @@
     <!-- Partner Logos Section -->
     <section class="partners" id="partners">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title-small">Vertraut von führenden Unternehmen</h2>
-            </div>
-            <div class="partner-logos">
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 1</div>
+            <!-- Carousel with touch support, arrows on desktop, dots on mobile -->
+            <div class="partners-carousel" role="region" aria-label="Partner logos carousel">
+                <button class="carousel-btn prev" aria-label="Previous partner" title="Previous Partner" type="button">&#10094;</button>
+                <div class="carousel-track-container">
+                    <ul class="carousel-track" role="list">
+                        <li class="carousel-slide" role="listitem">
+                            <div class="slide-inner">
+                                <img src="images/screenshots/screenshot1.png" alt="Partner 1 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner1@2x.png" />
+                            </div>
+                        </li>
+                        <li class="carousel-slide" role="listitem">
+                            <div class="slide-inner">
+                                <img src="images/screenshots/screenshot2.png" alt="Partner 2 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner2@2x.png" />
+                            </div>
+                        </li>
+                        <li class="carousel-slide" role="listitem">
+                            <div class="slide-inner">
+                                <img src="images/screenshots/screenshot3.png" alt="Partner 3 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner3@2x.png" />
+                            </div>
+                        </li>
+                        <li class="carousel-slide" role="listitem">
+                            <div class="slide-inner">
+                                <img src="images/screenshots/screenshot4.png" alt="Partner 4 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner4@2x.png" />
+                            </div>
+                        </li>
+                        <li class="carousel-slide" role="listitem">
+                            <div class="slide-inner">
+                                <img src="images/screenshots/screenshot5.png" alt="Partner 5 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner5@2x.png" />
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 2</div>
-                </div>
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 3</div>
-                </div>
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 4</div>
-                </div>
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 5</div>
-                </div>
-                <div class="partner-logo">
-                    <div class="logo-placeholder">Partner 6</div>
-                </div>
+                <button class="carousel-btn next" aria-label="Next partner" title="Next Partner" type="button">&#10095;</button>
+                <div class="carousel-dots" aria-hidden="false"></div>
+                <div class="carousel-announcer sr-only" aria-live="polite" aria-atomic="true"></div>
+                <!-- Lightbox overlay for viewing full-screen images -->
+                <!-- NOTE: modal is now global and dynamically created; per-carousel overlay removed -->
             </div>
         </div>
     </section>
@@ -239,13 +256,38 @@
         </div>
     </section>
 
+    <!-- Newsletter & Partner Section -->
+    <section class="newsletter-partner-section">
+        <div class="container">
+            <div class="newsletter-partner-grid">
+                <!-- Newsletter Column -->
+                <div class="newsletter-card">
+                    <h3>Stay up to date with CoCoCo´s Product Updates.</h3>
+                    <p>We will keep you regularly informed about new products and features. You will also receive all the latest news about CoCoCo.</p>
+                    <a href="https://share-eu1.hsforms.com/1KOSrawaPTrytKTjYpQ1bDQ2dztun" target="_blank" class="btn btn-primary">Subscribe</a>
+                </div>
+                
+                <!-- Partner Column -->
+                <div class="partner-card">
+                    <h3>For machine manufacturers and software vendors</h3>
+                    <p>Reduce your integration efforts and let's connect all your customers and users to the industry.</p>
+                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/aplien-30min-vicon" target="_blank" class="btn btn-secondary">Ask the Partnermanager</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section with Image -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
                 <div class="cta-image">
-                    <div class="cta-visual">
-                        <span class="cta-icon">🚀</span>
+                    <div class="cta-visual"> 
+                            <div class="cta-rocket-wrap">
+                                <img class="cta-icon cta-rocket" src="images/icons/rocket.png" alt="Rakete" loading="lazy" decoding="async" draggable="false" />
+                                <div class="cta-countdown" aria-hidden="true"></div>
+                            </div>
+                            <button class="cta-launch-btn btn btn-secondary" type="button">Launch</button>
                         <div class="cta-decoration"></div>
                     </div>
                 </div>
@@ -264,7 +306,7 @@
     <!-- Footer Placeholder -->
     <div id="site-footer"></div>
 
-    <script src="config.js"></script>
-    <script src="script.js"></script>
+    <script src="config.js?v=1.0.0"></script>
+    <script src="script.js?v=1.0.0"></script>
 </body>
 </html>

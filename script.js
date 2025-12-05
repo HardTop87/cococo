@@ -243,7 +243,704 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { /* ignore logging errors */ }
     highlightCurrentNav();
     initBadgeScroll();
+    initDetailToggles();
+    initPartnersCarousel();
+    initGlobalModal();
+    initCTALaunch();
+    initFeatureThumbnails();
 });
+
+// Initialize CTA rocket launch interaction (single-run liftoff and particle burst)
+function initCTALaunch() {
+    const visuals = document.querySelectorAll('.cta-visual');
+    if (!visuals || visuals.length === 0) return;
+    visuals.forEach(visual => {
+        const wrapper = visual.querySelector('.cta-rocket-wrap');
+        if (!wrapper) return;
+        const rocket = wrapper.querySelector('.cta-rocket');
+        if (!rocket) return;
+        let launched = false;
+        const launch = () => {
+            if (launched) return;
+            launched = true;
+            // add prelaunch class for shaking handled by CSS
+            wrapper.classList.add('prelaunch');
+            // ensure button is disabled to prevent re-tries
+            const btn = visual.querySelector('.cta-launch-btn');
+            if (btn) btn.disabled = true;
+            // short shake duration then liftoff
+            setTimeout(() => {
+                wrapper.classList.remove('prelaunch');
+                wrapper.classList.add('launching');
+                rocket.addEventListener('animationend', () => {
+                    wrapper.classList.remove('launching');
+                    wrapper.classList.add('launched');
+                    wrapper.style.visibility = 'hidden';
+                }, { once: true });
+            }, 400);
+        };
+
+        // Button based launch with countdown
+        let btn = visual.querySelector('.cta-launch-btn');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cta-launch-btn btn btn-secondary';
+            btn.textContent = 'Launch';
+            visual.insertAdjacentElement('beforeend', btn);
+        }
+        // Create countdown overlay
+        let countdownEl = wrapper.querySelector('.cta-countdown');
+        if (!countdownEl) {
+            countdownEl = document.createElement('div');
+            countdownEl.className = 'cta-countdown';
+            countdownEl.setAttribute('aria-hidden', 'true');
+            wrapper.appendChild(countdownEl);
+        }
+
+        const startCountdown = () => {
+            if (launched) return;
+            let n = 3;
+            countdownEl.textContent = n;
+            countdownEl.setAttribute('aria-hidden', 'false');
+            countdownEl.classList.add('visible');
+            btn.disabled = true;
+            const tick = () => {
+                n -= 1;
+                if (n > 0) {
+                    countdownEl.textContent = n;
+                    setTimeout(tick, 1000);
+                } else {
+                    countdownEl.textContent = 'Go!';
+                    setTimeout(() => {
+                        countdownEl.setAttribute('aria-hidden', 'true');
+                        countdownEl.classList.remove('visible');
+                        launch();
+                    }, 500);
+                }
+            };
+            setTimeout(tick, 1000);
+        };
+
+        btn.addEventListener('click', (e) => { e.preventDefault(); startCountdown(); });
+        btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startCountdown(); }});
+    });
+}
+
+// Create a single, global modal for all carousels
+function initGlobalModal() {
+        if (document.getElementById('carousel-modal')) return;
+        const html = `
+        <div id="carousel-modal" class="carousel-modal" aria-hidden="true" role="dialog" aria-modal="true">
+            <div class="carousel-modal-content">
+                <button class="modal-close" aria-label="Close">✕</button>
+                <div class="modal-image-wrap"><img class="modal-img" src="" alt="" /></div>
+                <div class="modal-controls"><button class="modal-zoom-in" aria-label="Zoom In">+</button><button class="modal-zoom-out" aria-label="Zoom Out">−</button></div>
+            </div>
+        </div>`;
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        document.body.appendChild(tmp.firstElementChild);
+
+        // Attach close events and full transform-based pan/zoom
+        const modal = document.getElementById('carousel-modal');
+        const closeBtn = modal.querySelector('.modal-close');
+        const imgWrap = modal.querySelector('.modal-image-wrap');
+        const modalImg = modal.querySelector('.modal-img');
+        const zoomInBtn = modal.querySelector('.modal-zoom-in');
+        const zoomOutBtn = modal.querySelector('.modal-zoom-out');
+        let scale = 1;
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let startX = 0;
+        let startY = 0;
+        const minScale = 1;
+        const maxScale = 4;
+        const updateTransform = () => {
+            // Reset pan to center when zooming back to 1x
+            if (scale <= 1) {
+                panX = 0;
+                panY = 0;
+            }
+            // Use translate3d for hardware acceleration and smooth panning
+            modalImg.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+            if (scale > 1) {
+                modalImg.classList.add('zoomed');
+            } else {
+                modalImg.classList.remove('zoomed');
+            }
+        };
+        const resetTransform = () => { scale = 1; panX = 0; panY = 0; updateTransform(); modalImg.style.width = ''; };
+
+        const closeModal = () => {
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            resetTransform();
+            // cleanup gesture state
+            pointers.clear();
+            isPanning = false;
+            initialPinchDistance = 0;
+            initialPinchScale = scale;
+        };
+        const openModal = (src, alt, fallbackSrc) => {
+            modalImg.src = src;
+            // We'll try fallback if full variant fails
+            modalImg.onerror = () => {
+                if (fallbackSrc && modalImg.src !== fallbackSrc) {
+                    modalImg.onerror = null;
+                    modalImg.src = fallbackSrc;
+                }
+            };
+            modalImg.alt = alt || '';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            resetTransform();
+        };
+        // Expose open/close functions so other modules can call them
+        window.openCarouselModal = openModal;
+        window.closeCarouselModal = closeModal;
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => {
+            const m = document.getElementById('carousel-modal');
+            if (!m || m.getAttribute('aria-hidden') === 'true') return;
+            // when modal is visible, handle keys
+            if (e.key === 'Escape') closeModal();
+            if (e.key === '+' || e.key === '=') { scale = Math.min(maxScale, scale + 0.5); updateTransform(); }
+            if (e.key === '-') { scale = Math.max(minScale, scale - 0.5); if (scale <= 1) { panX = 0; panY = 0; } updateTransform(); }
+            if (e.key === 'ArrowLeft') { panX -= 50; updateTransform(); }
+            if (e.key === 'ArrowRight') { panX += 50; updateTransform(); }
+            if (e.key === 'ArrowUp') { panY -= 50; updateTransform(); }
+            if (e.key === 'ArrowDown') { panY += 50; updateTransform(); }
+        });
+        // Zoom controls
+        zoomInBtn.addEventListener('click', () => { scale = Math.min(maxScale, scale + 0.5); updateTransform(); });
+        zoomOutBtn.addEventListener('click', () => { 
+            scale = Math.max(minScale, scale - 0.5); 
+            if (scale <= 1) { panX = 0; panY = 0; }
+            updateTransform(); 
+        });
+        // Multi-pointer support: panning on desktop and pinch-to-zoom on touch devices
+        const pointers = new Map();
+        let initialPinchDistance = 0;
+        let initialPinchScale = 1;
+        let pinchAnchor = { x: 0, y: 0, px: 0, py: 0 };
+        let lastTap = 0;
+
+        const getDistance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+        const getMidpoint = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+        const onPointerDownModal = (e) => {
+            if (modal.getAttribute('aria-hidden') === 'true') return;
+            if (e.cancelable) e.preventDefault();
+            // Accept mouse left-button and touch/pen pointers
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            pointers.set(e.pointerId, { id: e.pointerId, x: e.clientX, y: e.clientY });
+            // Track double-tap / double-click for toggling zoom
+            const now = Date.now();
+            if (now - lastTap < 300) {
+                // double tap/click: toggle zoom
+                if (scale <= 1) {
+                    // zoom to 2x centered on tap location
+                    const rect = modalImg.getBoundingClientRect();
+                    const px = (e.clientX - rect.left - panX) / scale;
+                    const py = (e.clientY - rect.top - panY) / scale;
+                    scale = 2; // target
+                    panX = e.clientX - rect.left - px * scale;
+                    panY = e.clientY - rect.top - py * scale;
+                } else {
+                    // zoom out: center image
+                    scale = 1; 
+                    panX = 0; 
+                    panY = 0;
+                }
+                updateTransform();
+                lastTap = 0;
+                return;
+            }
+            lastTap = now;
+
+            if (pointers.size === 2) {
+                // start pinch
+                const [p1, p2] = Array.from(pointers.values());
+                initialPinchDistance = getDistance(p1, p2);
+                initialPinchScale = scale;
+                const midpoint = getMidpoint(p1, p2);
+                // compute anchor point inside image local coords
+                const rect = modalImg.getBoundingClientRect();
+                const px = (midpoint.x - rect.left - panX) / scale;
+                const py = (midpoint.y - rect.top - panY) / scale;
+                pinchAnchor = { x: midpoint.x, y: midpoint.y, px, py };
+            } else if (pointers.size === 1 && scale > 1) {
+                // single pointer panning (mouse or touch)
+                isPanning = { active: true, rafPending: false };
+                startX = e.clientX - panX;
+                startY = e.clientY - panY;
+                modalImg.setPointerCapture && modalImg.setPointerCapture(e.pointerId);
+                modalImg.classList.add('grabbing');
+            }
+        };
+
+        const onPointerMoveModal = (e) => {
+            if (e.cancelable) e.preventDefault();
+            if (modal.getAttribute('aria-hidden') === 'true') return;
+            if (!pointers.has(e.pointerId)) return;
+            pointers.set(e.pointerId, { id: e.pointerId, x: e.clientX, y: e.clientY });
+            if (pointers.size >= 2) {
+                // pinch gesture
+                const [p1, p2] = Array.from(pointers.values());
+                const newDistance = getDistance(p1, p2);
+                if (initialPinchDistance > 0) {
+                    const newScale = Math.max(minScale, Math.min(maxScale, initialPinchScale * newDistance / initialPinchDistance));
+                    // maintain anchor point stable
+                    const rect = modalImg.getBoundingClientRect();
+                    const px = pinchAnchor.px;
+                    const py = pinchAnchor.py;
+                    panX = pinchAnchor.x - rect.left - px * newScale;
+                    panY = pinchAnchor.y - rect.top - py * newScale;
+                    scale = newScale;
+                    updateTransform();
+                }
+            } else if (isPanning) {
+                // smooth panning with direct coordinate update
+                panX = e.clientX - startX;
+                panY = e.clientY - startY;
+                // Use requestAnimationFrame for smooth rendering
+                if (!isPanning.rafPending) {
+                    isPanning.rafPending = true;
+                    requestAnimationFrame(() => {
+                        updateTransform();
+                        isPanning.rafPending = false;
+                    });
+                }
+            }
+        };
+
+        const onPointerUpModal = (e) => {
+            if (modal.getAttribute('aria-hidden') === 'true') return;
+            if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+            if (isPanning && isPanning.active) {
+                isPanning = false;
+                modalImg.releasePointerCapture && modalImg.releasePointerCapture(e.pointerId);
+                modalImg.classList.remove('grabbing');
+            }
+            // reset pinch state when fewer than 2 pointers remain
+            if (pointers.size < 2) {
+                initialPinchDistance = 0;
+                initialPinchScale = scale;
+            }
+        };
+
+        // Attach modal pointer events
+        modalImg.addEventListener('pointerdown', onPointerDownModal);
+        window.addEventListener('pointermove', onPointerMoveModal);
+        window.addEventListener('pointerup', onPointerUpModal);
+        // Touch fallbacks
+        modalImg.addEventListener('touchstart', (e) => {}, { passive: false });
+}
+
+// Partners Carousel: responsive, touch-friendly, arrows on desktop, dots on mobile
+function initPartnersCarousel() {
+    const carousels = document.querySelectorAll('.partners-carousel');
+    if (!carousels || carousels.length === 0) return;
+
+    carousels.forEach((carousel) => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = Array.from(track.children); // initial slides (will include clones after setup)
+        const realSlides = slides.slice(); // keep the originals for cloning and index mapping
+        const btnPrev = carousel.querySelector('.carousel-btn.prev');
+        const btnNext = carousel.querySelector('.carousel-btn.next');
+        const dotsContainer = carousel.querySelector('.carousel-dots');
+        const announcer = carousel.querySelector('.carousel-announcer');
+        let slidesPerView = 3; // default to 3 as requested
+        let pageIndex = 0; // used for page-based dots
+        let currentIndex = 0; // current absolute index (includes clones)
+        let pageCount = 1;
+        let startX = 0;
+        let currentTranslateX = 0;
+        let isDragging = false;
+        let didDrag = false; // track if a pointer move exceeded threshold (for click suppression)
+        let isAnimating = false; // lock during transition
+
+        const getSlidesPerView = () => {
+            const width = carousel.clientWidth;
+            if (width >= 1100) return 3; // keep 3 on larger screens
+            if (width >= 768) return 3;
+            if (width >= 420) return 2;
+            return 1;
+        };
+
+        // Rebuild layout with infinite clones and calculate sizes
+        const updateLayout = () => {
+            slidesPerView = getSlidesPerView();
+            // remove existing clones if any
+            const existingClones = track.querySelectorAll('.clone');
+            existingClones.forEach(c => c.remove());
+
+            // number of clones to create on each side to allow smooth infinite
+            const cloneCount = slidesPerView;
+            // clone last N to beginning
+            for (let i = realSlides.length - cloneCount; i < realSlides.length; i++) {
+                const clone = realSlides[i].cloneNode(true);
+                clone.classList.add('clone');
+                track.insertBefore(clone, track.firstChild);
+            }
+            // clone first N to end
+            for (let i = 0; i < cloneCount; i++) {
+                const clone = realSlides[i].cloneNode(true);
+                clone.classList.add('clone');
+                track.appendChild(clone);
+            }
+
+            // compute new list of slides including clones
+            const allSlides = Array.from(track.children);
+            const realCount = realSlides.length;
+            // set initial currentIndex to the center of the first page
+            const centerOffset = Math.floor(slidesPerView / 2);
+            currentIndex = cloneCount + centerOffset;
+            pageCount = Math.max(1, Math.ceil(realCount / slidesPerView));
+            pageIndex = Math.floor((currentIndex - cloneCount) / slidesPerView);
+            renderDots();
+            updateTrackPosition(false);
+            updateCenterClass();
+            // attach click to open lightbox for all slides (including clones)
+            allSlides.forEach(slide => {
+                const img = slide.querySelector('img');
+                if (!img) return;
+                if (slide.dataset.clickBound) return; // avoid duplicate handlers
+                slide.dataset.clickBound = '1';
+                slide.addEventListener('click', (e) => {
+                    // if the user was dragging, don't treat as click
+                    if (didDrag || isDragging) return;
+                    e.preventDefault();
+                    openLightbox(img);
+                });
+                // also bind directly on the image in case the slide click doesn't fire
+                if (!img.dataset.clickBound) {
+                    img.dataset.clickBound = '1';
+                    img.addEventListener('click', (e) => {
+                        if (didDrag || isDragging) return;
+                        e.preventDefault();
+                        openLightbox(img);
+                    });
+                }
+            });
+            // update center class
+            updateCenterClass();
+        };
+
+        // compute slide width (including gap) and set track translation for currentIndex
+        const updateTrackPosition = (smooth = true) => {
+            const allSlides = Array.from(track.children);
+            if (!allSlides.length) return;
+            const slideEl = allSlides[0];
+            // measure the slide width without transforms: use offsetWidth instead of getBoundingClientRect to ignore transforms
+            const slideWidth = slideEl.offsetWidth + (parseFloat(getComputedStyle(track).gap) || 0);
+            // compute target center as the viewport center relative to the carousel container
+            const carouselRect = carousel.getBoundingClientRect();
+            const viewportCenter = window.innerWidth / 2;
+            const targetRelativeToCarousel = viewportCenter - carouselRect.left;
+            // slide center position (relative to track left)
+            const slideCenter = slideWidth * currentIndex + slideWidth / 2;
+            const offset = slideCenter - targetRelativeToCarousel;
+            track.style.transition = smooth ? 'transform 400ms cubic-bezier(.22,.9,.42,1)' : 'none';
+            track.style.transform = `translateX(-${offset}px)`;
+
+            // Update derived paging info
+            const cloneCount = slidesPerView;
+            const realCount = realSlides.length;
+            const realIndex = ((currentIndex - cloneCount) % realCount + realCount) % realCount; // safe modulo
+            pageIndex = Math.floor(realIndex / slidesPerView);
+            updateActiveDots();
+        };
+
+        const updateCenterClass = () => {
+            const allSlides = Array.from(track.children);
+            const total = allSlides.length;
+            const centerIndex = ((currentIndex % total) + total) % total; // safe modulo
+            const leftIndex = ((centerIndex - 1) % total + total) % total;
+            const rightIndex = ((centerIndex + 1) % total + total) % total;
+            const left2Index = ((centerIndex - 2) % total + total) % total;
+            const right2Index = ((centerIndex + 2) % total + total) % total;
+
+            allSlides.forEach((s, i) => {
+                s.classList.toggle('is-center', i === centerIndex);
+                s.classList.toggle('is-left', i === leftIndex);
+                s.classList.toggle('is-right', i === rightIndex);
+                s.classList.toggle('is-left-2', i === left2Index);
+                s.classList.toggle('is-right-2', i === right2Index);
+                // remove other adjacent classes from non-matching slides
+                if (i !== centerIndex && i !== leftIndex && i !== rightIndex && i !== left2Index && i !== right2Index) {
+                    s.classList.remove('is-center', 'is-left', 'is-right', 'is-left-2', 'is-right-2');
+                }
+            });
+        };
+
+        const onTransitionEnd = () => {
+            if (!isAnimating) return; // guard against duplicate calls
+            const cloneCount = slidesPerView;
+            const realCount = realSlides.length;
+            if (currentIndex >= cloneCount + realCount) {
+                currentIndex -= realCount;
+                updateTrackPosition(false);
+                updateCenterClass();
+            } else if (currentIndex < cloneCount) {
+                currentIndex += realCount;
+                updateTrackPosition(false);
+                updateCenterClass();
+            }
+            isAnimating = false;
+        };
+
+        const renderDots = () => {
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < pageCount; i++) {
+                const d = document.createElement('button');
+                d.className = 'carousel-dot';
+                d.setAttribute('aria-label', `Show partners ${i + 1}`);
+                d.type = 'button';
+                if (i === pageIndex) d.classList.add('active');
+                d.setAttribute('aria-pressed', i === pageIndex ? 'true' : 'false');
+                if (i === pageIndex) d.setAttribute('aria-current', 'true');
+                d.addEventListener('click', () => moveToPage(i));
+                dotsContainer.appendChild(d);
+            }
+        };
+
+        // Move by pages (for dot navigation)
+        const moveToPage = (idx, smooth = true) => {
+            if (isAnimating) return; // prevent simultaneous transitions
+            isAnimating = true;
+            pageIndex = Math.max(0, Math.min(idx, pageCount - 1));
+            // set currentIndex to center of that page
+            const cloneCount = slidesPerView;
+            const realCount = realSlides.length;
+            const centerOffset = Math.floor(slidesPerView / 2);
+            currentIndex = cloneCount + pageIndex * slidesPerView + centerOffset;
+            updateTrackPosition(smooth);
+            track.removeEventListener('transitionend', onTransitionEnd);
+            if (smooth) {
+                track.addEventListener('transitionend', onTransitionEnd, { once: true });
+            } else {
+                isAnimating = false;
+            }
+            updateActiveDots();
+            // update button state
+            // For infinite carousel there are no disabled states
+            if (btnPrev) btnPrev.disabled = false;
+            if (btnNext) btnNext.disabled = false;
+            if (btnPrev) btnPrev.setAttribute('aria-disabled', 'false');
+            if (btnNext) btnNext.setAttribute('aria-disabled', 'false');
+            // mark slides visible/hidden for screen readers
+            const allSlides = Array.from(track.children);
+            if (allSlides && allSlides.length) {
+                const start = pageIndex * slidesPerView + slidesPerView; // account for clones
+                const end = start + slidesPerView - 1;
+                allSlides.forEach((s, i) => s.setAttribute('aria-hidden', (i < start || i > end) ? 'true' : 'false'));
+            }
+        };
+
+        const updateActiveDots = () => {
+            if (!dotsContainer) return;
+            const dots = Array.from(dotsContainer.children);
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === pageIndex);
+                d.setAttribute('aria-pressed', i === pageIndex ? 'true' : 'false');
+                if (i === pageIndex) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+            });
+            if (announcer) announcer.textContent = `Page ${pageIndex + 1} of ${pageCount}`;
+        };
+
+        const prev = () => moveBy(-1);
+        const next = () => moveBy(1);
+
+        const moveBy = (delta, smooth = true) => {
+            if (isAnimating) return; // prevent stacking transitions
+            isAnimating = true;
+            const allSlides = Array.from(track.children);
+            const total = allSlides.length;
+            currentIndex += delta;
+            updateTrackPosition(smooth);
+            updateCenterClass();
+            // if we moved into clones, reset after transition
+            track.removeEventListener('transitionend', onTransitionEnd);
+            if (smooth) {
+                track.addEventListener('transitionend', onTransitionEnd, { once: true });
+            } else {
+                isAnimating = false;
+            }
+        };
+
+        // Pointer / touch support
+        const onPointerDown = (e) => {
+            // Disable mouse-based dragging (desktop): only allow touch/pen pointer dragging
+            if (e.pointerType === 'mouse') return;
+            isDragging = true;
+            didDrag = false;
+            startX = (e.touches ? e.touches[0].clientX : e.clientX);
+            const slideEl = track.querySelector('.carousel-slide');
+            const slideWidth = slideEl ? (slideEl.getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap || 0)) : carousel.clientWidth;
+            const centerOffset = Math.floor(slidesPerView / 2);
+            currentTranslateX = -(currentIndex - centerOffset) * slideWidth;
+            track.style.transition = 'none';
+            if (e.pointerId && track.setPointerCapture) {
+                try { track.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+            }
+            carousel.classList.add('is-dragging');
+        };
+        const onPointerMove = (e) => {
+            if (!isDragging) return;
+            const x = (e.touches ? e.touches[0].clientX : e.clientX);
+            const dx = x - startX;
+            if (Math.abs(dx) > 6) didDrag = true; // small threshold to indicate was dragging
+            track.style.transform = `translateX(${currentTranslateX + dx}px)`;
+        };
+        const onPointerUp = (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const x = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
+            const dx = x - startX;
+            const threshold = Math.max(22, carousel.clientWidth * 0.07); // proportional threshold
+            if (dx > threshold) moveBy(-1);
+            else if (dx < -threshold) moveBy(1);
+            else moveToPage(pageIndex);
+            if (e.pointerId && track.releasePointerCapture) {
+                try { track.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+            }
+            carousel.classList.remove('is-dragging');
+            // Reset didDrag once click handlers have had a chance to run
+            setTimeout(() => { didDrag = false; }, 80);
+        };
+
+        // Keyboard support
+        const onKeyDown = (e) => {
+            if (e.key === 'ArrowLeft') prev();
+            if (e.key === 'ArrowRight') next();
+            if (e.key === 'Enter' || e.key === ' ') {
+                // open modal for current center slide
+                const allSlides = Array.from(track.children);
+                const total = allSlides.length;
+                const centerIndex = ((currentIndex % total) + total) % total;
+                const centerSlide = allSlides[centerIndex];
+                if (centerSlide) {
+                    const img = centerSlide.querySelector('img');
+                    if (img) openLightbox(img);
+                }
+            }
+        };
+
+        // Attach events
+        // mouse/pointer
+        track.addEventListener('pointerdown', onPointerDown);
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', onPointerUp);
+        // touch fallback (older devices)
+        track.addEventListener('touchstart', onPointerDown, { passive: true });
+        track.addEventListener('touchmove', onPointerMove, { passive: true });
+        track.addEventListener('touchend', onPointerUp);
+
+        // buttons
+        btnPrev?.addEventListener('click', prev);
+        btnNext?.addEventListener('click', next);
+
+        // keyboard
+        carousel.addEventListener('keydown', onKeyDown);
+
+        // Resize handling
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(updateLayout, 120);
+        });
+
+        // init
+        updateLayout();
+        // Allow focus for keyboard navigation
+        carousel.setAttribute('tabindex', '0');
+
+        // Handle wheel scrolling: allow vertical scroll, intercept horizontal wheel to navigate carousel
+        carousel.addEventListener('wheel', (e) => {
+            const modal = document.getElementById('carousel-modal');
+            if (modal && modal.getAttribute('aria-hidden') === 'false') {
+                return; // let modal handle wheel for zoom
+            }
+            const absX = Math.abs(e.deltaX);
+            const absY = Math.abs(e.deltaY);
+            // only intercept horizontal scrolls or large shift+wheel gestures
+            if (absX > absY || e.shiftKey) {
+                e.preventDefault();
+                if (e.deltaX > 0 || e.deltaY > 0) next(); else prev();
+            }
+            // otherwise, allow default vertical scrolling
+        }, { passive: false });
+    });
+}
+
+// Lightbox - open image fullscreen and allow zoom/pan
+function openLightbox(img) {
+    if (!img) return;
+    const originalSrc = img.getAttribute('src');
+    const fullSrc = img.getAttribute('data-full-src') || originalSrc;
+    const alt = img.alt || '';
+    if (window.openCarouselModal) {
+        window.openCarouselModal(fullSrc, alt, originalSrc);
+    } else {
+        // Fallback if modal wasn't initialized: create a quick inline modal
+        const tempModal = document.getElementById('carousel-modal');
+        if (tempModal) {
+            const modalImg = tempModal.querySelector('.modal-img');
+            modalImg.src = fullSrc;
+            modalImg.alt = alt;
+            tempModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+}
+
+// Detail Toggle (Mobile Accordion) - show/hide detail-content on small screens
+function initDetailToggles() {
+    const toggles = document.querySelectorAll('.detail-toggle');
+    toggles.forEach(btn => {
+        const controls = btn.getAttribute('aria-controls');
+        const content = document.getElementById(controls);
+        if (!content) return;
+        const parent = btn.closest('.cocore-details');
+        const setClosed = () => {
+            parent.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = 'Show more';
+            // remove inline max-height to allow CSS to handle collapsed
+            content.style.maxHeight = '';
+        };
+        const setOpen = () => {
+            parent.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+            btn.textContent = 'Show less';
+            // set explicit maxHeight to content's scrollHeight for smooth animation
+            content.style.maxHeight = `${content.scrollHeight}px`;
+        };
+        // initialize closed
+        setClosed();
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // toggle
+            if (parent.classList.contains('open')) setClosed(); else setOpen();
+        });
+        // If the window is resized and is > 767px, ensure we reset styles
+        window.addEventListener('resize', () => {
+                if (window.innerWidth > 767) {
+                // clear mobile-specific open/collapse behaviour
+                parent.classList.remove('open');
+                content.style.maxHeight = '';
+                btn.setAttribute('aria-expanded', 'false');
+                    btn.textContent = 'Show more';
+            }
+        });
+    });
+}
 
 // Also ensure config is applied after all resources load (covers race conditions)
 window.addEventListener('load', () => {
@@ -385,11 +1082,81 @@ document.addEventListener('DOMContentLoaded', async () => {
                 hamburger.classList.toggle('active');
             });
             document.querySelectorAll('.nav-menu a').forEach(link => {
-                link.addEventListener('click', () => {
+                // Skip dropdown toggles entirely
+                if (link.classList.contains('dropdown-toggle') || link.closest('.dropdown')) return;
+                link.addEventListener('click', (e) => {
+                    // Close mobile navigation by default
                     navMenu.classList.remove('active');
                     hamburger.classList.remove('active');
+
+                    // Try to smooth scroll anchors on the same page instead of reloading
+                    try {
+                        const href = link.getAttribute('href') || '';
+                        const resolved = new URL(href, window.location.href);
+
+                        // If the link points to another origin, do nothing special
+                        if (resolved.origin !== window.location.origin) return;
+
+                        const targetHash = resolved.hash; // includes '#' if any
+                        const basename = (p) => { const s = p.split('/').pop(); return (s === '' || s === undefined) ? 'index.html' : s; };
+                        const currentBase = basename(window.location.pathname);
+                        const targetBase = basename(resolved.pathname);
+
+                        if (targetHash) {
+                            // Only handle smooth scroll when target resolves to the same page
+                            if (targetBase === currentBase || (targetBase === 'index.html' && currentBase === 'index.html') || (targetBase === 'index.html' && currentBase === '')) {
+                                const el = document.querySelector(targetHash);
+                                if (el) {
+                                    e.preventDefault();
+                                    const headerEl = document.querySelector('.navbar');
+                                    const offset = headerEl ? headerEl.offsetHeight + 12 : 80;
+                                    const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+                                    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                                        window.scrollTo(0, top);
+                                    } else {
+                                        window.scrollTo({ top, behavior: 'smooth' });
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            // If the link points to the same page (e.g., pricing.html => pricing.html), scroll to top instead of reloading
+                            if (targetBase === currentBase) {
+                                e.preventDefault();
+                                const headerEl = document.querySelector('.navbar');
+                                const offset = headerEl ? headerEl.offsetHeight + 12 : 0;
+                                const top = 0 - 0; // We want to scroll to the top of page
+                                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                                    window.scrollTo(0, 0);
+                                } else {
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        // On invalid URL resolution, silently proceed to normal navigation
+                    }
                 });
             });
+                // If logo clicked and we're currently on the homepage, scroll to top smoothly instead of reloading
+                const logoLink = document.querySelector('.logo-link');
+                if (logoLink) {
+                    logoLink.addEventListener('click', (e) => {
+                        const path = window.location.pathname.split('/').pop();
+                        const onIndex = (path === '' || path === 'index.html');
+                        if (onIndex) {
+                            e.preventDefault();
+                            // close mobile nav if open
+                            navMenu.classList.remove('active');
+                            hamburger.classList.remove('active');
+                            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                                window.scrollTo(0, 0);
+                            } else {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                        }
+                    });
+                }
         }
         // Initialize pricing interactions if present
         try {
@@ -487,7 +1254,7 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.feature-card, .pricing-card, .faq-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     observer.observe(el);
 });
 
@@ -623,6 +1390,42 @@ if (billingSwitch) {
                     element.textContent = formatNumber(monthly);
                 }
             }
+
+            // Also add a general handler for anchor links across the document (a[href^="#"] and index-based hashes)
+            const addGlobalAnchorSmoothScroll = () => {
+                const selector = 'a[href^="#"], a[href*="#index.html#"], a[href*="/#"]';
+                document.querySelectorAll(selector).forEach(a => {
+                    a.addEventListener('click', (e) => {
+                        try {
+                            const href = a.getAttribute('href') || '';
+                            const resolved = new URL(href, window.location.href);
+                            if (resolved.origin !== window.location.origin) return;
+                            const targetHash = resolved.hash;
+                            if (!targetHash) return;
+                            const basename = (p) => { const s = p.split('/').pop(); return (s === '' || s === undefined) ? 'index.html' : s; };
+                            const currentBase = basename(window.location.pathname);
+                            const targetBase = basename(resolved.pathname);
+                            if (!(targetBase === currentBase || (targetBase === 'index.html' && (currentBase === 'index.html' || currentBase === '')))) return;
+                            const el = document.querySelector(targetHash);
+                            if (!el) return; // let browser navigate if target missing
+                            e.preventDefault();
+                            // scroll with offset matching header height
+                            const headerEl = document.querySelector('.navbar');
+                            const offset = headerEl ? headerEl.offsetHeight + 12 : 80;
+                            const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+                            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                                window.scrollTo(0, top);
+                            } else {
+                                window.scrollTo({ top, behavior: 'smooth' });
+                            }
+                        } catch (err) {
+                            // ignore and allow default navigation if any error
+                        }
+                    });
+                });
+            };
+            // Run on initial injection
+            addGlobalAnchorSmoothScroll();
         });
         
         // Update savings display
@@ -871,8 +1674,30 @@ function selectPlanFromCard(planKey, cardEl) {
         // ensure support level set
         PRICE_APP.supportLevels[planKey] = PRICE_APP.supportLevels[planKey] || 'basic';
         renderSupportPanel(cardEl, planKey);
-        // scroll into view for better UX
-        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // scroll into view for better UX, keep top edge visible
+        setTimeout(() => {
+            const cardRect = cardEl.getBoundingClientRect();
+            const cardTop = cardRect.top + window.scrollY;
+            const cardHeight = cardRect.height;
+            const viewportHeight = window.innerHeight;
+            
+            // Get header height to account for fixed navbar
+            const header = document.querySelector('.navbar');
+            const headerHeight = header ? header.offsetHeight : 0;
+            
+            // Calculate position to center the card (accounting for header)
+            const availableHeight = viewportHeight - headerHeight;
+            let scrollTarget = cardTop - headerHeight - (availableHeight / 2) + (cardHeight / 2);
+            
+            // Ensure the top edge is always visible (header height + 20px padding)
+            const minScrollTarget = cardTop - headerHeight - 20;
+            scrollTarget = Math.max(minScrollTarget, scrollTarget);
+            
+            window.scrollTo({ 
+                top: scrollTarget, 
+                behavior: 'smooth' 
+            });
+        }, 100);
     }
     savePriceState(PRICE_APP);
 }
@@ -938,6 +1763,115 @@ document.addEventListener('click', (e) => {
     try { console.debug('Delegated click detected for plan', plan); } catch (e) {}
     try { e.preventDefault(); } catch (e) {}
     try { selectPlanFromCard(plan, card); } catch (err) { console.error('Delegated selectPlanFromCard error', err); }
+});
+
+// Initialize feature thumbnails to open in global modal
+function initFeatureThumbnails() {
+    const thumbnails = document.querySelectorAll('.feature-thumbnail');
+    if (!thumbnails || thumbnails.length === 0) return;
+    
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent card expansion toggle
+            const fullSrc = thumb.getAttribute('data-full') || thumb.src;
+            const alt = thumb.alt || 'Feature Image';
+            
+            // Use global modal if available
+            if (typeof window.openCarouselModal === 'function') {
+                window.openCarouselModal(fullSrc, alt, thumb.src);
+            }
+        });
+    });
+    
+    // Add click event to feature cards to toggle expansion
+    const featureCards = document.querySelectorAll('.expandable-feature-card');
+    featureCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Don't toggle if clicking on a thumbnail
+            if (e.target.classList.contains('feature-thumbnail')) return;
+            
+            const isCurrentlyExpanded = card.classList.contains('expanded');
+            
+            // Close other cards first and wait for their collapse animation
+            const otherExpandedCards = Array.from(featureCards).filter(
+                otherCard => otherCard !== card && otherCard.classList.contains('expanded')
+            );
+            
+            otherExpandedCards.forEach(otherCard => {
+                otherCard.classList.remove('expanded');
+            });
+            
+            // If we're expanding this card
+            const isExpanding = !isCurrentlyExpanded;
+            
+            if (isExpanding) {
+                // Wait for other cards to collapse before expanding this one
+                const collapseDelay = otherExpandedCards.length > 0 ? 300 : 0;
+                
+                setTimeout(() => {
+                    card.classList.add('expanded');
+                    
+                    // Wait for expansion animation to complete, then scroll
+                    setTimeout(() => {
+                        const cardRect = card.getBoundingClientRect();
+                        const cardTop = cardRect.top + window.scrollY;
+                        const cardHeight = cardRect.height;
+                        const viewportHeight = window.innerHeight;
+                        
+                        // Get header height to account for fixed navbar
+                        const header = document.querySelector('.navbar');
+                        const headerHeight = header ? header.offsetHeight : 0;
+                        
+                        // Calculate position to center the card (accounting for header)
+                        const availableHeight = viewportHeight - headerHeight;
+                        let scrollTarget = cardTop - headerHeight - (availableHeight / 2) + (cardHeight / 2);
+                        
+                        // Ensure the top edge is always visible (header height + 20px padding)
+                        const minScrollTarget = cardTop - headerHeight - 20;
+                        scrollTarget = Math.max(minScrollTarget, scrollTarget);
+                        
+                        window.scrollTo({ 
+                            top: scrollTarget, 
+                            behavior: 'smooth' 
+                        });
+                    }, 300);
+                }, collapseDelay);
+            } else {
+                // Just collapse this card
+                card.classList.remove('expanded');
+            }
+        });
+    });
+}
+
+// Initialize typewriter animation for problem items on about_us page
+function initTypewriterAnimation() {
+    const problemItems = document.querySelectorAll('.problem-item');
+    if (problemItems.length === 0) return;
+
+    // Start animation shortly after page load (300ms delay)
+    setTimeout(() => {
+        problemItems.forEach(item => {
+            const delay = parseFloat(item.getAttribute('data-delay') || 0) * 1000;
+            
+            setTimeout(() => {
+                item.classList.add('visible');
+                const typewriterWord = item.querySelector('.typewriter-word');
+                if (typewriterWord) {
+                    typewriterWord.classList.add('typing');
+                    setTimeout(() => {
+                        typewriterWord.classList.remove('typing');
+                        typewriterWord.classList.add('typed');
+                    }, 1200);
+                }
+            }, delay);
+        });
+    }, 300);
+}
+
+// Initialize typewriter on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    initTypewriterAnimation();
 });
 
 // Log for debugging

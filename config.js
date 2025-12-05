@@ -2,6 +2,8 @@
 // Edit values below to customize the homepage without touching HTML/CSS.
 
 window.SITE_CONFIG = {
+  // site version: update this string (e.g. 1.0.0 or timestamp) on every deploy to bust cache
+  version: "1.0.0",
   brand: {
     name: "CoCoCo Platform",
     tagline: "The pioneering open platform for print",

@@ -57,7 +57,7 @@ window.SITE_CONFIG = {
         monthly: 500,
         yearly: 5500,
         setup: 2500,
-        cta: 'Auswählen',
+        cta: 'Select Plan',
         description: 'Basisfunktionen, schnelle Integration und E-Mail-Support.'
         ,
         // Plan-specific copy for detailed support panel
@@ -85,7 +85,7 @@ window.SITE_CONFIG = {
         monthly: 1000,
         yearly: 11000,
         setup: 2500,
-        cta: 'Auswählen',
+        cta: 'Select Plan',
         description: 'Erweiterte Integrationen, SLA und dedizierter Support.'
         ,
         setupBullets: [

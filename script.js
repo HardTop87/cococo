@@ -2004,6 +2004,7 @@ function initMirrorText() {
     
     if (prefersReduced) {
         // Skip animation for users who prefer reduced motion
+        el.classList.add('final-state');
         return;
     }
     
@@ -2011,10 +2012,11 @@ function initMirrorText() {
     setTimeout(() => {
         el.classList.add('animating');
         
-        // Remove animating class after animation completes (1s duration)
+        // Add final-state class after animation completes to keep text in normal orientation
         setTimeout(() => {
             el.classList.remove('animating');
-        }, 4000);
+            el.classList.add('final-state');
+        }, 1000); // Animation duration
     }, 1200); // Start after 1.2 second delay
 }
 

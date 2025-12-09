@@ -6544,6 +6544,12 @@ body {
     animation: mirror-unflip 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* Keep in normal state after animation with final-state class */
+.custom-apps-hero-title .mirror-text.final-state {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
 @keyframes mirror-unflip {
     0% {
         transform: scaleX(-1);

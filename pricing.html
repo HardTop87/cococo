@@ -20,7 +20,7 @@
     <section class="page-header">
         <div class="container">
             <h1>Pricing</h1>
-            <p>Fair Pricing for All Your Needs</p>
+            <p>Attractive Pricing for All Your Needs</p>
         </div>
     </section>
 
@@ -41,20 +41,20 @@
 
             <div class="pricing-grid">
                 <!-- Grow -->
-                <div class="pricing-card" data-plan="grow" data-setup="1500">
+                <div class="pricing-card" data-plan="grow" data-config="pricing.grow.setup">
                     <div class="card-header">
-                        <h2 data-config="pricing.grow.title">Grow</h2>
-                        <p class="plan-subtitle" data-config="pricing.grow.subtitle">Our attractive pricing to support small manufacturers</p>
+                        <h2 data-config="pricing.grow.title"></h2>
+                        <p class="plan-subtitle" data-config="pricing.grow.subtitle"></p>
                     </div>
                     <div class="price">
                         <span class="currency">€</span>
-                        <span class="amount" data-monthly="500" data-yearly="5500">500</span>
-                        <span class="period">/Monat</span>
+                        <span class="amount" data-config="pricing.grow.monthly" data-config-yearly="pricing.grow.yearly"></span>
+                        <span class="period">/month</span>
                     </div>
                     <div class="price-savings hidden"></div>
                     <div class="setup-fee">
                         <span class="setup-label">Setup & Migration:</span>
-                        <span class="setup-amount">€1.500</span>
+                        <span class="setup-amount" data-config="pricing.grow.setup">/span>
                     </div>
                     <button class="btn btn-outline plan-select-btn" data-config="pricing.grow.cta">Configure Support</button>
                     
@@ -64,21 +64,21 @@
                 </div>
 
                 <!-- Professional -->
-                <div class="pricing-card featured" data-plan="professional" data-setup="2500">
+                <div class="pricing-card featured" data-plan="professional" data-config="pricing.professional.setup">
                     <div class="popular-badge">Most Popular</div>
                     <div class="card-header">
-                        <h2 data-config="pricing.professional.title">Professional</h2>
-                        <p class="plan-subtitle" data-config="pricing.professional.subtitle">For full production operations</p>
+                        <h2 data-config="pricing.professional.title"></h2>
+                        <p class="plan-subtitle" data-config="pricing.professional.subtitle"></p>
                     </div>
                     <div class="price">
                         <span class="currency">€</span>
-                        <span class="amount" data-monthly="1000" data-yearly="11000">1.000</span>
-                        <span class="period">/Monat</span>
+                        <span class="amount" data-config="pricing.professional.monthly" data-config-yearly="pricing.professional.yearly"></span>
+                        <span class="period">/month</span>
                     </div>
                     <div class="price-savings hidden"></div>
                     <div class="setup-fee">
                         <span class="setup-label">Setup & Migration:</span>
-                        <span class="setup-amount">€2.500</span>
+                        <span class="setup-amount" data-config="pricing.professional.setup"></span>
                     </div>
                     <button class="btn btn-primary plan-select-btn" data-config="pricing.professional.cta">Configure Support</button>
                     
@@ -88,7 +88,7 @@
                 </div>
 
                 <!-- Enterprise -->
-                <div class="pricing-card" data-plan="enterprise" data-setup="0">
+                <div class="pricing-card" data-plan="enterprise" data-config="pricing.enterprise.setup">
                     <div class="card-header">
                         <h2 data-config="pricing.enterprise.title">Enterprise</h2>
                         <p class="plan-subtitle" data-config="pricing.enterprise.subtitle">For multi-plant operations</p>

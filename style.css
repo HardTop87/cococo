@@ -1215,7 +1215,7 @@ body {
 }
 
 .support-totals-box .support-total {
-    font-weight: 700;
+    font-weight: 400;
     padding-top: 0.75rem;
     border-top: 2px solid var(--text-dark);
     margin-top: 0.5rem;
@@ -1224,8 +1224,9 @@ body {
 .support-totals-box .support-year2 {
     padding-top: 0.75rem;
     font-size: 0.8rem;
-    color: var(--moss);
-    font-style: italic;
+    color: var(--pig);
+    font-weight: 700;
+    font-style: normal;
     justify-content: center;
     text-align: center;
 }

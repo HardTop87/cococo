@@ -127,6 +127,12 @@ function applySiteConfig() {
                     // Ensure setup fee is present on the card element (for support totals)
                     if (plan.setup !== undefined) {
                         card.setAttribute('data-setup', String(plan.setup));
+                        
+                        // Update setup fee display in the card
+                        const setupAmountEl = card.querySelector('.setup-amount');
+                        if (setupAmountEl && plan.setup > 0) {
+                            setupAmountEl.textContent = `€${formatter.format(plan.setup)}`;
+                        }
                     }
 
                     // Render plan-specific setup bullets and features into the pricing card
@@ -1549,7 +1555,7 @@ function renderSupportPanel(cardEl, planKey) {
             <div class="totals-row support-total"><span class="total-label">Total First Year</span> <span class="support-total-amount">-</span></div>
             <div class="totals-row support-year2 hidden"><span class="support-year2-amount">-</span></div>
         </div>
-        <button class="btn btn-primary support-cta">Proceed to Checkout</button>
+        <a href="${planCfg.applyUrl || '#'}" class="btn btn-primary support-cta" data-plan="${planKey}" target="_blank" rel="noopener noreferrer">Apply for Plan</a>
     `;
 
     // insert panel after the card body
@@ -1573,11 +1579,6 @@ function renderSupportPanel(cardEl, planKey) {
             savePriceState(PRICE_APP);
             updateSupportTotals(panel, cardEl, planKey);
         });
-    });
-
-    panel.querySelector('.support-cta').addEventListener('click', () => {
-        // Placeholder: proceed to checkout flow (left to integrate with server)
-        alert('Proceed to checkout - server integration not configured');
     });
 
     updateSupportTotals(panel, cardEl, planKey);
@@ -1641,6 +1642,23 @@ function updateSupportTotals(panel, cardEl, planKey) {
         year2Wrap.classList.remove('hidden');
         const ongoingMonthly = planAmount + supportPrice; // monthly ongoing (no setup)
         year2AmtEl.textContent = `€${formatNumber(ongoingMonthly)}/month ongoing`;
+    }
+
+    // Update Apply for Plan link with support_plan and billing_period parameters
+    const ctaLink = panel.querySelector('.support-cta');
+    if (ctaLink) {
+        const planCfg = getConfigPlan(planKey) || {};
+        let url = planCfg.applyUrl || '#';
+        
+        // Add support_plan parameter to the URL
+        const separator = url.includes('?') ? '&' : '?';
+        url = `${url}${separator}support_plan=${encodeURIComponent(supportLevel)}`;
+        
+        // Add billing_period parameter (monthly or annual)
+        const billingPeriod = isYearly ? 'annual' : 'monthly';
+        url = `${url}&billing_period=${encodeURIComponent(billingPeriod)}`;
+        
+        ctaLink.href = url;
     }
 }
 
@@ -1711,10 +1729,11 @@ function initPricingInteractions() {
     document.querySelectorAll('.pricing-card').forEach(card => {
         const plan = card.getAttribute('data-plan');
         // Prefer an explicit CTA button (data-config) or .btn; fall back to first button
+        // But skip the support-cta link (Apply for Plan button)
         let selectBtn = null;
         if (plan) selectBtn = card.querySelector(`[data-config="pricing.${plan}.cta"]`);
-        if (!selectBtn) selectBtn = card.querySelector('.btn');
-        if (!selectBtn) selectBtn = card.querySelector('button');
+        if (!selectBtn) selectBtn = card.querySelector('.btn:not(.support-cta)');
+        if (!selectBtn) selectBtn = card.querySelector('button:not(.support-cta)');
         if (plan && selectBtn) {
             // Add debug info for wiring
             try { console.debug('Wiring pricing select button for plan', plan, selectBtn); } catch (e) {}
@@ -1753,9 +1772,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Delegated click fallback: ensure clicks on pricing-card buttons open the support panel
+// But skip the support-cta link (Apply for Plan button) to allow navigation
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.pricing-card .btn, .pricing-card button, .pricing-card [data-config^="pricing."]');
     if (!btn) return;
+    
+    // Skip the support-cta link - let it navigate normally
+    if (btn.classList.contains('support-cta')) return;
+    
     const card = btn.closest('.pricing-card');
     if (!card) return;
     const plan = card.getAttribute('data-plan');

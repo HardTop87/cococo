@@ -45,19 +45,17 @@ window.SITE_CONFIG = {
       lead: 'Start today with the CoCoCo Platform and experience seamless data flow and data availability like never before. Our team will support you every step of the way.',
       note: ''
     },
-    pricingPreview: {
-      title: 'Fair Pricing',
-      description: 'Flexible Preismodelle für jedes Unternehmen'
-    },
+    
     // Centralized pricing plan texts and numeric values used by the pricing page
     pricingPlans: {
       grow: {
         title: 'Grow',
-        subtitle: 'Our fair pricing to support small manufacturers',
+        subtitle: 'Our special pricing to support small businesses (≤ 10 employees)',
         monthly: 500,
         yearly: 5500,
         setup: 2500,
         cta: 'Select Plan',
+        applyUrl: 'https://2dztun.share-eu1.hsforms.com/2Roz4Vr1gQAmdQ-qgvm9SAw',
         // Plan-specific copy for detailed support panel
         setupBullets: [
           'Guided setup & onboarding (2 weeks)',
@@ -66,24 +64,25 @@ window.SITE_CONFIG = {
           '2 months silver support included'
         ],
         features: [
-          { text: 'CoCoCo Integration Backbone', included: true },
-          { text: 'Unlimited users', included: true },
-          { text: 'Custom apps', included: true },
-          { text: 'Feature 1', included: true },
+          { text: 'Unlimited Users', included: true },
+          { text: 'Unlimited Integrations', included: true },
+          { text: 'CoCoCo Data Model', included: true },
+          { text: 'Custom Apps', included: true },
           { text: 'Feature 2', included: true },
           { text: 'Feature 3', included: true },
           { text: 'Multi-site support', included: false },
-          { text: 'ABC', included: false },
-          { text: 'QRS', included: false }
+          { text: 'SLA', included: false },
+          { text: 'XYZ', included: false }
         ]
       },
       professional: {
         title: 'Professional',
-        subtitle: 'For full production operations',
+        subtitle: 'Standard pricing for full production operations',
         monthly: 1000,
         yearly: 11000,
         setup: 2500,
         cta: 'Select Plan',
+        applyUrl: 'https://2dztun.share-eu1.hsforms.com/PROFESSIONAL_PLAN_FORM_URL',
         setupBullets: [
           'Dedicated onboarding specialist (4 weeks)',
           'Data migration and mapping support',
@@ -92,11 +91,13 @@ window.SITE_CONFIG = {
           '60 days priority email support'
         ],
         features: [
-          { text: 'Everything in Grow', included: true },
-          { text: 'SLA & priority support', included: true },
-          { text: 'Custom reporting', included: true },
-          { text: '5 connected systems', included: true },
-          { text: 'Role-based access controls', included: true }
+          { text: 'Unlimited Users', included: true },
+          { text: 'Unlimited Integrations', included: true },
+          { text: 'CoCoCo Data Model', included: true },
+          { text: 'Custom Apps', included: true },
+          { text: 'Multi-site support', included: false },
+          { text: 'SLA', included: false },
+          { text: 'XYZ', included: false }
         ]
       },
       enterprise: {

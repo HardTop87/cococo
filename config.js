@@ -58,8 +58,6 @@ window.SITE_CONFIG = {
         yearly: 5500,
         setup: 2500,
         cta: 'Select Plan',
-        description: 'Basisfunktionen, schnelle Integration und E-Mail-Support.'
-        ,
         // Plan-specific copy for detailed support panel
         setupBullets: [
           'Guided setup & onboarding (2 weeks)',
@@ -86,8 +84,6 @@ window.SITE_CONFIG = {
         yearly: 11000,
         setup: 2500,
         cta: 'Select Plan',
-        description: 'Erweiterte Integrationen, SLA und dedizierter Support.'
-        ,
         setupBullets: [
           'Dedicated onboarding specialist (4 weeks)',
           'Data migration and mapping support',
@@ -110,8 +106,6 @@ window.SITE_CONFIG = {
         yearly: 0,
         setup: 0,
         cta: 'Contact Sales',
-        description: 'Individuelle Angebote, Onboarding und Integrationssupport.'
-        ,
         setupBullets: [
           'Named implementation manager & PM',
           'Complex data migration & integration support',

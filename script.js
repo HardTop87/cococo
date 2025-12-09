@@ -134,10 +134,10 @@ function applySiteConfig() {
                     if (featuresEl) {
                         // Build rich markup: headings, SVG check icons, divider, and muted styling for advanced items
                         const makeIcon = () => `
-                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                            <svg class="pricing-feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
                         const makeXIcon = () => `
-                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                            <svg class="pricing-feature-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
                         const isMutedFeature = (text) => {
                             const key = text.toLowerCase();
@@ -150,7 +150,7 @@ function applySiteConfig() {
                             items.push(`<li class="section-heading">Setup & Migration:</li>`);
                             plan.setupBullets.forEach(b => {
                                 const safe = String(b);
-                                items.push(`<li class="feature-item">${makeIcon()}<span class="feature-text">${safe}</span></li>`);
+                                items.push(`<li class="pricing-feature-item">${makeIcon()}<span class="pricing-feature-text">${safe}</span></li>`);
                             });
                             items.push(`<li class="divider-line" aria-hidden="true"></li>`);
                         }
@@ -181,14 +181,14 @@ function applySiteConfig() {
                             // render included features first
                             includedFeatures.forEach(fText => {
                                 const muted = isMutedFeature(fText) ? 'muted-feature' : '';
-                                items.push(`<li class="feature-item ${muted}">${makeIcon()}<span class="feature-text">${fText}</span></li>`);
+                                items.push(`<li class="pricing-feature-item ${muted}">${makeIcon()}<span class="pricing-feature-text">${fText}</span></li>`);
                             });
 
                             // render excluded features at the end, separated and using X icon
                             if (excludedFeatures.length) {
                                 items.push(`<li class="divider-line" aria-hidden="true"></li>`);
                                 excludedFeatures.forEach(fText => {
-                                    items.push(`<li class="feature-item excluded-feature muted-feature">${makeXIcon()}<span class="feature-text">${fText.replace(/^x\s+|^✗\s+/i, '')}</span></li>`);
+                                    items.push(`<li class="pricing-feature-item excluded-feature muted-feature">${makeXIcon()}<span class="pricing-feature-text">${fText.replace(/^x\s+|^✗\s+/i, '')}</span></li>`);
                                 });
                             }
 
@@ -1872,7 +1872,153 @@ function initTypewriterAnimation() {
 // Initialize typewriter on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     initTypewriterAnimation();
+    initConnectionDiagramScroll();
 });
 
-// Log for debugging
-console.log('CoCoCo Platform Website initialized successfully!');
+// Connection Diagram Scroll Animation
+function initConnectionDiagramScroll() {
+    const diagram = document.getElementById('connectionDiagram');
+    if (!diagram) return;
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5 // Trigger when 50% of diagram is visible (center of viewport)
+    };
+
+    const observerCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add expanded class when diagram reaches center
+                diagram.classList.add('expanded');
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    observer.observe(diagram);
+}
+
+// Language Cycler with fast-flip effect
+function initLanguageCycler() {
+    const cycler = document.getElementById('languageCycler');
+    if (!cycler) return;
+
+    // Get the default/current language text from data attribute or content
+    const defaultText = cycler.getAttribute('data-i18n-default') || 'Your Language';
+    
+    // Language variations (excluding the default which will be first and last)
+    const languages = [
+        defaultText,           // Start with current language
+        'Deine Sprache',       // German
+        'ta langue',           // French
+        'la tua lingua',       // Italian
+        'あなたの言語',         // Japanese
+        'tu idioma',           // Spanish
+        'je taal',             // Dutch
+        defaultText            // End with current language
+    ];
+
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    async function cycleLanguage() {
+        if (isAnimating || currentIndex >= languages.length - 1) return;
+        
+        isAnimating = true;
+        currentIndex++;
+        
+        // Flip out
+        cycler.classList.add('flip-out');
+        
+        // Wait for flip-out animation
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Change text
+        cycler.textContent = languages[currentIndex] + '.';
+        
+        // Remove flip-out, add flip-in
+        cycler.classList.remove('flip-out');
+        cycler.classList.add('flip-in');
+        
+        // Wait for flip-in animation
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Clean up
+        cycler.classList.remove('flip-in');
+        isAnimating = false;
+    }
+
+    // Start cycling after initial delay
+    setTimeout(async () => {
+        // Cycle through all languages with 400ms between each
+        const totalCycles = languages.length - 1;
+        for (let i = 0; i < totalCycles; i++) {
+            await cycleLanguage();
+            if (i < totalCycles - 1) {
+                await new Promise(resolve => setTimeout(resolve, 400));
+            }
+        }
+    }, 600); // Start after 0.6 second delay
+}
+
+// Initialize language cycler on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initLanguageCycler(); } catch (e) { console.error('Language cycler error:', e); }
+});
+
+// Connecting Split Animation (for integration.html hero)
+function initConnectingSplit() {
+    const el = document.getElementById('connectingSplit');
+    if (!el) return;
+    
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) {
+        // Skip animation for users who prefer reduced motion
+        return;
+    }
+    
+    // Start animation after brief delay (hero is visible on load)
+    setTimeout(() => {
+        el.classList.add('animating');
+        
+        // Remove animating class after animation completes (1.2s duration)
+        setTimeout(() => {
+            el.classList.remove('animating');
+        }, 1200);
+    }, 600); // Start after 0.6 second delay
+}
+
+// Initialize connecting split animation on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initConnectingSplit(); } catch (e) { console.error('Connecting split error:', e); }
+});
+
+// Mirror Text Animation (for custom_apps.html hero)
+function initMirrorText() {
+    const el = document.getElementById('mirrorText');
+    if (!el) return;
+    
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReduced) {
+        // Skip animation for users who prefer reduced motion
+        return;
+    }
+    
+    // Start animation after brief delay (hero is visible on load)
+    setTimeout(() => {
+        el.classList.add('animating');
+        
+        // Remove animating class after animation completes (1s duration)
+        setTimeout(() => {
+            el.classList.remove('animating');
+        }, 4000);
+    }, 1200); // Start after 1.2 second delay
+}
+
+// Initialize mirror text animation on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initMirrorText(); } catch (e) { console.error('Mirror text error:', e); }
+});

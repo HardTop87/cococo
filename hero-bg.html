@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo 3D Network - Final</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFFFF; 
+            overflow: hidden;
+        }
+
+        #canvas-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-wrapper">
+        <canvas id="wireframe-network"></canvas>
+    </div>
+
+<script>
+/**
+ * 3D WIREFRAME NETWORK (Final Version)
+ * Config: No Moss, Pig Nodes, Full Rotation Placement
+ */
+
+const PALETTE = {
+    Berry: '#4D2B41',   // Struktur-Linien (Dunkel für Kontrast auf Weiß)
+    Pig: '#FF79C9',     // Active Nodes & Impulse
+    Peach: '#FFEFF8'    // (Optional)
+};
+
+const project3D = (x, y, z, centerX, centerY, scale) => {
+    const fl = 400; 
+    const perspective = fl / (fl + z);
+    return {
+        x: centerX + x * perspective * scale,
+        y: centerY + y * perspective * scale,
+        scale: perspective
+    };
+};
+
+const rotateX = (x, y, z, angle) => {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    return { y: y * cos - z * sin, z: z * cos + y * sin };
+};
+
+const rotateY = (x, y, z, angle) => {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    return { x: x * cos - z * sin, z: z * cos + x * sin };
+};
+
+// 1. Icosahedron Geometry
+const t = (1 + Math.sqrt(5)) / 2;
+const ICOSAHEDRON_VERTS = [
+    [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+    [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+    [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]
+];
+
+// 2. Cube Geometry
+const CUBE_VERTS = [
+    [-1,-1,-1], [1,-1,-1], [1, 1,-1], [-1, 1,-1],
+    [-1,-1, 1], [1,-1, 1], [1, 1, 1], [-1, 1, 1]
+];
+const CUBE_EDGES = [
+    [0,1], [1,2], [2,3], [3,0], [4,5], [5,6], [6,7], [7,4], [0,4], [1,5], [2,6], [3,7]
+];
+
+class Shape3D {
+    constructor(type, x, y, size) {
+        this.baseX = x; 
+        this.baseY = y;
+        this.size = size;
+        this.angleX = Math.random() * Math.PI;
+        this.angleY = Math.random() * Math.PI;
+        this.rotationSpeedX = (Math.random() - 0.5) * 0.005;
+        this.rotationSpeedY = (Math.random() - 0.5) * 0.005;
+        
+        if (type === 'core') {
+            this.vertices = ICOSAHEDRON_VERTS.map(v => ({x: v[0], y: v[1], z: v[2]}));
+            this.edges = this.generateIcosahedronEdges();
+            this.isCore = true;
+        } else {
+            this.vertices = CUBE_VERTS.map(v => ({x: v[0], y: v[1], z: v[2]}));
+            this.edges = CUBE_EDGES;
+            this.isCore = false;
+        }
+        this.projectedPoints = [];
+    }
+
+    generateIcosahedronEdges() {
+        const edges = [];
+        for(let i=0; i<this.vertices.length; i++) {
+            for(let j=i+1; j<this.vertices.length; j++) {
+                const v1 = this.vertices[i];
+                const v2 = this.vertices[j];
+                const dist = Math.sqrt(Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2) + Math.pow(v1.z-v2.z, 2));
+                if (dist < 2.1 && dist > 1.9) edges.push([i, j]);
+            }
+        }
+        return edges;
+    }
+
+    update() {
+        this.angleX += this.rotationSpeedX;
+        this.angleY += this.rotationSpeedY;
+        this.projectedPoints = this.vertices.map(v => {
+            let r = rotateY(v.x, v.y, v.z, this.angleY);
+            r = {...r, ...rotateX(r.x, v.y, r.z, this.angleX)};
+            return project3D(r.x, r.y, r.z, this.baseX, this.baseY, this.size * 30);
+        });
+    }
+
+    draw(ctx) {
+        // Kanten zeichnen (Wireframe)
+        ctx.beginPath();
+        // Hier wurde 'Moss' entfernt. Alle Linien sind Pig.
+        ctx.strokeStyle = PALETTE.Pig; 
+        ctx.lineWidth = this.isCore ? 1.2 : 0.6; 
+        ctx.globalAlpha = this.isCore ? 0.8 : 0.4;
+
+        this.edges.forEach(edge => {
+            const p1 = this.projectedPoints[edge[0]];
+            const p2 = this.projectedPoints[edge[1]];
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+        });
+        ctx.stroke();
+
+        // Knotenpunkte zeichnen
+        ctx.globalAlpha = 1;
+        this.projectedPoints.forEach(p => {
+            ctx.beginPath();
+            ctx.fillStyle = PALETTE.Pig; // Alle Nodes sind Pig
+            const dotSize = (this.isCore ? 2.0 : 1.2) * p.scale; 
+            ctx.arc(p.x, p.y, Math.max(0, dotSize), 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+}
+
+class Pulse {
+    constructor(startObj, endObj) {
+        this.startObj = startObj;
+        this.endObj = endObj;
+        this.progress = 0;
+        this.speed = 0.005 + Math.random() * 0.01;
+        this.history = []; 
+    }
+
+    update() {
+        this.progress += this.speed;
+        if (this.progress >= 1) {
+            this.progress = 0; 
+            this.history = [];
+        }
+    }
+
+    draw(ctx) {
+        const x = this.startObj.baseX + (this.endObj.baseX - this.startObj.baseX) * this.progress;
+        const y = this.startObj.baseY + (this.endObj.baseY - this.startObj.baseY) * this.progress;
+
+        this.history.push({x, y});
+        if (this.history.length > 20) this.history.shift();
+
+        ctx.beginPath();
+        ctx.strokeStyle = PALETTE.Pig;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        
+        if (this.history.length > 1) {
+            ctx.moveTo(this.history[0].x, this.history[0].y);
+            for(let point of this.history) {
+                ctx.lineTo(point.x, point.y);
+            }
+        }
+        ctx.globalAlpha = 0.6 * (1 - this.progress);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.fillStyle = PALETTE.Pig;
+        ctx.globalAlpha = 1;
+        ctx.arc(x, y, 2.5, 0, Math.PI*2);
+        ctx.fill();
+    }
+}
+
+class Scene {
+    constructor() {
+        this.canvas = document.getElementById('wireframe-network');
+        this.ctx = this.canvas.getContext('2d');
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.shapes = [];
+        this.pulses = [];
+        this.mouse = { x: 0, y: 0 };
+        this.init();
+        this.animate();
+
+        window.addEventListener('resize', () => {
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+            this.canvas.width = this.width;
+            this.canvas.height = this.height;
+            this.init();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            const centerX = this.width * 0.75;
+            const centerY = this.height * 0.35;
+            this.mouse.x = (e.clientX - centerX) * 0.0001;
+            this.mouse.y = (e.clientY - centerY) * 0.0001;
+        });
+    }
+
+    init() {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.shapes = [];
+        this.pulses = [];
+
+        // HAUPTKNOTEN
+        const coreX = this.width * 0.75;
+        const coreY = this.height * 0.35;
+        // Kleine Größe beibehalten (Faktor 0.0025)
+        const coreSize = Math.min(this.width, this.height) * 0.001; 
+        
+        const core = new Shape3D('core', coreX, coreY, coreSize * 1.5);
+        this.shapes.push(core);
+
+        // SATELLITEN
+        // 360 Grad Verteilung, aber Nähe zum Core beachten
+        const satelliteCount = 7;
+        for(let i=0; i<satelliteCount; i++) {
+            // Full Circle (0 bis 2 PI)
+            const angle = Math.random() * Math.PI * 2;
+            
+            // Distanz-Logik:
+            // Min: Genug Abstand vom Core, damit sie sich nicht überschneiden
+            // Max: Nicht zu weit weg, damit sie auf dem Screen bleiben (besonders oben/rechts)
+            // Wir nutzen einen relativ engen Radius um den Core herum.
+            const minDistance = 120; // Mindestabstand in Pixeln
+            const maxDistance = Math.min(this.width, this.height) * 0.25; 
+            
+            const distance = minDistance + Math.random() * (maxDistance - minDistance);
+            
+            const satX = coreX + Math.cos(angle) * distance;
+            const satY = coreY + Math.sin(angle) * distance;
+            
+            const sat = new Shape3D('cube', satX, satY, coreSize * 0.6);
+            this.shapes.push(sat);
+            this.pulses.push(new Pulse(sat, core));
+        }
+    }
+
+    drawConnections(core) {
+        this.ctx.lineWidth = 1;
+        this.shapes.forEach(shape => {
+            if (shape === core) return;
+            this.ctx.beginPath();
+            const dist = Math.hypot(core.baseX - shape.baseX, core.baseY - shape.baseY);
+            const opacity = Math.max(0.1, 1 - (dist / (this.width * 0.5)));
+            
+            // Verbindungslinien sind jetzt Berry
+            this.ctx.strokeStyle = PALETTE.Berry;
+            this.ctx.globalAlpha = opacity * 0.2; 
+            
+            this.ctx.moveTo(core.baseX, core.baseY);
+            this.ctx.lineTo(shape.baseX, shape.baseY);
+            this.ctx.stroke();
+        });
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        const core = this.shapes[0];
+
+        this.shapes.forEach(shape => {
+            shape.rotationSpeedX += (this.mouse.y - shape.rotationSpeedX) * 0.05;
+            shape.rotationSpeedY += (this.mouse.x - shape.rotationSpeedY) * 0.05;
+            shape.update();
+        });
+
+        this.drawConnections(core);
+        this.pulses.forEach(p => { p.update(); p.draw(this.ctx); });
+        this.shapes.forEach(shape => { shape.draw(this.ctx); });
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+window.onload = () => new Scene();
+</script>
+</body>
+</html>

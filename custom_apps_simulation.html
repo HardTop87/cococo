@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo Editor & ERP Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.0.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/vue@3.3.8/dist/vue.global.js"></script>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <style>
+        /* --- EDITOR STYLES (Scope: Outside the ERP App) --- */
+        :root {
+            --bg-body: #0F0F10; /* Darker Background from screenshot */
+            --bg-panel: #18181B;
+            --border: #27272A;
+            --brand-pink: #FF79C9;
+            --text-main: #E4E4E7;
+            --text-muted: #71717A;
+            --accent-blue: #0EA5E9;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh; overflow: hidden;
+        }
+
+        /* --- EDITOR LAYOUT --- */
+        #editor-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            z-index: 50; transition: opacity 0.5s ease;
+        }
+
+        /* Header */
+        .editor-header {
+            height: 64px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 32px; background: var(--bg-body);
+        }
+        .breadcrumb { font-size: 13px; color: var(--text-muted); display: flex; gap: 8px; }
+        .breadcrumb span { color: var(--text-main); }
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .edit-toggle { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
+        .toggle-switch { width: 32px; height: 18px; background: var(--brand-pink); border-radius: 9px; position: relative; }
+        .toggle-dot { width: 14px; height: 14px; background: #fff; border-radius: 50%; position: absolute; right: 2px; top: 2px; }
+        
+        .btn-update {
+            background-color: var(--brand-pink); color: #000;
+            font-weight: 600; font-size: 13px; padding: 8px 16px;
+            border-radius: 6px; border: none; cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        /* Content Area */
+        .editor-content {
+            flex: 1; padding: 32px; overflow-y: auto; max-width: 1200px; margin: 0 auto; width: 100%;
+        }
+
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+        .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        
+        /* Runtime Selector (Pink Border) */
+        .runtime-selector {
+            border: 2px solid var(--brand-pink);
+            background: rgba(255, 121, 201, 0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px; border-radius: 8px; margin-bottom: 24px;
+        }
+        .radio-selected { width: 18px; height: 18px; border: 5px solid var(--brand-pink); border-radius: 50%; background: transparent; }
+
+        /* Blue Info Box */
+        .info-alert {
+            background: rgba(14, 165, 233, 0.1); border-left: 4px solid var(--accent-blue);
+            padding: 16px; border-radius: 4px; margin-bottom: 24px;
+            color: var(--accent-blue); font-size: 13px; font-weight: 500;
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        /* Code Editors */
+        .code-block {
+            background: #09090b; border: 1px solid var(--border); border-radius: 8px;
+            font-family: 'Menlo', monospace; font-size: 13px; line-height: 1.6;
+            margin-bottom: 24px; position: relative; overflow: hidden;
+        }
+        .code-header {
+            padding: 8px 16px; border-bottom: 1px solid var(--border);
+            color: var(--text-muted); font-size: 12px; font-weight: 600;
+        }
+        .code-body { padding: 16px; min-height: 180px; color: #d4d4d4; white-space: pre; position: relative; }
+        
+        /* Syntax Colors */
+        .tag { color: #569cd6; } .attr { color: #9cdcfe; } .val { color: #ce9178; }
+        .kwd { color: #c586c0; } .func { color: #dcdcaa; } .cmt { color: #6a9955; }
+
+        .cursor {
+            display: inline-block; width: 2px; height: 16px; background-color: var(--brand-pink);
+            animation: blink 1s infinite; vertical-align: text-bottom;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Fake Mouse */
+        #fake-mouse {
+            position: fixed; top: 60%; left: 30%; width: 0; height: 0;
+            border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid var(--brand-pink);
+            transform: rotate(-25deg); z-index: 1000; opacity: 0; pointer-events: none; transition: all 1s ease-in-out;
+        }
+
+        /* --- PREVIEW LAYER (The ERP App) --- */
+        #preview-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a; /* ERP Background */
+            z-index: 40; opacity: 0; pointer-events: none;
+            transform: scale(0.98); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+        #preview-layer.active { opacity: 1; transform: scale(1); pointer-events: all; z-index: 100; }
+
+        /* Scoped styles for the ERP content to look good */
+        .erp-container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+    <div id="editor-layer">
+        <div class="editor-header">
+            <div class="breadcrumb">Home › Custom Apps › <span>Edit Custom App</span></div>
+            <div class="header-actions">
+                <div class="edit-toggle">Edit Mode <div class="toggle-switch"><div class="toggle-dot"></div></div></div>
+                <button id="btn-update" class="btn-update">Update App</button>
+            </div>
+        </div>
+
+        <div class="editor-content">
+            <h1 class="section-title">Edit Custom App</h1>
+            
+            <div class="card">
+                <div class="section-title" style="font-size:16px;">App Configuration</div>
+                
+                <div class="runtime-selector">
+                    <div>
+                        <div style="font-weight:600; color:#fff;">Simple Vue App</div>
+                        <div style="font-size:12px; color:var(--text-muted);">Write Vue templates and scripts directly in the browser</div>
+                    </div>
+                    <div class="radio-selected"></div>
+                </div>
+
+                <div class="info-alert">
+                    <span>ℹ️</span>
+                    <div><strong>Vue Component Development</strong><br>Write your Vue 3 component using Composition API.</div>
+                </div>
+
+                <div style="color:var(--text-muted); font-size:12px; margin-bottom:8px; font-weight:600;">Template</div>
+                <div class="code-block">
+                    <div class="code-body">
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"dashboard-layout"</span><span class="tag">&gt;</span>
+  <span class="cmt">&lt;!-- KPI Header Section --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"stats shadow"</span><span class="tag">&gt;</span>
+    <span id="code-target"></span><span class="cursor"></span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+                </div>
+
+                <div style="color:var(--text-muted); font-size:12px; margin-bottom:8px; font-weight:600;">Script</div>
+                <div class="code-block" style="height:120px; min-height:auto;">
+                    <div class="code-body" style="min-height:auto;">
+<span class="kwd">const</span> { <span class="func">createApp</span>, <span class="func">ref</span> } = <span class="val">Vue</span>;
+
+<span class="kwd">setup</span>() {
+  <span class="kwd">const</span> <span class="val">isLoading</span> = <span class="func">ref</span>(<span class="kwd">true</span>);
+  <span class="cmt">// ... fetching ERP data logic ...</span>
+}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="fake-mouse"></div>
+
+    <div id="preview-layer">
+        <div id="app" class="erp-container">
+            <div class="navbar bg-base-100 rounded-box shadow-lg mb-6 border border-gray-700">
+                <div class="flex-1">
+                    <a class="btn btn-ghost text-xl text-white">
+                        <span class="text-blue-500">ERP</span> System
+                    </a>
+                    <span class="text-xs text-gray-500 ml-2 hidden sm:block">Customer & Order Management</span>
+                </div>
+                <div class="flex-none gap-2">
+                    <div class="form-control">
+                        
+                    </div>
+                    <button class="btn btn-primary btn-sm" @click="showAddOrderModal = true">+ New Order</button>
+                </div>
+            </div>
+
+            <div v-if="isLoading" class="flex justify-center items-center h-64">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+
+            <div v-else class="fade-in">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="stats shadow bg-base-100 border border-gray-700">
+                        <div class="stat">
+                            <div class="stat-figure text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                            <div class="stat-title">Active Customers</div>
+                            <div class="stat-value text-primary">{{ customersTotalCount }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats shadow bg-base-100 border border-gray-700">
+                        <div class="stat">
+                            <div class="stat-figure text-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            </div>
+                            <div class="stat-title">Open Orders</div>
+                            <div class="stat-value text-secondary">{{ openOrdersCount }}</div>
+                        </div>
+                    </div>
+
+                    <div class="stats shadow bg-base-100 border border-gray-700">
+                        <div class="stat">
+                            <div class="stat-figure text-accent">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            </div>
+                            <div class="stat-title">In Production</div>
+                            <div class="stat-value text-accent">{{ productionOrdersCount }}</div>
+                        </div>
+                    </div>
+
+                    <div class="stats shadow bg-base-100 border border-gray-700">
+                        <div class="stat">
+                            <div class="stat-figure text-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div class="stat-title">Revenue (Month)</div>
+                            <div class="stat-value text-warning">{{ formatCurrency(totalRevenue) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <div class="card bg-base-100 shadow-xl border border-gray-700 h-[600px] flex flex-col">
+                        <div class="card-body p-4 flex flex-col h-full">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg flex items-center">
+                                    <span class="text-primary mr-2">👥</span> Customer Management
+                                </h2>
+                                <button class="btn btn-xs btn-primary" @click="showAddCustomerModal = true">+ Customer</button>
+                            </div>
+                            
+                            <input type="text" placeholder="Search customer..." class="input input-bordered w-full mb-4 bg-gray-800" v-model="customerSearchTerm" />
+                            
+                            <div class="overflow-y-auto flex-1 pr-2 space-y-3" @scroll="onCustomerScroll">
+                                <div v-for="customer in filteredCustomers" :key="customer.id" 
+                                     class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer border border-gray-700"
+                                     @click="selectCustomer(customer)">
+                                    <div class="card-body p-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-bold text-white">{{ customer.company }}</h3>
+                                                <p class="text-sm text-gray-400">{{ customer.contact_person }}</p>
+                                                <p class="text-xs text-gray-500 mt-1">{{ customer.email }}</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-sm font-mono text-gray-300">{{ formatCurrency(getCustomerRevenue(customer.id)) }}</div>
+                                                <div class="text-xs text-gray-500">Revenue</div>
+                                                <div class="badge badge-sm mt-2">{{ getCustomerOrderCount(customer.id) }} Orders</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="customersLoading" class="text-center p-2 text-xs text-gray-500">Loading more customers...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-gray-700 h-[600px] flex flex-col">
+                        <div class="card-body p-4 flex flex-col h-full">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="card-title text-lg flex items-center">
+                                    <span class="text-secondary mr-2">📋</span> Order Management
+                                </h2>
+                                <select class="select select-bordered select-xs w-32 bg-gray-800" v-model="orderStatusFilter" @change="applyOrderFilter(orderStatusFilter)">
+                                    <option value="">All Status</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in_production">In Prod</option>
+                                    <option value="delivered">Delivered</option>
+                                </select>
+                            </div>
+
+                            <input type="text" placeholder="Search order..." class="input input-bordered w-full mb-4 bg-gray-800" v-model="orderSearchTerm" />
+
+                            <div class="overflow-y-auto flex-1 pr-2 space-y-3" @scroll="onOrderScroll">
+                                <div v-for="order in filteredOrders" :key="order.id" 
+                                     class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer border border-gray-700"
+                                     @click="selectOrder(order)">
+                                    <div class="card-body p-4">
+                                        <div class="flex justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <div class="status-indicator" :class="getStatusIndicatorClass(order.status)"></div>
+                                                <span class="font-bold text-sm text-gray-300">{{ order.order_number }}</span>
+                                                <span :class="getStatusBadgeClass(order.status) + ' badge-xs'">{{ getStatusText(order.status) }}</span>
+                                            </div>
+                                            <div class="font-bold text-white">{{ formatCurrency(order.total_amount) }}</div>
+                                        </div>
+                                        
+                                        <div class="mt-2">
+                                            <p class="text-sm text-white">{{ getCustomerDisplayName(order) }}</p>
+                                            <p class="text-xs text-gray-400 mt-1 truncate">{{ order.product_description }}</p>
+                                        </div>
+                                        
+                                        <div class="flex justify-between mt-3 text-xs">
+                                            <span class="bg-gray-700 px-2 py-1 rounded text-gray-300">{{ formatDate(order.created_date) }}</span>
+                                            <span class="bg-yellow-900/30 text-yellow-500 px-2 py-1 rounded border border-yellow-700/50">Due: {{ formatDate(order.deadline) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="ordersLoading" class="text-center p-2 text-xs text-gray-500">Loading more orders...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SIMULATION LOGIC ---
+        
+        // Code to be "typed" into the Template Editor
+        const codeSequence = [
+            { text: '\n    <div', class: 'tag' },
+            { text: ' class', class: 'attr' },
+            { text: '="stat"', class: 'val' },
+            { text: '>', class: 'tag' },
+            { text: '\n      <div', class: 'tag' },
+            { text: ' class', class: 'attr' },
+            { text: '="stat-title"', class: 'val' },
+            { text: '>Revenue</div>', class: 'tag' },
+            { text: '\n      <div', class: 'tag' },
+            { text: ' class', class: 'attr' },
+            { text: '="stat-value"', class: 'val' },
+            { text: '>\n        {{ totalRevenue }}', class: 'text' },
+            { text: '\n      </div>', class: 'tag' },
+            { text: '\n    </div>', class: 'tag' }
+        ];
+
+        const codeTarget = document.getElementById('code-target');
+        const updateBtn = document.getElementById('btn-update');
+        const fakeMouse = document.getElementById('fake-mouse');
+        const previewLayer = document.getElementById('preview-layer');
+
+        async function typeWriter() {
+            // Wait initially
+            await new Promise(r => setTimeout(r, 1000));
+
+            for (let chunk of codeSequence) {
+                const span = document.createElement('span');
+                if(chunk.class) span.className = chunk.class;
+                codeTarget.appendChild(span);
+
+                for (let char of chunk.text) {
+                    span.textContent += char;
+                    // Type speed
+                    await new Promise(r => setTimeout(r, Math.random() * 20 + 20));
+                }
+            }
+
+            // Typing done. Move mouse to button
+            await new Promise(r => setTimeout(r, 500));
+            moveMouseToButton();
+        }
+
+        async function moveMouseToButton() {
+            fakeMouse.style.opacity = '1';
+            fakeMouse.style.display = 'block';
+            
+            // Get Coords
+            const btnRect = updateBtn.getBoundingClientRect();
+            
+            // Start Pos (center screen)
+            fakeMouse.style.top = '60%';
+            fakeMouse.style.left = '40%';
+
+            // Wait a sec
+            await new Promise(r => setTimeout(r, 500));
+
+            // Move
+            fakeMouse.style.top = (btnRect.top + 15) + 'px';
+            fakeMouse.style.left = (btnRect.left + 30) + 'px';
+
+            // Wait travel time
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Click animation
+            updateBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                updateBtn.style.transform = 'scale(1)';
+                launchERP();
+            }, 150);
+        }
+
+        function launchERP() {
+            fakeMouse.style.opacity = '0';
+            previewLayer.classList.add('active');
+            
+            // Initialize Vue App after UI transition
+            setTimeout(() => {
+                initVueApp();
+            }, 300);
+        }
+
+        // Start Simulation
+        typeWriter();
+
+
+        // --- 2. THE ERP APP LOGIC (Provided by User) ---
+        
+        function initVueApp() {
+            const { createApp, ref, computed, onMounted, watch } = Vue;
+
+            createApp({
+                setup() {
+                    // UI State
+                    const isLoading = ref(true);
+                    const darkMode = ref(true); // Default dark to match screenshot
+                    const useLiveData = ref(false);
+                    
+                    // Search & Filter
+                    const customerSearchTerm = ref('');
+                    const orderSearchTerm = ref('');
+                    const orderStatusFilter = ref('');
+
+                    // Selected Items
+                    const selectedCustomer = ref(null);
+                    const selectedOrder = ref(null);
+
+                    // States
+                    const showCustomerModal = ref(false);
+                    const showOrderModal = ref(false);
+                    const showAddCustomerModal = ref(false);
+                    const showAddOrderModal = ref(false);
+
+                    // DATA
+                    const demoCustomers = [
+                        { id: 1, company: 'TechFlow Industries GmbH', contact_person: 'Sarah Schmidt', email: 'sarah@techflow.de' },
+                        { id: 2, company: 'Elegant Events Studio', contact_person: 'Marcus Weber', email: 'm.weber@events.com' },
+                        { id: 3, company: 'Global Finance Corp', contact_person: 'Dr. Lisa Miller', email: 'lisa@global.com' },
+                        { id: 4, company: 'Creative Design Agency', contact_person: 'Thomas Klein', email: 'tk@creative.net' },
+                        { id: 5, company: 'Metropolitan Publishing', contact_person: 'Jennifer Brown', email: 'jennifer@metro.com' },
+                        { id: 6, company: 'Local Restaurant Chain', contact_person: 'Antonio Rossi', email: 'antonio@pizza.com' },
+                        { id: 7, company: 'University Press', contact_person: 'Anna Wagner', email: 'wagner@uni.edu' },
+                        { id: 8, company: 'Organic Foods Co', contact_person: 'Michael Green', email: 'mike@bio.com' },
+                        { id: 9, company: 'StartUp Inc', contact_person: 'Jonas Tech', email: 'jonas@startup.io' },
+                        { id: 10, company: 'Law Firm Meier', contact_person: 'Dr. Meier', email: 'info@meier-law.de' }
+                    ];
+
+                    const demoOrders = [
+                        { id: 101, order_number: 'ORD-2025-1001', customer_id: 1, status: 'in_production', total_amount: 2850.00, created_date: '2025-10-18', deadline: '2025-10-22', product_description: '5000x Brochures' },
+                        { id: 102, order_number: 'ORD-2025-1002', customer_id: 2, status: 'in_production', total_amount: 890.00, created_date: '2025-10-19', deadline: '2025-10-25', product_description: '300x Invitations' },
+                        { id: 103, order_number: 'ORD-2025-1003', customer_id: 3, status: 'ready_for_pickup', total_amount: 4200.00, created_date: '2025-10-15', deadline: '2025-10-21', product_description: 'Annual Report' },
+                        { id: 104, order_number: 'ORD-2025-1004', customer_id: 4, status: 'confirmed', total_amount: 320.00, created_date: '2025-10-21', deadline: '2025-10-28', product_description: '1000x Business Cards' },
+                        { id: 105, order_number: 'ORD-2025-1005', customer_id: 5, status: 'pending', total_amount: 1650.00, created_date: '2025-10-21', deadline: '2025-10-30', product_description: 'Magazine Issue 10' },
+                        { id: 106, order_number: 'ORD-2025-1006', customer_id: 9, status: 'draft', total_amount: 150.00, created_date: '2025-10-22', deadline: '2025-11-01', product_description: 'Stickers' },
+                        { id: 107, order_number: 'ORD-2025-1007', customer_id: 8, status: 'delivered', total_amount: 1240.00, created_date: '2025-10-05', deadline: '2025-10-12', product_description: 'Product Labels' }
+                    ];
+
+                    const customers = ref([...demoCustomers]);
+                    const orders = ref([...demoOrders]);
+                    const allCustomers = ref([...demoCustomers]);
+                    const allOrders = ref([...demoOrders]);
+
+                    // Dummy Pagination
+                    const customersLoading = ref(false);
+                    const customersTotalCount = ref(10);
+                    const ordersLoading = ref(false);
+
+                    // COMPUTED
+                    const filteredCustomers = computed(() => {
+                        if (!customerSearchTerm.value) return customers.value;
+                        const term = customerSearchTerm.value.toLowerCase();
+                        return customers.value.filter(c => c.company.toLowerCase().includes(term));
+                    });
+
+                    const filteredOrders = computed(() => {
+                        let res = orders.value;
+                        if (orderSearchTerm.value) {
+                            const term = orderSearchTerm.value.toLowerCase();
+                            res = res.filter(o => o.order_number.toLowerCase().includes(term));
+                        }
+                        if (orderStatusFilter.value) {
+                            res = res.filter(o => o.status === orderStatusFilter.value);
+                        }
+                        return res;
+                    });
+
+                    const openOrdersCount = computed(() => orders.value.filter(o => o.status !== 'delivered').length);
+                    const productionOrdersCount = computed(() => orders.value.filter(o => o.status === 'in_production').length);
+                    const totalRevenue = computed(() => orders.value.reduce((acc, o) => acc + o.total_amount, 0));
+
+                    // HELPERS
+                    const getCustomerRevenue = (id) => orders.value.filter(o => o.customer_id === id).reduce((acc, o) => acc + o.total_amount, 0);
+                    const getCustomerOrderCount = (id) => orders.value.filter(o => o.customer_id === id).length;
+                    
+                    const getCustomerDisplayName = (order) => {
+                        const c = customers.value.find(c => c.id === order.customer_id);
+                        return c ? c.company : 'Unknown';
+                    };
+
+                    const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+                    const formatDate = (d) => new Date(d).toLocaleDateString();
+
+                    const getStatusText = (s) => s.replace('_', ' ').toUpperCase();
+                    const getStatusBadgeClass = (s) => {
+                        const map = { draft: 'badge-ghost', pending: 'badge-info', confirmed: 'badge-primary', in_production: 'badge-warning', ready_for_pickup: 'badge-accent', delivered: 'badge-success' };
+                        return `badge ${map[s] || 'badge-neutral'}`;
+                    };
+                    const getStatusIndicatorClass = (s) => {
+                        const map = { draft: 'bg-gray-400', pending: 'bg-blue-400', confirmed: 'bg-indigo-400', in_production: 'bg-yellow-400', ready_for_pickup: 'bg-teal-400', delivered: 'bg-green-400' };
+                        return `w-2 h-2 rounded-full mr-2 ${map[s] || 'bg-gray-500'}`;
+                    };
+
+                    // ACTIONS (Dummy)
+                    const selectCustomer = () => {};
+                    const selectOrder = () => {};
+                    const applyOrderFilter = () => {};
+                    const toggleDataSource = () => {};
+                    const onCustomerScroll = () => {};
+                    const onOrderScroll = () => {};
+
+                    // INIT
+                    onMounted(() => {
+                        setTimeout(() => isLoading.value = false, 800);
+                    });
+
+                    return {
+                        isLoading, darkMode, useLiveData,
+                        customerSearchTerm, orderSearchTerm, orderStatusFilter,
+                        showAddCustomerModal, showAddOrderModal,
+                        filteredCustomers, filteredOrders,
+                        customersTotalCount, openOrdersCount, productionOrdersCount, totalRevenue,
+                        getCustomerRevenue, getCustomerOrderCount, getCustomerDisplayName,
+                        formatCurrency, formatDate, getStatusText, getStatusBadgeClass, getStatusIndicatorClass,
+                        selectCustomer, selectOrder, applyOrderFilter, toggleDataSource, onCustomerScroll, onOrderScroll,
+                        customersLoading, ordersLoading
+                    };
+                }
+            }).mount('#app');
+        }
+    </script>
+
+</body>
+</html>

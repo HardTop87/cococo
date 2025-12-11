@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,45 +15,13 @@
     <!-- Header Placeholder -->
     <div id="site-header"></div>
 
-    <!-- Top Banner Section -->
-    <!-- <section class="top-banner">
-        <div class="banner-image-container">
-            <img src="images/banners/CoCoCo_Platform.webp" alt="CoCoCo Platform" class="banner-image">
-        </div>
-    </section> -->
-
-    <!-- Hero Section -->
-    <!-- <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <div class="badge-scroll-container">
-                        <div class="badge-scroll-content" id="badgeScrollContent">
-                            <span class="badge-text">Connect</span>
-                            <span class="badge-text">Combine</span>
-                            <span class="badge-text">Collaborate</span>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="hero-title" data-config="hero.title"></h1>
-                <p class="hero-description" data-config="hero.subtitle"></p>
-                <div class="hero-buttons">
-                    <a class="btn btn-primary" data-config="hero.cta.primary" href="pricing.html">Start Now</a>
-                    <a class="btn btn-secondary" data-config="hero.cta.secondary" href="#features">Learn More</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="hero-visual">
-                    <img src="images/hero/heart.png" alt="AI Brain" class="brain-image">
-                    <div class="visual-circle"></div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-decoration"></div>
-    </section> -->
-
     <!-- CoCoCo Platform Core Section -->
     <section class="cocore-hero" id="services">
+        <!-- Canvas Background (behind text) -->
+        <div id="hero-canvas-wrapper">
+            <canvas id="wireframe-network"></canvas>
+        </div>
+        
         <div class="container">
             <!-- Hero Header with Heart Visual -->
             <div class="cocore-header">
@@ -68,189 +36,271 @@
                             </div>
                         </div>
                         </div> -->
-                    <h2 class="cocore-title">Your Print Ecosystem, <span class="highlight-text">Unified and Automated</span></h2>
-                    <p class="cocore-tagline">Where Data and Insight Drive Print Success</p>
+                    <h2 class="cocore-title"><span class="highlight-text">21st Century Press.</span> 20th Century Workflow.</h2>
+                    <p class="cocore-tagline">You invested millions in hardware, but you're running it on spreadsheets.</p>
+                    <p class="home-hero-text">You have world-class equipment, but your data is stuck in silos. This leads to manual entry errors, blind spots, and lost revenue. <strong>CoCoCo's Platform</strong> bridges the gap between your disjointed hardware and software into one intelligent operating system. Stop guessing. Start knowing.</p>
                 </div>
+                <div class="hero-buttons">
+                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/round-robin-salesteam" class="btn btn-primary btn-large">Book a Demo</a>
+                    <a href="platform.html" class="btn btn-secondary btn-large">Find out more</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Experience Section (Accordion) -->
+    <section class="product-experience">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Built for your entire team.</h2>
+            </div>
+            
+            <div class="feature-accordion-container">
+                <!-- Left Column: Display Area -->
+                <div class="feature-display-column">
+                    <!-- Image Container -->
+                    <div class="feature-image-container" id="imageZoomContainer">
+                        <div class="feature-content active" data-feature="developers">
+                            <img src="images/tabs/1-Lua Code.png" alt="Code Snippet - Lua Integration" class="feature-image zoomable-image">
+                        </div>
+                        <div class="feature-content" data-feature="managers">
+                            <img src="images/tabs/2-Workflow.png" alt="Workflow Automation Flowchart" class="feature-image zoomable-image">
+                        </div>
+                        <div class="feature-content" data-feature="operators">
+                            <img src="images/tabs/3-Shopfloor.png" alt="iPad Kiosk App Interface" class="feature-image zoomable-image">
+                        </div>
+                        <div class="feature-content" data-feature="owners">
+                            <img src="images/tabs/4-Dashboard.png" alt="Financial Dashboard" class="feature-image zoomable-image">
+                        </div>
+                    </div>
+                    
+                    <!-- Description Text -->
+                    <div class="feature-description-container">
+                        <div class="feature-description active" data-description="developers">
+                            <p>Don't be limited by standard integrations. Use lightweight Lua scripts to react to machine signals in real-time, sync data back to your ERP, and trigger custom alerts.</p>
+                        </div>
+                        <div class="feature-description" data-description="managers">
+                            <p>Stop manually assigning every job. Build visual logic flows that automatically route orders to the most efficient machine based on paper type or deadline.</p>
+                        </div>
+                        <div class="feature-description" data-description="operators">
+                            <p>Give your team simple, touch-friendly Kiosk Apps that display exactly what needs to be done. No confusion, no wrong paper, just a focused "Next Job" button.</p>
+                        </div>
+                        <div class="feature-description" data-description="owners">
+                            <p>Move beyond vanity metrics. Track real-time revenue, waste costs, and OEE in one view. Answer customer questions instantly and spot risks before they impact your margin.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Accordion Navigation -->
+                <div class="feature-accordion-nav">
+                    <div class="accordion-item active" data-accordion="developers">
+                        <div class="accordion-header">
+                            <div class="accordion-text">
+                                <span class="accordion-label">Developers can...</span>
+                                <span class="accordion-headline">Extend workflows with custom scripts.</span>
+                            </div>
+                            <div class="accordion-icon">
+                                <span class="icon-minus">−</span>
+                                <span class="icon-plus">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item" data-accordion="managers">
+                        <div class="accordion-header">
+                            <div class="accordion-text">
+                                <span class="accordion-label">Managers can...</span>
+                                <span class="accordion-headline">Automate complex job routing.</span>
+                            </div>
+                            <div class="accordion-icon">
+                                <span class="icon-minus">−</span>
+                                <span class="icon-plus">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item" data-accordion="operators">
+                        <div class="accordion-header">
+                            <div class="accordion-text">
+                                <span class="accordion-label">Operators can...</span>
+                                <span class="accordion-headline">Eliminate manual data entry.</span>
+                            </div>
+                            <div class="accordion-icon">
+                                <span class="icon-minus">−</span>
+                                <span class="icon-plus">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item" data-accordion="owners">
+                        <div class="accordion-header">
+                            <div class="accordion-text">
+                                <span class="accordion-label">Owners can...</span>
+                                <span class="accordion-headline">See the financial pulse.</span>
+                            </div>
+                            <div class="accordion-icon">
+                                <span class="icon-minus">−</span>
+                                <span class="icon-plus">+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+   <!--<section class="trust-bar">
+        <div class="container">
+            <p class="trust-bar-headline">Seamlessly integrates with the tools you rely on:</p>
+            <div class="trust-logos">
+                <div class="trust-logo">Heidelberg</div>
+                <div class="trust-logo">HP</div>
+                <div class="trust-logo">Horizon</div>
+                <div class="trust-logo">SAP</div>
+                <div class="trust-logo">Microsoft</div>
+                <div class="trust-logo">Slack</div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Heartbeat Vision Section -->
+    <section class="heartbeat-section">
+        <div class="container">
+            <div class="heartbeat-content">
                 <div class="cocore-heart-visual">
                     <img src="images/banners/CoCoCo_Platform_free.png" alt="CoCoCo Platform" class="heart-image pulse-animation">
                     <div class="heart-pulse-ring"></div>
                     <div class="heart-pulse-ring ring-delay-1"></div>
                     <div class="heart-pulse-ring ring-delay-2"></div>
                 </div>
-            </div>
-
-            <!-- Main Content Grid -->
-            <div class="cocore-content-grid">
-                <!-- Main Description -->
-                <div class="cocore-main-content">
-                    <div class="beat-marker">
-                        <span class="beat-dot"></span>
-                        <span class="beat-line"></span>
-                    </div>
-                    <p class="cocore-lead">
-                        CoCoCo's Platform is the <strong>beating heart</strong> of your print ecosystem. Our product unifies all machines, teams, and software, automates complex workflows, and delivers critical real-time insights. With Platform, you manage your production centrally, flexibly, and securely - for maximum efficiency, reduced errors, and complete transparency.
-                    </p>
-                    <p class="cocore-lead">
-                        Experience the <strong>pulse</strong> of real-time data flow across your entire ecosystem, giving you instant visibility into every process and operation. Feel the steady <strong>beat</strong> of automated workflows that never miss a cycle, keeping your production running smoothly and predictably, day after day.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Detailed Description with Visual Separation -->
-            <div class="cocore-details">
-                <div class="detail-header">
-                    <div class="pulse-line"></div>
-                    <h3 class="detail-title">The Heart of Seamless, Automated Print Ecosystems</h3>
-                    <div class="pulse-line"></div>
-                    <!-- Mobile-only toggle button for detail content (Mehr anzeigen / Weniger) -->
-                    <button class="detail-toggle mobile-only" aria-expanded="false" aria-controls="detail-content">Show more</button>
-                </div>
-                
-                <div class="detail-content" id="detail-content">
-                    <div class="detail-column">
-                            <div class="detail-icon-wrap">
-                                <img src="images/icons/heart_icon.png" alt="Pulse – Real-time insights" class="detail-icon" loading="lazy" decoding="async" />
-                            </div>
-                        <p class="detail-text">
-                            CoCoCo's Platform is the foundational element that transforms your print ecosystem from a collection of isolated processes into a single, unified powerhouse. In an environment where speed and precision are crucial for success, Platform connects every machine, software, and team member through one secure and scalable system.
-                        </p>
-                    </div>
-                    
-                    <div class="detail-column">
-                        <div class="detail-icon-wrap">
-                            <img src="images/icons/flash.png" alt="Automated workflows" class="detail-icon" loading="lazy" decoding="async" />
-                        </div>
-                        <p class="detail-text">
-                            It is much more than just a data repository; CoCoCo's Platform acts as the <strong>vital pulse</strong> that keeps your business alive and thriving. Platform automates complex workflows, enables real-time collaboration, and delivers actionable insights for smarter decision-making.
-                        </p>
-                    </div>
-                    
-                    <div class="detail-column">
-                        <div class="detail-icon-wrap">
-                            <img src="images/icons/wave.png" alt="Data flow – Continuous integration" class="detail-icon" loading="lazy" decoding="async" />
-                        </div>
-                        <p class="detail-text">
-                            By consolidating your entire production landscape, CoCoCo's Platform ensures seamless data flow across all areas of your business. This gives you the visibility and control needed to respond quickly, boost efficiency, and encourage innovation at every stage of your print operation. With Platform, your organization moves beyond traditional silos, unlocking new potential and driving continuous improvement through advanced automation.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feature Cards -->
-            <div class="cocore-features-grid">
-                <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/heart_icon.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
-                    <h3>Central Heartbeat</h3>
-                    <p>Unifies all machines, software, and teams into one secure, rhythmic system that pulses with efficiency</p>
-                    <a href="features.html" class="feature-card-link">Explore →</a>
-                </div>
-                <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/flash.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
-                    <h3>Automated Rhythm</h3>
-                    <p>Workflows that beat automatically, eliminating manual errors and keeping your production in perfect sync</p>
-                    <a href="features.html" class="feature-card-link">Explore →</a>
-                </div>
-                <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/pulse.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
-                    <h3>Real-time Pulse</h3>
-                    <p>Live data and insights that flow through your system like a steady pulse, enabling instant decisions</p>
-                    <a href="features.html" class="feature-card-link">Explore →</a>
-                </div>
-                <div class="cocore-feature-card">
-                    <div class="feature-card-icon heartbeat-icon"><img src="images/icons/connections.png" alt="Automated Rhythm" class="feature-card-icon-img" loading="lazy" decoding="async" /></div>
-                    <h3>Vital Connections</h3>
-                    <p>Seamless integration ensures continuous flow of information, keeping your entire ecosystem alive and connected</p>
-                    <a href="features.html" class="feature-card-link">Explore →</a>
+                <div class="heartbeat-text">
+                    <h2 class="heartbeat-title">From Isolated Islands to a Living Organism.</h2>
+                    <p class="heartbeat-subtitle">Transform your print shop into a unified ecosystem where every heartbeat counts.</p>
+                    <p class="heartbeat-body">Platform is the <strong>beating heart</strong> of your production. Once connected, it transforms static machines into a living ecosystem. Experience the <strong>pulse</strong> of real-time data flow across your shop floor. Feel the steady <strong>beat</strong> of automated workflows that never miss a cycle.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Partner Logos Section -->
-    <section class="partners" id="partners">
+    <!-- Core Benefits (3 Pillars) -->
+    <section class="core-benefits">
         <div class="container">
-            <!-- Carousel with touch support, arrows on desktop, dots on mobile -->
-            <div class="partners-carousel" role="region" aria-label="Partner logos carousel">
-                <button class="carousel-btn prev" aria-label="Previous partner" title="Previous Partner" type="button">&#10094;</button>
-                <div class="carousel-track-container">
-                    <ul class="carousel-track" role="list">
-                        <li class="carousel-slide" role="listitem">
-                            <div class="slide-inner">
-                                <img src="images/screenshots/screenshot1.png" alt="Partner 1 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner1@2x.png" />
-                            </div>
-                        </li>
-                        <li class="carousel-slide" role="listitem">
-                            <div class="slide-inner">
-                                <img src="images/screenshots/screenshot2.png" alt="Partner 2 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner2@2x.png" />
-                            </div>
-                        </li>
-                        <li class="carousel-slide" role="listitem">
-                            <div class="slide-inner">
-                                <img src="images/screenshots/screenshot3.png" alt="Partner 3 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner3@2x.png" />
-                            </div>
-                        </li>
-                        <li class="carousel-slide" role="listitem">
-                            <div class="slide-inner">
-                                <img src="images/screenshots/screenshot4.png" alt="Partner 4 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner4@2x.png" />
-                            </div>
-                        </li>
-                        <li class="carousel-slide" role="listitem">
-                            <div class="slide-inner">
-                                <img src="images/screenshots/screenshot5.png" alt="Partner 5 screenshot" loading="lazy" decoding="async" data-full-src="images/partners/partner5@2x.png" />
-                            </div>
-                        </li>
-                    </ul>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon heartbeat-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="3" fill="currentColor"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                            <circle cx="36" cy="12" r="3" fill="currentColor"/>
+                            <circle cx="12" cy="36" r="3" fill="currentColor"/>
+                            <circle cx="36" cy="36" r="3" fill="currentColor"/>
+                            <line x1="24" y1="24" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+                            <line x1="24" y1="24" x2="36" y2="12" stroke="currentColor" stroke-width="2"/>
+                            <line x1="24" y1="24" x2="12" y2="36" stroke="currentColor" stroke-width="2"/>
+                            <line x1="24" y1="24" x2="36" y2="36" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Vital Connections</h3>
+                    <p class="benefit-text">The "Rosetta Stone" of print. We translate JDF, XML, and legacy signals into one unified language.</p>
                 </div>
-                <button class="carousel-btn next" aria-label="Next partner" title="Next Partner" type="button">&#10095;</button>
-                <div class="carousel-dots" aria-hidden="false"></div>
-                <div class="carousel-announcer sr-only" aria-live="polite" aria-atomic="true"></div>
-                <!-- Lightbox overlay for viewing full-screen images -->
-                <!-- NOTE: modal is now global and dynamically created; per-carousel overlay removed -->
+
+                <div class="benefit-card">
+                    <div class="benefit-icon heartbeat-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 8L28 18L38 20L30 28L32 38L24 34L16 38L18 28L10 20L20 18L24 8Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Automated Rhythm</h3>
+                    <p class="benefit-text">Workflows that run automatically, eliminating manual errors and keeping your production in perfect sync.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon heartbeat-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+    
+    <circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="2"/>
+    
+    <path d="M15 24H19L21.5 17L24 31L26.5 13L29 24H33" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+                    </div>
+                    <h3 class="benefit-title">Real-time Pulse</h3>
+                    <p class="benefit-text">Decisions based on facts, not guesses. Experience a live flow of data from your shop floor that gives you instant visibility into every process, exactly when it happens.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon heartbeat-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="12" width="32" height="24" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M14 18H34M14 24H28M14 30H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="36" cy="12" r="4" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Custom Power</h3>
+                    <p class="benefit-text">Don't wait for vendors. Build your own Apps and Dashboards using standard web technologies and AI.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Empowering Businesses Section -->
-    <section class="empowering" id="features">
+    <!-- Custom Apps Section -->
+    <section class="custom-apps" id="features">
         <div class="container">
-            <div class="empowering-content">
-                <div class="empowering-text">
-                    <span class="section-badge">Innovation</span>
-                    <h2>Empowering businesses with seamless integration</h2>
-                    <p>CoCoCo Platform ermöglicht es Unternehmen, ihre Druckprozesse zu optimieren und alle Systeme nahtlos zu verbinden. Unsere innovative Technologie sorgt für maximale Effizienz.</p>
-                    <ul class="empowering-list">
+            <div class="custom-apps-content">
+                <div class="custom-apps-text">
+                    <h2 class="section-title-large">Stop Waiting for Feature Requests. Build Them.</h2>
+                    <p class="section-subtitle">Every print shop is unique. Why should your software be generic? With <strong>Custom Apps</strong>, you build the exact tools your team needs, using standard web technologies or simple AI prompts.</p>
+                    
+                    <ul class="custom-apps-list">
                         <li>
-                            <span class="check-icon">✓</span>
-                            <span>Nahtlose System-Integration</span>
+                            <div class="custom-apps-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M10 16H22M16 10V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>"Vibe Coding" Ready</h4>
+                                <p>You don't need a team of engineers. Just describe the tool you need to ChatGPT or Claude ("Build me a small, light ERP system"), paste the code, and go live in minutes.</p>
+                            </div>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <span>Automatisierte Workflows</span>
+                            <div class="custom-apps-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M16 10V16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Powered by Real-Time Data</h4>
+                                <p>Your apps are instantly connected. Display live machine speeds, trigger JDF signals, or write data back to your ERP without complex backend coding.</p>
+                            </div>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <span>Echtzeit-Monitoring</span>
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            <span>Skalierbare Lösungen</span>
+                            <div class="custom-apps-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="6" y="8" width="9" height="16" rx="1" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="17" y="6" width="9" height="18" rx="1" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="10.5" cy="28" r="1.5" fill="currentColor"/>
+                                    <circle cx="21.5" cy="28" r="1.5" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Run Everywhere</h4>
+                                <p>Build once, deploy instantly to any device. Put an iPad at the cutter, a dashboard on the hallway TV, or a scanner interface on a mobile phone.</p>
+                            </div>
                         </li>
                     </ul>
-                    <button class="btn btn-primary">Mehr erfahren</button>
+                    
+                    <div class="custom-apps-buttons">
+                        <a href="pricing.html" class="btn btn-primary btn-large">Start Building</a>
+                        <a href="custom_apps.html" class="btn btn-secondary btn-large">Find out more</a>
+                    </div>
                 </div>
-                <div class="empowering-images">
-                    <div class="emp-image emp-image-1">
-                        <div class="image-placeholder-large">
-                            <span>📱</span>
-                            <p>Moderne Technologie</p>
-                        </div>
-                    </div>
-                    <div class="emp-image emp-image-2">
-                        <div class="image-placeholder-large">
-                            <span>🚀</span>
-                            <p>Schnelle Integration</p>
-                        </div>
-                    </div>
+                <div class="custom-apps-visual">
+                    <iframe src="custom_apps_simulation.html" class="custom-apps-iframe" title="Custom Apps Demo"></iframe>
                 </div>
             </div>
         </div>
@@ -262,16 +312,16 @@
             <div class="newsletter-partner-grid">
                 <!-- Newsletter Column -->
                 <div class="newsletter-card">
-                    <h3>Stay up to date with CoCoCo´s Product Updates.</h3>
+                    <h3>Stay up to date with CoCoCo´s Product Updates</h3>
                     <p>We will keep you regularly informed about new products and features. You will also receive all the latest news about CoCoCo.</p>
-                    <a href="https://share-eu1.hsforms.com/1KOSrawaPTrytKTjYpQ1bDQ2dztun" target="_blank" class="btn btn-primary">Subscribe</a>
+                    <a href="https://share-eu1.hsforms.com/1KOSrawaPTrytKTjYpQ1bDQ2dztun" target="_blank" class="btn btn-primary">Subscribe to our Newsletter</a>
                 </div>
                 
                 <!-- Partner Column -->
                 <div class="partner-card">
                     <h3>For machine manufacturers and software vendors</h3>
                     <p>Reduce your integration efforts and let's connect all your customers and users to the industry.</p>
-                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/aplien-30min-vicon" target="_blank" class="btn btn-secondary">Ask the Partnermanager</a>
+                    <a href="oem_solutions.html"class="btn btn-secondary">Look at our OEM solutions</a>
                 </div>
             </div>
         </div>

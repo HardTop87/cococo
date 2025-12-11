@@ -2048,3 +2048,387 @@ function initMirrorText() {
 document.addEventListener('DOMContentLoaded', () => {
     try { initMirrorText(); } catch (e) { console.error('Mirror text error:', e); }
 });
+
+/* ============================================
+   NEW HOMEPAGE - INTERACTIVE FEATURE ACCORDION
+   ============================================ */
+
+function initFeatureAccordion() {
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    const featureContents = document.querySelectorAll('.feature-content');
+    const featureDescriptions = document.querySelectorAll('.feature-description');
+    
+    if (accordionItems.length === 0) return;
+    
+    accordionItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const targetFeature = item.dataset.accordion;
+            
+            // If clicking already active item, do nothing (keep it open)
+            if (item.classList.contains('active')) return;
+            
+            // Remove active class from all items
+            accordionItems.forEach(i => i.classList.remove('active'));
+            featureContents.forEach(c => c.classList.remove('active'));
+            featureDescriptions.forEach(d => d.classList.remove('active'));
+            
+            // Add active class to clicked item and corresponding content
+            item.classList.add('active');
+            
+            const targetContent = document.querySelector(`[data-feature="${targetFeature}"]`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            
+            const targetDescription = document.querySelector(`[data-description="${targetFeature}"]`);
+            if (targetDescription) {
+                targetDescription.classList.add('active');
+            }
+        });
+    });
+}
+
+// Initialize feature accordion on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initFeatureAccordion(); } catch (e) { console.error('Feature accordion error:', e); }
+});
+
+/* ============================================
+   IMAGE ZOOM FUNCTIONALITY
+   ============================================ */
+
+function initImageZoom() {
+    const imageContainer = document.getElementById('imageZoomContainer');
+    if (!imageContainer) return;
+    
+    let isZoomed = false;
+    
+    imageContainer.addEventListener('click', (e) => {
+        // Only zoom if clicking on the image itself
+        if (e.target.classList.contains('zoomable-image')) {
+            if (!isZoomed) {
+                // Zoom in
+                imageContainer.classList.add('zoomed');
+                isZoomed = true;
+            } else {
+                // Zoom out
+                imageContainer.classList.remove('zoomed');
+                isZoomed = false;
+            }
+        }
+    });
+    
+    // Close zoom on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isZoomed) {
+            imageContainer.classList.remove('zoomed');
+            isZoomed = false;
+        }
+    });
+}
+
+// Initialize image zoom on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initImageZoom(); } catch (e) { console.error('Image zoom error:', e); }
+});
+
+/* ============================================
+   3D WIREFRAME NETWORK CANVAS
+   ============================================ */
+
+const CANVAS_PALETTE = {
+    Berry: '#4D2B41',
+    Pig: '#FF79C9',
+    Peach: '#FFEFF8'
+};
+
+const project3D = (x, y, z, centerX, centerY, scale) => {
+    const fl = 400;
+    const perspective = fl / (fl + z);
+    return {
+        x: centerX + x * perspective * scale,
+        y: centerY + y * perspective * scale,
+        scale: perspective
+    };
+};
+
+const rotateX = (x, y, z, angle) => {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    return { y: y * cos - z * sin, z: z * cos + y * sin };
+};
+
+const rotateY = (x, y, z, angle) => {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    return { x: x * cos - z * sin, z: z * cos + x * sin };
+};
+
+const t = (1 + Math.sqrt(5)) / 2;
+const ICOSAHEDRON_VERTS = [
+    [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+    [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+    [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]
+];
+
+const CUBE_VERTS = [
+    [-1,-1,-1], [1,-1,-1], [1, 1,-1], [-1, 1,-1],
+    [-1,-1, 1], [1,-1, 1], [1, 1, 1], [-1, 1, 1]
+];
+const CUBE_EDGES = [
+    [0,1], [1,2], [2,3], [3,0], [4,5], [5,6], [6,7], [7,4], [0,4], [1,5], [2,6], [3,7]
+];
+
+class Shape3D {
+    constructor(type, x, y, size) {
+        this.baseX = x;
+        this.baseY = y;
+        this.size = size;
+        this.angleX = Math.random() * Math.PI;
+        this.angleY = Math.random() * Math.PI;
+        this.rotationSpeedX = (Math.random() - 0.5) * 0.005;
+        this.rotationSpeedY = (Math.random() - 0.5) * 0.005;
+        
+        if (type === 'core') {
+            this.vertices = ICOSAHEDRON_VERTS.map(v => ({x: v[0], y: v[1], z: v[2]}));
+            this.edges = this.generateIcosahedronEdges();
+            this.isCore = true;
+        } else {
+            this.vertices = CUBE_VERTS.map(v => ({x: v[0], y: v[1], z: v[2]}));
+            this.edges = CUBE_EDGES;
+            this.isCore = false;
+        }
+        this.projectedPoints = [];
+    }
+
+    generateIcosahedronEdges() {
+        const edges = [];
+        for(let i=0; i<this.vertices.length; i++) {
+            for(let j=i+1; j<this.vertices.length; j++) {
+                const v1 = this.vertices[i];
+                const v2 = this.vertices[j];
+                const dist = Math.sqrt(Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2) + Math.pow(v1.z-v2.z, 2));
+                if (dist < 2.1 && dist > 1.9) edges.push([i, j]);
+            }
+        }
+        return edges;
+    }
+
+    update() {
+        this.angleX += this.rotationSpeedX;
+        this.angleY += this.rotationSpeedY;
+        this.projectedPoints = this.vertices.map(v => {
+            let r = rotateY(v.x, v.y, v.z, this.angleY);
+            r = {...r, ...rotateX(r.x, v.y, r.z, this.angleX)};
+            return project3D(r.x, r.y, r.z, this.baseX, this.baseY, this.size * 30);
+        });
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.strokeStyle = CANVAS_PALETTE.Pig;
+        ctx.lineWidth = this.isCore ? 1.2 : 0.6;
+        ctx.globalAlpha = this.isCore ? 0.8 : 0.4;
+
+        this.edges.forEach(edge => {
+            const p1 = this.projectedPoints[edge[0]];
+            const p2 = this.projectedPoints[edge[1]];
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+        });
+        ctx.stroke();
+
+        ctx.globalAlpha = 1;
+        this.projectedPoints.forEach(p => {
+            ctx.beginPath();
+            ctx.fillStyle = CANVAS_PALETTE.Pig;
+            const dotSize = (this.isCore ? 2.0 : 1.2) * p.scale;
+            ctx.arc(p.x, p.y, Math.max(0, dotSize), 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+}
+
+class Pulse {
+    constructor(startObj, endObj) {
+        this.startObj = startObj;
+        this.endObj = endObj;
+        this.progress = 0;
+        this.speed = 0.005 + Math.random() * 0.01;
+        this.history = [];
+    }
+
+    update() {
+        this.progress += this.speed;
+        if (this.progress >= 1) {
+            this.progress = 0;
+            this.history = [];
+        }
+    }
+
+    draw(ctx) {
+        const x = this.startObj.baseX + (this.endObj.baseX - this.startObj.baseX) * this.progress;
+        const y = this.startObj.baseY + (this.endObj.baseY - this.startObj.baseY) * this.progress;
+
+        this.history.push({x, y});
+        if (this.history.length > 20) this.history.shift();
+
+        ctx.beginPath();
+        ctx.strokeStyle = CANVAS_PALETTE.Pig;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        
+        if (this.history.length > 1) {
+            ctx.moveTo(this.history[0].x, this.history[0].y);
+            for(let point of this.history) {
+                ctx.lineTo(point.x, point.y);
+            }
+        }
+        ctx.globalAlpha = 0.6 * (1 - this.progress);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.fillStyle = CANVAS_PALETTE.Pig;
+        ctx.globalAlpha = 1;
+        ctx.arc(x, y, 2.5, 0, Math.PI*2);
+        ctx.fill();
+    }
+}
+
+class NetworkScene {
+    constructor() {
+        this.canvas = document.getElementById('wireframe-network');
+        if (!this.canvas) return;
+        
+        this.ctx = this.canvas.getContext('2d');
+        this.width = 0;
+        this.height = 0;
+        this.shapes = [];
+        this.pulses = [];
+        this.mouse = { x: 0, y: 0 };
+        
+        this.resize();
+        this.init();
+        this.animate();
+
+        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('mousemove', (e) => {
+            const centerX = this.width * 0.5;
+            const centerY = this.height * 0.4;
+            this.mouse.x = (e.clientX - centerX) * 0.0001;
+            this.mouse.y = (e.clientY - centerY) * 0.0001;
+        });
+    }
+
+    resize() {
+        const wrapper = document.getElementById('hero-canvas-wrapper');
+        if (!wrapper) return;
+        
+        this.width = wrapper.offsetWidth;
+        this.height = wrapper.offsetHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.init();
+    }
+
+    init() {
+        this.shapes = [];
+        this.pulses = [];
+
+        const coreX = this.width * 0.5;
+        const coreY = this.height * 0.4;
+        const coreSize = Math.min(this.width, this.height) * 0.001;
+        
+        const core = new Shape3D('core', coreX, coreY, coreSize * 1.5);
+        this.shapes.push(core);
+
+        const satelliteCount = 7;
+        for(let i=0; i<satelliteCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const minDistance = 120;
+            const maxDistance = Math.min(this.width, this.height) * 0.25;
+            const distance = minDistance + Math.random() * (maxDistance - minDistance);
+            
+            const satX = coreX + Math.cos(angle) * distance;
+            const satY = coreY + Math.sin(angle) * distance;
+            
+            const sat = new Shape3D('cube', satX, satY, coreSize * 0.6);
+            this.shapes.push(sat);
+            this.pulses.push(new Pulse(sat, core));
+        }
+    }
+
+    drawConnections(core) {
+        this.ctx.lineWidth = 1;
+        this.shapes.forEach(shape => {
+            if (shape === core) return;
+            this.ctx.beginPath();
+            const dist = Math.hypot(core.baseX - shape.baseX, core.baseY - shape.baseY);
+            const opacity = Math.max(0.1, 1 - (dist / (this.width * 0.5)));
+            
+            this.ctx.strokeStyle = CANVAS_PALETTE.Berry;
+            this.ctx.globalAlpha = opacity * 0.2;
+            
+            this.ctx.moveTo(core.baseX, core.baseY);
+            this.ctx.lineTo(shape.baseX, shape.baseY);
+            this.ctx.stroke();
+        });
+    }
+
+    animate() {
+        if (!this.ctx) return;
+        
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        const core = this.shapes[0];
+
+        this.shapes.forEach(shape => {
+            shape.rotationSpeedX += (this.mouse.y - shape.rotationSpeedX) * 0.05;
+            shape.rotationSpeedY += (this.mouse.x - shape.rotationSpeedY) * 0.05;
+            shape.update();
+        });
+
+        this.drawConnections(core);
+        this.pulses.forEach(p => { p.update(); p.draw(this.ctx); });
+        this.shapes.forEach(shape => { shape.draw(this.ctx); });
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Initialize canvas network on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { new NetworkScene(); } catch (e) { console.error('Canvas network error:', e); }
+});
+
+/* ============================================
+   CUSTOM APPS IFRAME LAZY LOADING
+   ============================================ */
+
+function initCustomAppsIframe() {
+    const iframe = document.querySelector('.custom-apps-iframe');
+    if (!iframe) return;
+    
+    // Store original src and remove it initially
+    const originalSrc = iframe.getAttribute('src');
+    iframe.removeAttribute('src');
+    
+    // Create Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Start loading iframe when 60% is visible
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+                iframe.setAttribute('src', originalSrc);
+                observer.unobserve(iframe); // Stop observing once loaded
+            }
+        });
+    }, {
+        threshold: 0.6 // Trigger when 60% of iframe is visible
+    });
+    
+    observer.observe(iframe);
+}
+
+// Initialize Custom Apps iframe observer on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try { initCustomAppsIframe(); } catch (e) { console.error('Custom Apps iframe error:', e); }
+});

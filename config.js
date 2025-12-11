@@ -82,7 +82,7 @@ window.SITE_CONFIG = {
         yearly: 11000,
         setup: 2500,
         cta: 'Select Plan',
-        applyUrl: 'https://2dztun.share-eu1.hsforms.com/PROFESSIONAL_PLAN_FORM_URL',
+        applyUrl: 'https://2dztun.share-eu1.hsforms.com/2_kgrHlj0ST-nrcFK803BkA',
         setupBullets: [
           'Dedicated onboarding specialist (4 weeks)',
           'Data migration and mapping support',

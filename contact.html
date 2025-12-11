@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,25 +15,38 @@
     <!-- Header Placeholder -->
     <div id="site-header"></div>
 
-    <!-- Page Header -->
-    <section class="page-header">
+    <!-- Hero Section -->
+    <section class="platform-hero">
         <div class="container">
-            <h1>Contact Us</h1>
-            <p>We'd Love to Hear From You</p>
+            <div class="platform-hero-content">
+                <h1 class="platform-hero-title">Let's Talk Production.</h1>
+                <p class="platform-hero-subtitle">Choose the way that works best for you: Book a live call or send us a detailed inquiry.</p>
+            </div>
         </div>
+        <div class="platform-wave-bg"></div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section class="contact contact-single-column" id="contact">
         <div class="container">
             <div class="contact-content">
-                <div class="contact-chat-box">
-                    <h2>Let's have a chat</h2>
-                    <p>Get in touch and let's talk about your infrastructure. We know that every business is different and faces different challenges. On day one, you can add value to your business, with our team available for support if needed.</p>
-                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/round-robin-salesteam" target="_blank" class="btn btn-primary nav-cta-btn">Get In Touch</a>
+                <!-- Option 1: Meeting Booker -->
+                <div class="contact-option contact-meeting">
+                    <h2>Option 1: Fast Track (Book a Call)</h2>
+                    <p>Skip the back-and-forth emails. Schedule an intro call directly with our experts to discuss your infrastructure challenges.</p>
+                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/round-robin-salesteam" target="_blank" class="btn btn-primary">Book Time</a>
                 </div>
-                
-                <div class="contact-form-container">
+
+                <!-- Divider -->
+                <div class="contact-divider">
+                    <span>— OR —</span>
+                </div>
+
+                <!-- Option 2: Contact Form -->
+                <div class="contact-option contact-form-option">
+                    <h2>Option 2: Send a Request</h2>
+                    <p>Prefer to write it down? Give us some details about your current setup and pain points so we can prepare a tailored answer for you.</p>
+                    
                     <div id="hubspot-form">
                         <!-- HubSpot Form will load here -->
                     </div>

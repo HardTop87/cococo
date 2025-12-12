@@ -722,6 +722,29 @@ body {
     margin: 0 auto;
 }
 
+.section-cta {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.inline-link {
+    color: var(--pig);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.inline-link:hover {
+    color: var(--pig-dark);
+    text-decoration: underline;
+}
+
+.connectivity-cta {
+    margin-top: 2rem;
+    text-align: center;
+}
+
 /* Expandable Features List */
 .expandable-features-list {
     display: flex;
@@ -8066,7 +8089,7 @@ body:has(#pricing) .pricing {
     max-width: 1400px;
     margin: 2rem auto 0;
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 45% 55%;
     gap: 3rem;
     align-items: start;
 }

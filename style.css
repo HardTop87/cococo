@@ -7084,18 +7084,18 @@ body {
 }
 
 /* CTA Section for Manufacturers */
-.platform-cta {
+.manufacturers-cta {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(255, 121, 201, 0.05) 100%);
     padding: 4rem 2rem;
 }
 
-.cta-content-centered {
+.manufacturers-cta .cta-content-centered {
     max-width: 700px;
     margin: 0 auto;
     text-align: center;
 }
 
-.cta-title {
+.manufacturers-cta-title {
     font-size: 2rem;
     font-weight: 700;
     color: var(--text-primary);
@@ -7103,14 +7103,14 @@ body {
     font-family: 'Sofia Sans Condensed', sans-serif;
 }
 
-.cta-subtitle {
+.manufacturers-cta-subtitle {
     font-size: 1.1rem;
     color: var(--text-secondary);
     margin-bottom: 2.5rem;
     line-height: 1.6;
 }
 
-.cta-buttons {
+.manufacturers-cta-buttons {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -8087,6 +8087,284 @@ body {
     
     .custom-apps-visual {
         display: none;
+    }
+}
+
+/* ============================================
+   FAQ SECTION REDESIGN
+   ============================================ */
+
+.faq {
+    padding: 4rem 2rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 121, 201, 0.02) 100%);
+}
+
+/* The Essentials (Featured) */
+.faq-essentials {
+    margin-bottom: 5rem;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(255, 121, 201, 0.1) 0%, rgba(122, 219, 203, 0.05) 100%);
+    border: 2px solid rgba(255, 121, 201, 0.2);
+    border-radius: 16px;
+}
+
+.faq-essential-item {
+    max-width: 900px;
+}
+
+.faq-essential-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    font-family: 'Sofia Sans Condensed', sans-serif;
+}
+
+.faq-essential-answer {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.faq-essential-answer p {
+    margin-bottom: 1.5rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.feature-list li {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--pig);
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+/* FAQ Sections */
+.faq-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.faq-section {
+    max-width: 900px;
+}
+
+.faq-section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--pig);
+}
+
+.faq-section-intro {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.faq-item {
+    border: 2px solid rgba(255, 121, 201, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.faq-item:hover {
+    border-color: rgba(255, 121, 201, 0.3);
+    box-shadow: 0 4px 16px rgba(255, 121, 201, 0.1);
+}
+
+.faq-question {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    background: var(--white);
+    transition: background 0.3s ease;
+}
+
+.faq-item.active .faq-question {
+    background: rgba(255, 121, 201, 0.05);
+}
+
+.faq-question h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-align: left;
+}
+
+.faq-icon {
+    font-size: 1.5rem;
+    color: var(--pig);
+    font-weight: 800;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1.5rem;
+}
+
+.faq-item.active .faq-icon {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    padding: 0 1.5rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: rgba(255, 121, 201, 0.02);
+}
+
+.faq-item.active .faq-answer {
+    padding: 1.5rem;
+    max-height: 2000px;
+}
+
+.faq-answer p {
+    margin: 0 0 1rem 0;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.faq-answer p:last-child {
+    margin-bottom: 0;
+}
+
+/* Summary Grid (3 Pillars) */
+.faq-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.faq-summary-card {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 121, 201, 0.08) 0%, rgba(122, 219, 203, 0.08) 100%);
+    border: 2px solid rgba(255, 121, 201, 0.2);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faq-summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255, 121, 201, 0.15);
+}
+
+.faq-summary-card h3 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-family: 'Sofia Sans Condensed', sans-serif;
+}
+
+.faq-summary-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Glossary */
+.glossary-subsection {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255, 121, 201, 0.15);
+}
+
+.glossary-subsection:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.glossary-subtitle {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--pig);
+    margin-bottom: 1.5rem;
+    font-family: 'Sofia Sans Condensed', sans-serif;
+}
+
+.glossary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.glossary-item {
+    padding: 1.25rem;
+    background: rgba(255, 121, 201, 0.03);
+    border-left: 4px solid var(--pig);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.glossary-item strong {
+    color: var(--text-primary);
+}
+
+/* Responsive: FAQ */
+@media (max-width: 768px) {
+    .faq {
+        padding: 3rem 1.5rem;
+    }
+    
+    .faq-essentials {
+        padding: 1.5rem;
+    }
+    
+    .faq-essential-title {
+        font-size: 1.6rem;
+    }
+    
+    .faq-section-title {
+        font-size: 1.5rem;
+    }
+    
+    .faq-question h3 {
+        font-size: 1rem;
+    }
+    
+    .faq-summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .glossary-item {
+        padding: 1rem;
+        border-left-width: 3px;
     }
 }
 

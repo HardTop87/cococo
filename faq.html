@@ -29,104 +29,178 @@
     <!-- FAQ Section -->
     <section class="faq">
         <div class="container">
-            <div class="faq-list">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Was ist die CoCoCo Platform?</h3>
-                        <span class="faq-icon">+</span>
+            <!-- The Essentials (Featured) -->
+            <div class="faq-essentials">
+                <div class="faq-essential-item">
+                    <h3 class="faq-essential-title">What is CoCoCo Platform?</h3>
+                    <div class="faq-essential-answer">
+                        <p><strong>CoCoCo Platform is the open operating system for your print production.</strong></p>
+                        
+                        <p>Technically, it is an intelligent middleware layer that sits between your hardware (machines) and your business software (MIS/ERP). Instead of replacing your existing tools, it connects them. It gathers data from every part of your shop floor, centralizes it into a unified Data Lake, and gives you the tools to act on it.</p>
+                        
+                        <p><strong>Essentially, it does three things:</strong></p>
+                        <ul class="feature-list">
+                            <li><strong>Connect:</strong> It bridges your isolated islands. We translate different machine languages (JDF, API, legacy signals) into one standard format so everything speaks the same language.</li>
+                            <li><strong>Combine:</strong> It automates your process. We combine data streams from different sources to trigger intelligent workflows automatically (e.g., updating your MIS the second a job finishes).</li>
+                            <li><strong>Collaborate:</strong> It empowers your people. We visualize real-time data through custom dashboards and apps, enabling your team to see exactly what is happening and collaborate faster.</li>
+                        </ul>
                     </div>
-                    <div class="faq-answer">
-                        <p>Die CoCoCo Platform ist eine offene Integrationsplattform, die speziell für die Druckindustrie entwickelt wurde. Sie ermöglicht die nahtlose Verbindung verschiedener Systeme, Workflows und Prozesse in der Druckproduktion.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Sections -->
+            <div class="faq-sections">
+                <!-- Section 1: General & Strategic -->
+                <div class="faq-section">
+                    <h2 class="faq-section-title">Understanding Platform</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Is Platform a replacement for my existing MIS or ERP system?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>No. We follow a "Best of Breed" philosophy. We do not want to replace systems that are working well for you. If you are happy with your MIS, keep it.</p>
+                                <p>Instead, view Platform as your central Data Lake. We connect all your islands—machines, software, and databases—and pool that data in one place for you to use. You decide how to use it. However, if your current system is missing a specific feature or isn't performing a task well enough, Platform gives you the power to fill that gap. You can build that missing feature yourself using our Custom Apps, enhancing your existing setup without the need for a costly migration.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>I have a mixed shop with machines from HP, Heidelberg, and Horizon. Does Platform work for me?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Yes. This is exactly why we exist.</strong> Unlike machine vendors who want to lock you into their ecosystem, Platform is strictly vendor-neutral. We act as the "Rosetta Stone" of print, translating data from any manufacturer into a single, unified language. Whether your press is 20 years old or brand new, we aim to integrate it into your workflow provided it has some form of digital interface.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Is Platform suitable for small print shops, or is it only for enterprise?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Yes, absolutely.</strong> We have created a specific offering tailored for small businesses because we want to grow with you.</p>
+                                <p>You do not need to automate your entire factory overnight. Platform allows you to digitize your production at your own speed. You can start with just one machine or one specific workflow that saves you time. As your volume increases, our scalable architecture ensures you never outgrow the system.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Wie sicher sind meine Daten?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Wir nehmen Datensicherheit sehr ernst. Alle Daten werden mit modernsten Verschlüsselungstechnologien übertragen und gespeichert. Wir entsprechen den höchsten Sicherheitsstandards und sind GDPR-konform. Regelmäßige Security-Audits und Penetrationstests stellen die Sicherheit Ihrer Daten sicher.</p>
+                <!-- Section 2: Technical & Implementation -->
+                <div class="faq-section">
+                    <h2 class="faq-section-title">Making it Work</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What happens if my internet connection drops? Do I stop printing?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Never.</strong> We deploy a smart Edge Device (Controller) directly into your local infrastructure. This device buffers all data locally. If the internet goes down, your production continues without interruption. Once the connection is back, the system syncs everything automatically.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Do I need a team of programmers to use Platform?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>It depends on your ambition.</strong> While a full development team is not strictly necessary, a technical mindset is highly recommended.</p>
+                                <p><strong>For Integrations:</strong> Connecting machines is often straightforward with our Kits. However, integrating complex MIS or ERP systems requires a deep understanding of your data and business logic. Our Integration Kits provide a strong framework, but they are not "magic wands." They require configuration and mapping by someone who understands your systems.</p>
+                                <p><strong>For Apps:</strong> We rely on standard web technologies (HTML/CSS/JS). You do not need to learn a proprietary language. While our internal tools do not have built-in AI yet, the open nature of our code allows you to use external tools like ChatGPT or Claude to generate code ("Vibe Coding") and paste it directly into Platform. This drastically lowers the barrier to entry.</p>
+                                <p><strong>For Automation:</strong> You can use our visual logic builders for simple tasks. For complex, multi-step logic, our Lua scripting engine gives developers unlimited power.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>How secure is my data?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Security is our top priority.</strong> Our Edge Device uses outbound-only connections, meaning you do not have to open dangerous ports in your firewall. Your data is encrypted both in transit and at rest. We provide enterprise-grade security standards to ensure your production data stays safe.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Welche Systeme können integriert werden?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Unsere Plattform unterstützt eine Vielzahl von Systemen aus der Druckindustrie, darunter MIS, ERP, E-Commerce-Plattformen, Workflow-Systeme und mehr. Durch unsere offene RESTful API können praktisch alle modernen Systeme angebunden werden. Kontaktieren Sie uns für spezifische Integrationsanfragen.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Wie lange dauert die Implementierung?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Die Implementierungszeit variiert je nach Komplexität Ihrer Anforderungen. Eine einfache Integration kann innerhalb von 2-4 Wochen umgesetzt werden. Komplexere Integrationen mit mehreren Systemen und Custom Development können 2-3 Monate in Anspruch nehmen. Wir bieten auch Express-Implementation für dringende Projekte an.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Gibt es eine kostenlose Testversion?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Ja, wir bieten eine 30-tägige kostenlose Testversion an. Keine Kreditkarte erforderlich. Testen Sie alle Features und überzeugen Sie sich selbst von der Leistungsfähigkeit unserer Plattform. Unser Support-Team steht Ihnen während der Testphase zur Verfügung.</p>
+                <!-- Section 3: The Executive Summary -->
+                <div class="faq-section">
+                    <h2 class="faq-section-title">The Executive Summary</h2>
+                    <p class="faq-section-intro">If you only remember three things about Platform, let them be these.</p>
+                    <div class="faq-summary-grid">
+                        <div class="faq-summary-card">
+                            <h3><strong>We Bridge the Gap</strong></h3>
+                            <p>We connect your disjointed hardware and software using CoConnect. If a machine can speak, we translate it into a single source of truth.</p>
+                        </div>
+                        <div class="faq-summary-card">
+                            <h3><strong>We Automate the Routine</strong></h3>
+                            <p>Using intelligent Flows and Triggers, we eliminate manual data entry and reduce human error across your entire production line.</p>
+                        </div>
+                        <div class="faq-summary-card">
+                            <h3><strong>We Empower You to Build</strong></h3>
+                            <p>With Custom Apps, you stop waiting for vendors to fix your problems. You build the exact tools and dashboards your shop floor needs, powered by real-time data and standard web technologies.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Welche Support-Optionen gibt es?</h3>
-                        <span class="faq-icon">+</span>
+                <!-- Section 4: Glossary -->
+                <div class="faq-section">
+                    <h2 class="faq-section-title">Speak Our Language</h2>
+                    <p class="faq-section-intro">The print industry is full of jargon. Here is how we define the key terms inside the Platform ecosystem.</p>
+                    
+                    <div class="glossary-subsection">
+                        <h3 class="glossary-subtitle">The Core Concepts</h3>
+                        <div class="glossary-list">
+                            <div class="glossary-item">
+                                <strong>Platform</strong>: The central operating system. This is the hub where all your job, order, and machine data is visualized and managed.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>CoConnect</strong>: The connectivity layer. This product manages all your integrations, including your Controllers, Connectors, and Devices.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Order & Order Line:</strong> The commercial layer. An <strong>Order</strong> is the high-level commercial agreement containing customer details and delivery dates. Inside it, <strong>Order Lines</strong> define the specific products sold (e.g., quantity, price). The Order Line is the crucial link to production, as each line typically translates into a manufacturing Job.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Job & Component:</strong> The manufacturing layer. A <strong>Job</strong> is the production work order that instructs the shop floor how to produce an item, managing scheduling and tracking. Complex Jobs are often split into <strong>Components</strong>, which represent the specific physical parts (e.g., the "Cover" and "Inner Pages" of a brochure) that are produced separately and assembled later.
+                            </div>
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        <p>Wir bieten verschiedene Support-Level: Email Support für alle Kunden, Priority Support für Professional-Kunden und 24/7 Premium Support für Enterprise-Kunden. Zusätzlich stehen umfangreiche Dokumentation, Video-Tutorials und ein Community-Forum zur Verfügung.</p>
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Kann ich die Plattform an meine Bedürfnisse anpassen?</h3>
-                        <span class="faq-icon">+</span>
+                    <div class="glossary-subsection">
+                        <h3 class="glossary-subtitle">Connectivity Terms</h3>
+                        <div class="glossary-list">
+                            <div class="glossary-item">
+                                <strong>Edge Device (Controller):</strong> A secure piece of hardware or software that sits in your local network. It allows your machines to talk to the cloud even if they are not internet-enabled.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Connector:</strong> Think of this as a "driver" or "plugin." A Connector enables a specific machine or software to exchange data with Platform. It consists of one or more Releases.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Device:</strong> The physical machine (e.g., an Offset Press) or the software instance (e.g., your MIS) visible in your dashboard.
+                            </div>
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        <p>Absolut! Die CoCoCo Platform ist hochgradig anpassbar. Sie können Custom Workflows erstellen, eigene Integrationen entwickeln und die Benutzeroberfläche anpassen. Für umfangreichere Anpassungen bieten wir Custom Development Services an.</p>
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Was passiert mit meinen Daten wenn ich kündige?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sie haben jederzeit vollen Zugriff auf Ihre Daten. Bei Kündigung können Sie alle Ihre Daten exportieren. Wir bieten verschiedene Export-Formate an. Nach einer Übergangsfrist von 30 Tagen werden Ihre Daten sicher gelöscht, sofern nicht anders vereinbart.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Gibt es Schulungen für mein Team?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Ja, wir bieten umfassende Schulungen an - sowohl online als auch vor Ort. Dies umfasst Onboarding-Sessions, Admin-Schulungen und Developer-Workshops. Enterprise-Kunden erhalten individuell zugeschnittene Schulungsprogramme.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Ist die Plattform GDPR-konform?</h3>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Ja, die CoCoCo Platform ist vollständig GDPR-konform. Wir haben umfangreiche Maßnahmen implementiert, um die Anforderungen der Datenschutz-Grundverordnung zu erfüllen. Dazu gehören Datenminimierung, Zweckbindung, Transparenz und das Recht auf Löschung.</p>
+                    <div class="glossary-subsection">
+                        <h3 class="glossary-subtitle">Automation Terms</h3>
+                        <div class="glossary-list">
+                            <div class="glossary-item">
+                                <strong>Flow:</strong> An automated workflow. It consists of a sequence of Actions that are processed in a defined order.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Trigger:</strong> The starting pistol. In a Trigger, an event is defined. When this event occurs, the Flow starts automatically.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Action:</strong> The worker. An Action is a specific task performed within a Flow, such as processing data or sending a file.
+                            </div>
+                            <div class="glossary-item">
+                                <strong>Run:</strong> A single execution of a Flow. You can check the status of a Run to see if an automation was successful.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -159,6 +233,6 @@
     <div id="site-footer"></div>
 
     <script src="config.js?v=1.0.0"></script>
-    <script src="script.js?v=1.0.0"></script>
+    <script src="script.js?v=1.0.8"></script>
 </body>
 </html>

@@ -693,6 +693,26 @@ body {
     color: var(--text-dark);
 }
 
+.section-subtitle {
+    font-family: 'Sofia Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text-light);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 2rem auto;
+}
+
+.section-subtitle {
+    font-family: 'Sofia Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text-light);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 2rem auto;
+}
+
 .section-description {
     font-family: 'Sofia Sans', sans-serif;
     font-size: 1.1rem;
@@ -1077,6 +1097,11 @@ body {
     background: var(--white);
 }
 
+/* Reduce top padding on pricing page specifically */
+body:has(#pricing) .pricing {
+    padding: 00px 0 100px 0;
+}
+
 .pricing-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1319,18 +1344,6 @@ body {
     .support-panel .support-main { flex-direction: column; }
 }
 
-.popular-badge {
-    font-family: 'Sofia Sans', sans-serif;
-    position: absolute;
-    top: -15px;
-    right: 20px;
-    background: var(--gradient-1);
-    color: var(--white);
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 0.9rem;
-}
 
 .pricing-card h3 {
     font-family: 'Sofia Sans Condensed', sans-serif;
@@ -1429,9 +1442,6 @@ body {
     flex: 1;
 }
 
-.pricing-feature-item.muted-feature {
-    opacity: 0.4;
-}
 
 /* Style for excluded (not included) features: use X icon color and keep muted */
 .pricing-feature-item.excluded-feature .pricing-feature-icon {
@@ -1439,6 +1449,17 @@ body {
 }
 .pricing-feature-item.excluded-feature .pricing-feature-text {
     color: var(--text-light);
+}
+
+/* Pricing note style (gray, italic, no icon) */
+.pricing-note {
+    list-style: none;
+    padding: 0.1rem 0;
+    margin: 0.75rem 0 0.5rem 0;
+    font-size: 0.75rem;
+    color: #969799;
+    line-height: 1.5;
+    font-style: italic;
 }
 
 /* Legacy feature item styles (for other cards) */
@@ -1489,6 +1510,530 @@ body {
     margin-top: auto;
     padding-top: 1.25rem;
     margin-bottom: 1.25rem;
+}
+
+/* Deployment Section */
+.deployment-section {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.deployment-section .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.deployment-section .section-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.deployment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.deployment-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.deployment-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.deployment-card:hover {
+    border-color: var(--peach);
+    box-shadow: 0 4px 12px rgba(77, 43, 65, 0.08);
+    transform: translateY(-2px);
+}
+
+.deployment-card.selected {
+    border-color: var(--pig);
+    background: linear-gradient(135deg, rgba(255, 121, 201, 0.03), rgba(255, 121, 201, 0.08));
+    box-shadow: 0 6px 20px rgba(255, 121, 201, 0.15);
+}
+
+.deployment-content {
+    text-align: center;
+}
+
+.deployment-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.deployment-price-badge {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--peach), var(--pig));
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.deployment-price-badge.cloud-price {
+    background: linear-gradient(135deg, var(--pig), var(--berry));
+}
+
+.deployment-description {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive adjustments for deployment cards */
+@media (max-width: 768px) {
+    .deployment-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
+
+/* ========================================
+   PRICING MODAL STYLES
+   ======================================== */
+
+.pricing-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pricing-modal.active {
+    display: flex;
+}
+
+.pricing-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(77, 43, 65, 0.85);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+    z-index: 0;
+}
+
+.pricing-modal-content {
+    position: relative;
+    background: var(--white);
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    box-shadow: 0 20px 60px rgba(77, 43, 65, 0.3);
+    animation: slideUp 0.4s ease;
+    z-index: 10;
+}
+
+.pricing-modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--peach);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.pricing-modal-close:hover {
+    background: var(--pig);
+    border-color: var(--pig);
+    transform: rotate(90deg);
+}
+
+.pricing-modal-close svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--berry);
+}
+
+.pricing-modal-close:hover svg {
+    stroke: var(--white);
+}
+
+/* Modal Header */
+.modal-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--peach);
+}
+
+.modal-plan-info {
+    margin-bottom: 1.5rem;
+}
+
+.modal-plan-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 0.5rem 0;
+}
+
+.modal-plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.modal-price-amount {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--pig);
+}
+
+.modal-price-period {
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+/* Modal Billing Toggle */
+.modal-billing-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.modal-billing-option {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.modal-toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.modal-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.modal-toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 26px;
+    transition: 0.3s;
+}
+
+.modal-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.modal-toggle-switch input:checked + .modal-toggle-slider {
+    background: linear-gradient(135deg, var(--pig), var(--berry));
+}
+
+.modal-toggle-switch input:checked + .modal-toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.modal-savings-badge {
+    background: linear-gradient(135deg, var(--peach), var(--pig));
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Modal Sections */
+.modal-section {
+    margin-bottom: 2rem;
+}
+
+.modal-section-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 1rem 0;
+}
+
+/* Modal Cards (Deployment & Support) */
+.modal-deployment-grid,
+.modal-support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.modal-support-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.modal-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-card:hover {
+    border-color: var(--peach);
+    box-shadow: 0 4px 12px rgba(77, 43, 65, 0.08);
+    transform: translateY(-2px);
+}
+
+.modal-card.selected {
+    border-color: var(--pig);
+    background: linear-gradient(135deg, rgba(255, 121, 201, 0.05), rgba(255, 121, 201, 0.1));
+    box-shadow: 0 6px 20px rgba(255, 121, 201, 0.2);
+}
+
+.modal-card-content {
+    text-align: center;
+}
+
+.modal-card-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 0.75rem 0;
+}
+
+.modal-card-price {
+    display: inline-block;
+    padding: 0.35rem 0.9rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--peach), var(--pig));
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.modal-card-price.cloud-price {
+    background: linear-gradient(135deg, var(--pig), var(--berry));
+}
+
+.modal-card-description {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Modal Summary Section */
+.modal-summary-section {
+    background: linear-gradient(135deg, rgba(255, 219, 209, 0.2), rgba(255, 121, 201, 0.1));
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.modal-totals-box {
+    background: var(--white);
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--peach);
+}
+
+.modal-totals-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.modal-totals-row:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 219, 209, 0.4);
+}
+
+.modal-totals-row span:last-child {
+    font-weight: 600;
+    color: var(--berry);
+}
+
+.modal-total-final {
+    border-top: 2px solid var(--text-dark) !important;
+    padding-top: 0.75rem !important;
+    margin-top: 0.5rem;
+    font-weight: 700;
+}
+
+.modal-total-label {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.modal-total-amount {
+    font-size: 1.3rem;
+    color: var(--pig) !important;
+}
+
+.modal-total-ongoing {
+    padding-top: 0.75rem !important;
+    justify-content: center;
+    border-top: none !important;
+}
+
+.modal-total-ongoing-text {
+    color: var(--pig) !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* Modal CTA Section */
+.modal-cta-section {
+    text-align: center;
+}
+
+.modal-cta-button {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Responsive Design */
+@media (max-width: 992px) {
+    .modal-support-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing-modal-content {
+        padding: 2rem 1.5rem;
+        max-height: 95vh;
+    }
+    
+    .modal-plan-title {
+        font-size: 1.75rem;
+    }
+    
+    .modal-price-amount {
+        font-size: 2rem;
+    }
+    
+    .modal-deployment-grid,
+    .modal-support-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-billing-toggle {
+        font-size: 0.9rem;
+    }
+    
+    .modal-section-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-modal {
+        padding: 10px;
+    }
+    
+    .pricing-modal-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .modal-header {
+        padding-bottom: 1rem;
+    }
+    
+    .pricing-modal-close {
+        top: 1rem;
+        right: 1rem;
+        width: 36px;
+        height: 36px;
+    }
 }
 
 /* FAQ Section */
@@ -1556,6 +2101,37 @@ body {
     padding: 0 1.5rem 1.5rem;
     color: var(--text-light);
     line-height: 1.8;
+}
+
+.faq-answer p:last-child {
+    padding-bottom: 1.5rem;
+}
+
+/* FAQ Lists */
+.faq-process-list,
+.faq-feature-list {
+    padding: 0 1.5rem 1rem 3rem;
+    margin: 0.5rem 0;
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.faq-process-list li,
+.faq-feature-list li {
+    margin-bottom: 0.75rem;
+}
+
+.faq-process-list li:last-child,
+.faq-feature-list li:last-child {
+    margin-bottom: 0;
+}
+
+.faq-answer .section-subtitle {
+    padding: 0 1.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-style: italic;
 }
 
 /* Contact Section */
@@ -5496,8 +6072,17 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem;
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Platform-specific benefits grid (overrides homepage styles) */
+.platform-section .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .benefit-card {
@@ -8263,9 +8848,12 @@ body {
 /* Summary Grid (3 Pillars) */
 .faq-summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .faq-summary-card {

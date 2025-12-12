@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - CoCoCo Platform</title>
-    <link rel="stylesheet" href="style.css?v=1.0.0">
+    <link rel="stylesheet" href="style.css?v=1.0.6">
     <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
@@ -19,8 +19,8 @@
     <section class="platform-hero">
         <div class="container">
             <div class="platform-hero-content">
-                <h1 class="platform-hero-title">FAQ</h1>
-                <p class="platform-hero-subtitle">Häufig gestellte Fragen zur CoCoCo Platform</p>
+                <h1 class="platform-hero-title">Frequently Asked Questions</h1>
+                <p class="platform-hero-subtitle">Everything you need to know to connect, automate, and build.</p>
             </div>
         </div>
         <div class="platform-wave-bg"></div>
@@ -108,7 +108,7 @@
                                 <span class="faq-icon">+</span>
                             </div>
                             <div class="faq-answer">
-                                <p><strong>It depends on your ambition.</strong> While a full development team is not strictly necessary, a technical mindset is highly recommended.</p>
+                                <p><strong>It depends on your ambition.</strong> While a full development team is not strictly necessary, at least a technical mindset is recommended.</p>
                                 <p><strong>For Integrations:</strong> Connecting machines is often straightforward with our Kits. However, integrating complex MIS or ERP systems requires a deep understanding of your data and business logic. Our Integration Kits provide a strong framework, but they are not "magic wands." They require configuration and mapping by someone who understands your systems.</p>
                                 <p><strong>For Apps:</strong> We rely on standard web technologies (HTML/CSS/JS). You do not need to learn a proprietary language. While our internal tools do not have built-in AI yet, the open nature of our code allows you to use external tools like ChatGPT or Claude to generate code ("Vibe Coding") and paste it directly into Platform. This drastically lowers the barrier to entry.</p>
                                 <p><strong>For Automation:</strong> You can use our visual logic builders for simple tasks. For complex, multi-step logic, our Lua scripting engine gives developers unlimited power.</p>
@@ -122,6 +122,28 @@
                             </div>
                             <div class="faq-answer">
                                 <p><strong>Security is our top priority.</strong> Our Edge Device uses outbound-only connections, meaning you do not have to open dangerous ports in your firewall. Your data is encrypted both in transit and at rest. We provide enterprise-grade security standards to ensure your production data stays safe.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Which machines and software systems are supported?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>We support a wide range of industry standards out-of-the-box, including <strong>JDF/JMF enabled devices</strong> and standard <strong>SQL/REST interfaces</strong>.</p>
+                                <p>Our library of Integration Kits includes major brands like <strong>HP Indigo, Heidelberg (via Prinect), Horizon</strong>, and various MIS providers. Since we add new drivers constantly, please contact our Implementation Specialists to check if your specific model is already plug-and-play ready.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Can I connect older machines that don't have an internet connection?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Yes, in many cases.</strong> While direct connection isn't always possible out-of-the-box, we assess your specific hardware setup together.</p>
+                                <p>We will work with you to find a suitable solution—whether through third-party gateways or custom configurations—to bring even your analog machines into your digital dashboard.</p>
                             </div>
                         </div>
                     </div>
@@ -147,7 +169,129 @@
                     </div>
                 </div>
 
-                <!-- Section 4: Glossary -->
+                <!-- Section 4: Billing & Licensing -->
+                <div class="faq-section">
+                    <h2 class="faq-section-title">Billing & Licensing</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What happens after I select a plan?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>We ensure a smooth and risk-free start. Here is the process:</strong></p>
+                                <ol class="faq-process-list">
+                                    <li><strong>Request:</strong> After configuring your plan, you fill out a brief request form. No payment is taken at this stage.</li>
+                                    <li><strong>Validation Call:</strong> Our team reviews your setup and contacts you personally. We verify that the selected plan and machine interfaces perfectly match your shop floor reality.</li>
+                                    <li><strong>Kickoff:</strong> Once everything is confirmed, you receive a secure payment link via Stripe. After payment, we schedule the onboarding and setup starts immediately.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Why can't I just buy instantly without talking to anyone?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Because we care about your long-term success.</strong> While we love automation, we believe digital transformation requires a human foundation. We want to be a partner, not just a software vendor.</p>
+                                <p>By briefly speaking with you first, we ensure you aren't paying for features you don't need and that your technical requirements are fully met before you spend a single penny.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Why is there a one-time onboarding fee?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>CoCoCo isn't just a login; it's infrastructure.</strong> We don't just send you a manual. Our implementation specialists work closely with you to configure your local Edge Controllers, map your specific MIS data, and train your team live.</p>
+                                <p>We ensure your production doesn't just "run," but actually improves. The fee covers this dedicated expertise and setup time.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Do I need to host CoCoCo Platform myself?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>You have the choice.</strong></p>
+                                <ul class="faq-feature-list">
+                                    <li><strong>Self-Hosted (Included):</strong> By default, you run the platform on your own local server or VM (Docker provided). This gives you full control, maximum data privacy, and zero latency on the shop floor.</li>
+                                    <li><strong>Managed Cloud (+€100/mo):</strong> If you prefer a worry-free solution, we can host the instance for you. This add-on includes automated daily backups, security updates, and global access without VPN configuration.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Are there any hidden transaction fees or per-machine costs?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>No. Our pricing is flat and transparent.</strong> All our plans—from Grow to Enterprise—include unlimited connections and unlimited jobs, subject to a standard fair-use policy.</p>
+                                <p>Whether you connect 2 machines or 20, or process 300 or 3,000 jobs, the price stays the same. We want you to digitize everything, not punish you for being efficient.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What happens if I outgrow the 'Grow' plan limits (10 employees)?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>First of all: Congratulations on your growth!</strong> We won't shut you down overnight. We will simply notify you and help you upgrade to the Professional Plan.</p>
+                                <p>Your data, workflows, and integrations stay exactly the same—you just unlock more capacity for your expanding team.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Am I locked into a long-term contract?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>No.</strong> We offer flexible monthly plans that you can cancel at any time. If you prefer stability and want to save money, our annual plans offer a discount (get 1 month free) in exchange for a 12-month commitment.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>What payment methods do you accept?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>We use <strong>Stripe</strong> to securely process payments via <strong>Credit Card</strong> and <strong>SEPA Direct Debit</strong> for all plans. This ensures your billing is automated and hassle-free.</p>
+                                <p>For Professional and Enterprise customers, we also offer <strong>manual invoicing via bank transfer</strong> upon request to fit your corporate procurement processes.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Are future updates included in my subscription?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>Yes.</strong> We continuously improve the Core Platform, and you will receive all performance updates, security patches, and usability improvements automatically for free.</p>
+                                <p>However, we may release completely new, specialized Add-on Modules in the future that offer significant additional value. These major expansions may be offered as optional upgrades.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>Who owns my data, and what happens if I cancel?</h3>
+                                <span class="faq-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p><strong>You own your data 100%.</strong> We are an open platform, not a data jail. You can export your production history and configuration at any time via our API or CSV tools.</p>
+                                <p>If you cancel, we provide a grace period for you to download your data before the instance is decommissioned.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Glossary -->
                 <div class="faq-section">
                     <h2 class="faq-section-title">Speak Our Language</h2>
                     <p class="faq-section-intro">The print industry is full of jargon. Here is how we define the key terms inside the Platform ecosystem.</p>
@@ -207,23 +351,15 @@
         </div>
     </section>
 
-    <!-- Contact CTA -->
-    <section class="cta-section">
+    <!-- CTA Section -->
+    <section class="platform-cta">
         <div class="container">
-            <div class="cta-content">
-                <div class="cta-image">
-                    <div class="cta-visual">
-                        <span class="cta-icon">💬</span>
-                        <div class="cta-decoration"></div>
-                    </div>
-                </div>
-                <div class="cta-text">
-                    <h2>Noch Fragen?</h2>
-                    <p>Unser Team steht Ihnen gerne zur Verfügung und beantwortet alle Ihre Fragen zur CoCoCo Platform.</p>
-                    <div class="cta-buttons">
-                        <button class="btn btn-primary">Kontakt aufnehmen</button>
-                        <button class="btn btn-secondary">Demo buchen</button>
-                    </div>
+            <div class="cta-content-centered">
+                <h2 class="cta-title">Still have questions?</h2>
+                <p class="cta-subtitle">Our team is happy to help and answer any questions you have about the CoCoCo Platform.</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary btn-large">Get in Contact</a>
+                    <a href="https://meetings-eu1.hubspot.com/andreas-aplien/round-robin-salesteam" class="btn btn-secondary btn-large" target="_blank" rel="noopener noreferrer">Book a Demo</a>
                 </div>
             </div>
         </div>
@@ -232,7 +368,7 @@
     <!-- Footer Placeholder -->
     <div id="site-footer"></div>
 
-    <script src="config.js?v=1.0.0"></script>
-    <script src="script.js?v=1.0.8"></script>
+    <script src="config.js?v=1.0.6"></script>
+    <script src="script.js?v=1.0.6"></script>
 </body>
 </html>

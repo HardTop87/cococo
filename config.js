@@ -48,74 +48,67 @@ window.SITE_CONFIG = {
     
     // Centralized pricing plan texts and numeric values used by the pricing page
     pricingPlans: {
+      setupNote: 'Need more? We build custom integrations for legacy machines and software on request..',
       grow: {
         title: 'Grow',
-        subtitle: 'Our special pricing to support small businesses (≤ 10 employees)',
+        subtitle: 'Full power, priced for small teams (≤ 10 employees)',
         monthly: 500,
         yearly: 5500,
         setup: 2500,
-        cta: 'Select Plan',
+        cta: 'Configure Plan',
         applyUrl: 'https://2dztun.share-eu1.hsforms.com/2Roz4Vr1gQAmdQ-qgvm9SAw',
         // Plan-specific copy for detailed support panel
         setupBullets: [
-          'Guided setup & onboarding (2 weeks)',
-          'Data migration assistance',
-          'team training sessions (web meeting)',
-          '2 months silver support included'
+          'Includes Full Professional Plan Onboarding Package'
         ],
         features: [
-          { text: 'Unlimited Users', included: true },
-          { text: 'Unlimited Integrations', included: true },
-          { text: 'CoCoCo Data Model', included: true },
-          { text: 'Custom Apps', included: true },
-          { text: 'Feature 2', included: true },
-          { text: 'Feature 3', included: true },
+          { text: 'All Professional Plan Features included', included: true},
           { text: 'Multi-site support', included: false },
-          { text: 'SLA', included: false },
-          { text: 'XYZ', included: false }
+          { text: 'No custom SLA', included: false },
         ]
       },
       professional: {
         title: 'Professional',
-        subtitle: 'Standard pricing for full production operations',
+        subtitle: 'The operating system for modern print production',
         monthly: 1000,
         yearly: 11000,
         setup: 2500,
-        cta: 'Select Plan',
+        cta: 'Configure Plan',
         applyUrl: 'https://2dztun.share-eu1.hsforms.com/2_kgrHlj0ST-nrcFK803BkA',
         setupBullets: [
-          'Dedicated onboarding specialist (4 weeks)',
-          'Data migration and mapping support',
-          'First custom workflow configuration',
-          '3× training sessions',
-          '60 days priority email support'
+          'Guided Setup & Onboarding',
+          'Setup of all available Integration Kits',
+          'Data Migration Assistance',
+          'Team Training (Web Session)',
+          'Priority Support during Onboarding'
         ],
         features: [
           { text: 'Unlimited Users', included: true },
-          { text: 'Unlimited Integrations', included: true },
+          { text: 'All available Integration Kits', included: true },
           { text: 'CoCoCo Data Model', included: true },
           { text: 'Custom Apps', included: true },
-          { text: 'Multi-site support', included: false },
-          { text: 'SLA', included: false },
-          { text: 'XYZ', included: false }
+          { text: 'Full API Access', included: true },
+          { text: 'No Limitations in Automation or Integration', included: true },
+          { text: 'Multi-Site Support', included: false },
+          { text: 'No Custom SLA', included: false },
         ]
       },
       enterprise: {
         title: 'Enterprise',
-        subtitle: 'For big customers, multi-plant operations and custom solutions',
+        subtitle: 'For multi-site operations with mission-critical security & compliance needs',
         monthly: 0,
         yearly: 0,
         setup: 0,
         cta: 'Contact Sales',
         setupBullets: [
-          'Named implementation manager & PM',
-          'Complex data migration & integration support',
-          'On-site training available where needed',
-          'SLA-backed 24/7 premium support (90 days)',
-          'Custom reporting & export setup'
+          'Named Implementation Manager & PM',
+          'Legacy System Migration & Integration Support',
+          'On-site Training Available Where Needed',
+          'SLA-backed Premium Support During Onboarding'
         ],
         features: [
           { text: 'Everything in Professional', included: true },
+          { text: 'Multi-site support', included: true },
           { text: 'Enterprise-grade security & compliance', included: true },
           { text: 'Dedicated account manager', included: true },
           { text: 'Dedicated support & SLAs', included: true },

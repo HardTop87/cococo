@@ -100,6 +100,8 @@ function applySiteConfig() {
         if (cfg.content.pricingPlans) {
             const formatter = new Intl.NumberFormat('de-DE');
             Object.keys(cfg.content.pricingPlans).forEach(planKey => {
+                // Skip setupNote, it's not a plan
+                if (planKey === 'setupNote') return;
                 const plan = cfg.content.pricingPlans[planKey];
 
                 // Bind textual pieces by data-config keys if present
@@ -147,7 +149,7 @@ function applySiteConfig() {
 
                         const isMutedFeature = (text) => {
                             const key = text.toLowerCase();
-                            return key.includes('advanced') || key.includes('api') || key.includes('multi-site') || key.includes('multi site');
+                            return key.includes('xyz');
                         };
 
                         let items = [];
@@ -158,6 +160,11 @@ function applySiteConfig() {
                                 const safe = String(b);
                                 items.push(`<li class="pricing-feature-item">${makeIcon()}<span class="pricing-feature-text">${safe}</span></li>`);
                             });
+                            // Add setup note if defined in config
+                            const setupNote = window.SITE_CONFIG?.content?.pricingPlans?.setupNote;
+                            if (setupNote) {
+                                items.push(`<li class="pricing-note">${setupNote}</li>`);
+                            }
                             items.push(`<li class="divider-line" aria-hidden="true"></li>`);
                         }
 
@@ -1197,14 +1204,23 @@ if (hamburger && navMenu) {
 // Smooth Scrolling for Navigation Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        // Only handle if it's actually a hash link (not just # or full URL)
+        if (!href || href === '#' || !href.startsWith('#') || href.includes('://')) return;
+        
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
+        try {
+            const target = document.querySelector(href);
+            if (target) {
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        } catch (err) {
+            // Invalid selector, ignore
+            console.warn('Invalid hash selector:', href);
         }
     });
 });
@@ -1464,7 +1480,8 @@ function savePriceState(state) {
 const PRICE_APP = {
     isAnnual: false,
     selectedPlan: null,
-    supportLevels: { grow: 'basic', professional: 'basic', enterprise: 'gold' }
+    supportLevels: { grow: 'basic', professional: 'basic', enterprise: 'gold' },
+    deployment: 'self-hosted' // 'self-hosted' (0€) or 'cloud' (100€/mo)
 };
 
 function getConfigPlan(planKey) {
@@ -1531,8 +1548,9 @@ function renderSupportPanel(cardEl, planKey) {
         </div>
         <div class="support-totals-box">
             <div class="totals-row"><span>Subscription ${isYearly ? '(annual)' : '(monthly)'}</span> <span class="support-subscription">-</span></div>
-            <div class="totals-row"><span>Setup Fee (one-time)</span> <span class="support-setup">-</span></div>
+            <div class="totals-row"><span>Onboarding (one-time)</span> <span class="support-setup">-</span></div>
             <div class="totals-row support-support hidden"><span>Support ${isYearly ? '(annual)' : '(monthly)'}</span> <span class="support-support-amount">-</span></div>
+            <div class="totals-row support-deployment hidden"><span>Deployment (Cloud)</span> <span class="support-deployment-amount">-</span></div>
             <div class="totals-row support-total"><span class="total-label">Total First Year</span> <span class="support-total-amount">-</span></div>
             <div class="totals-row support-year2 hidden"><span class="support-year2-amount">-</span></div>
         </div>
@@ -1587,10 +1605,15 @@ function updateSupportTotals(panel, cardEl, planKey) {
     const setupEl = panel.querySelector('.support-setup');
     const supportElWrap = panel.querySelector('.support-support');
     const supportAmtEl = panel.querySelector('.support-support-amount');
+    const deploymentElWrap = panel.querySelector('.support-deployment');
+    const deploymentAmtEl = panel.querySelector('.support-deployment-amount');
     const totalLabelEl = panel.querySelector('.total-label');
     const totalEl = panel.querySelector('.support-total-amount');
     const year2Wrap = panel.querySelector('.support-year2');
     const year2AmtEl = panel.querySelector('.support-year2-amount');
+
+    // Get deployment cost (100€/mo for cloud, 0 for self-hosted)
+    const deploymentCost = PRICE_APP.deployment === 'cloud' ? 100 : 0;
 
     // Update total label based on billing period
     if (totalLabelEl) {
@@ -1609,19 +1632,29 @@ function updateSupportTotals(panel, cardEl, planKey) {
         supportElWrap.classList.add('hidden');
     }
 
-    // Calculate totals
+    // Update deployment display
+    if (deploymentCost > 0) {
+        deploymentElWrap.classList.remove('hidden');
+        const deploymentAnnual = deploymentCost * 11; // 11 months = 1 month free
+        deploymentAmtEl.textContent = isYearly ? `€${formatNumber(deploymentAnnual)} /yr` : `€${formatNumber(deploymentCost)} /mo`;
+    } else {
+        deploymentElWrap.classList.add('hidden');
+    }
+
+    // Calculate totals including deployment
     const supportAnnual = supportPrice * 11; // 11 months = 1 month free
-    const total = isYearly ? (setup + planAmount + supportAnnual) : (setup + planAmount + supportPrice);
+    const deploymentAnnual = deploymentCost * 11; // 11 months = 1 month free
+    const total = isYearly ? (setup + planAmount + supportAnnual + deploymentAnnual) : (setup + planAmount + supportPrice + deploymentCost);
     totalEl.textContent = `€${formatNumber(total)}`;
 
     // Show year 2 onwards for annual, ongoing monthly for monthly billing
     if (isYearly) {
         year2Wrap.classList.remove('hidden');
-        const year2Total = planAmount + supportAnnual; // no setup fee from year 2
+        const year2Total = planAmount + supportAnnual + deploymentAnnual; // no setup fee from year 2
         year2AmtEl.textContent = `Then from year 2: €${formatNumber(year2Total)}/year`;
     } else {
         year2Wrap.classList.remove('hidden');
-        const ongoingMonthly = planAmount + supportPrice; // monthly ongoing (no setup)
+        const ongoingMonthly = planAmount + supportPrice + deploymentCost; // monthly ongoing (no setup)
         year2AmtEl.textContent = `€${formatNumber(ongoingMonthly)}/month ongoing`;
     }
 
@@ -1639,6 +1672,9 @@ function updateSupportTotals(panel, cardEl, planKey) {
         const billingPeriod = isYearly ? 'annual' : 'monthly';
         url = `${url}&billing_period=${encodeURIComponent(billingPeriod)}`;
         
+        // Add deployment parameter
+        url = `${url}&deployment=${encodeURIComponent(PRICE_APP.deployment)}`;
+        
         ctaLink.href = url;
     }
 }
@@ -1649,7 +1685,7 @@ function removeSupportPanel(cardEl) {
 }
 
 function selectPlanFromCard(planKey, cardEl) {
-    // Enterprise plan: open email instead of support panel
+    // Enterprise plan: open email instead of modal
     if (planKey === 'enterprise') {
         const subject = encodeURIComponent('Enterprise Plan Inquiry - CoCoCo Platform');
         const body = encodeURIComponent('Hello,\n\nI am interested in the CoCoCo Platform Enterprise Plan and would like to discuss:\n\n- Number of sites/locations\n- Expected number of integrations\n- Specific requirements\n- Custom implementation needs\n\nBest regards');
@@ -1657,6 +1693,13 @@ function selectPlanFromCard(planKey, cardEl) {
         return;
     }
     
+    // NEW: Open Modal for Grow and Professional plans
+    PRICE_APP.selectedPlan = planKey;
+    PRICE_APP.supportLevels[planKey] = PRICE_APP.supportLevels[planKey] || 'basic';
+    savePriceState(PRICE_APP);
+    openPricingModal(planKey);
+    
+    /* OLD CODE - FLAGGED FOR REMOVAL: Support panel logic (replaced by modal)
     // Toggle selection
     if (PRICE_APP.selectedPlan === planKey) {
         PRICE_APP.selectedPlan = null;
@@ -1699,6 +1742,7 @@ function selectPlanFromCard(planKey, cardEl) {
         }, 100);
     }
     savePriceState(PRICE_APP);
+    END OLD CODE */
 }
 
 function initPricingInteractions() {
@@ -1725,16 +1769,22 @@ function initPricingInteractions() {
         } else if (plan) {
             try { console.warn('No select button found for pricing card', plan, card); } catch (e) {}
         }
+        /* OLD CODE - FLAGGED FOR REMOVAL: Auto-reopen support panel on page load
         // if previously selected, re-open panel
         if (plan && PRICE_APP.selectedPlan === plan) {
             renderSupportPanel(card, plan);
         }
+        END OLD CODE */
     });
 
     // update when billing toggle changes
     const bill = document.getElementById('billing-switch');
     if (bill) {
         bill.addEventListener('change', () => {
+            PRICE_APP.isAnnual = bill.checked;
+            savePriceState(PRICE_APP);
+            
+            /* OLD CODE - FLAGGED FOR REMOVAL: Update support panels on main page
             document.querySelectorAll('.support-panel').forEach(p => {
                 const card = p.closest('.pricing-card');
                 if (card) {
@@ -1743,7 +1793,47 @@ function initPricingInteractions() {
                     renderSupportPanel(card, plan);
                 }
             });
+            END OLD CODE */
         });
+    }
+
+    // Wire deployment card selection
+    document.querySelectorAll('.deployment-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const deploymentType = card.getAttribute('data-deployment');
+            
+            // Update selection state
+            document.querySelectorAll('.deployment-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            
+            // Update radio button
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            
+            // Update app state
+            PRICE_APP.deployment = deploymentType;
+            savePriceState(PRICE_APP);
+            
+            // Update any open support panels with new totals
+            document.querySelectorAll('.support-panel').forEach(p => {
+                const pricingCard = p.closest('.pricing-card');
+                if (pricingCard) {
+                    const plan = pricingCard.getAttribute('data-plan');
+                    updateSupportTotals(p, pricingCard, plan);
+                }
+            });
+        });
+    });
+
+    // Restore deployment selection from saved state
+    if (PRICE_APP.deployment) {
+        const savedCard = document.querySelector(`.deployment-card[data-deployment="${PRICE_APP.deployment}"]`);
+        if (savedCard) {
+            document.querySelectorAll('.deployment-card').forEach(c => c.classList.remove('selected'));
+            savedCard.classList.add('selected');
+            const radio = savedCard.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        }
     }
 }
 
@@ -2449,6 +2539,308 @@ function initFAQAccordion() {
     });
 }
 
+// ========================================
+// PRICING MODAL FUNCTIONS
+// ========================================
+
+function openPricingModal(planKey) {
+    const modal = document.getElementById('pricing-modal');
+    if (!modal) return;
+    
+    const planCfg = getConfigPlan(planKey) || {};
+    const isYearly = PRICE_APP.isAnnual;
+    
+    // Update modal header
+    const titleEl = modal.querySelector('.modal-plan-title');
+    const priceEl = modal.querySelector('.modal-price-amount');
+    const periodEl = modal.querySelector('.modal-price-period');
+    
+    if (titleEl) titleEl.textContent = planCfg.title || planKey;
+    if (priceEl) {
+        const amount = isYearly ? planCfg.yearly : planCfg.monthly;
+        priceEl.textContent = `€${formatNumber(amount)}`;
+    }
+    if (periodEl) periodEl.textContent = isYearly ? '/year' : '/month';
+    
+    // Sync billing toggle with main page
+    const modalBillingSwitch = modal.querySelector('#modal-billing-switch');
+    if (modalBillingSwitch) modalBillingSwitch.checked = isYearly;
+    
+    // Restore selections from state
+    const deployment = PRICE_APP.deployment || 'self-hosted';
+    const support = PRICE_APP.supportLevels[planKey] || 'basic';
+    
+    // Update deployment selection
+    modal.querySelectorAll('.modal-card[data-modal-deployment]').forEach(card => {
+        const cardDeployment = card.getAttribute('data-modal-deployment');
+        if (cardDeployment === deployment) {
+            card.classList.add('selected');
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        } else {
+            card.classList.remove('selected');
+        }
+    });
+    
+    // Update support selection
+    modal.querySelectorAll('.modal-card[data-modal-support]').forEach(card => {
+        const cardSupport = card.getAttribute('data-modal-support');
+        if (cardSupport === support) {
+            card.classList.add('selected');
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        } else {
+            card.classList.remove('selected');
+        }
+    });
+    
+    // Update totals
+    updateModalTotals(planKey);
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePricingModal() {
+    const modal = document.getElementById('pricing-modal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function updateModalTotals(planKey) {
+    const modal = document.getElementById('pricing-modal');
+    if (!modal) return;
+    
+    const planCfg = getConfigPlan(planKey) || {};
+    const isYearly = modal.querySelector('#modal-billing-switch')?.checked || false;
+    const monthly = Number(planCfg.monthly || 0);
+    const yearly = Number(planCfg.yearly || 0);
+    const planAmount = isYearly ? yearly : monthly;
+    const setup = Number(planCfg.setup || 0);
+    
+    // Get deployment cost
+    const deployment = PRICE_APP.deployment || 'self-hosted';
+    const deploymentCost = deployment === 'cloud' ? 100 : 0;
+    
+    // Get support cost
+    const supportLevel = PRICE_APP.supportLevels[planKey] || 'basic';
+    let supportPrice = DEFAULT_SUPPORT_PRICES[supportLevel] || 0;
+    try {
+        const pkgs = (window.SITE_CONFIG && window.SITE_CONFIG.content && Array.isArray(window.SITE_CONFIG.content.supportPackages)) ? window.SITE_CONFIG.content.supportPackages : null;
+        if (pkgs) {
+            const found = pkgs.find(p => p.key === supportLevel);
+            if (found) supportPrice = Number(found.priceMonthly || supportPrice);
+        }
+    } catch (e) {}
+    
+    // Update display elements
+    const subLabelEl = modal.querySelector('.modal-subscription-label');
+    const subEl = modal.querySelector('.modal-total-subscription');
+    const setupEl = modal.querySelector('.modal-total-setup');
+    const supportRowEl = modal.querySelector('.modal-total-support-row');
+    const supportLabelEl = modal.querySelector('.modal-support-label');
+    const supportEl = modal.querySelector('.modal-total-support');
+    const deploymentRowEl = modal.querySelector('.modal-total-deployment-row');
+    const deploymentLabelEl = modal.querySelector('.modal-deployment-label');
+    const deploymentEl = modal.querySelector('.modal-total-deployment');
+    const totalLabelEl = modal.querySelector('.modal-total-label');
+    const totalEl = modal.querySelector('.modal-total-amount');
+    const ongoingEl = modal.querySelector('.modal-total-ongoing-text');
+    
+    // Update subscription label and value
+    if (subLabelEl) subLabelEl.textContent = `Subscription (${isYearly ? 'annual' : 'monthly'})`;
+    if (subEl) subEl.textContent = `€${formatNumber(planAmount)} ${isYearly ? '/yr' : '/mo'}`;
+    if (setupEl) setupEl.textContent = `€${formatNumber(setup)}`;
+    
+    // Always show support row (included or paid)
+    if (supportRowEl) supportRowEl.classList.remove('hidden');
+    // Capitalize first letter of support level
+    const supportName = supportLevel.charAt(0).toUpperCase() + supportLevel.slice(1);
+    if (supportLabelEl) supportLabelEl.textContent = `Support: ${supportName} (${isYearly ? 'annual' : 'monthly'})`;
+    if (supportEl) {
+        if (supportPrice > 0) {
+            const supportAnnual = supportPrice * 11;
+            supportEl.textContent = isYearly ? `€${formatNumber(supportAnnual)} /yr` : `€${formatNumber(supportPrice)} /mo`;
+        } else {
+            supportEl.textContent = 'Included';
+        }
+    }
+    
+    // Always show deployment row (included or paid)
+    if (deploymentRowEl) deploymentRowEl.classList.remove('hidden');
+    const deploymentName = deployment === 'cloud' ? 'Cloud' : 'Self-Hosted';
+    if (deploymentLabelEl) deploymentLabelEl.textContent = `Deployment: ${deploymentName} (${isYearly ? 'annual' : 'monthly'})`;
+    if (deploymentEl) {
+        if (deploymentCost > 0) {
+            const deploymentAnnual = deploymentCost * 11;
+            deploymentEl.textContent = isYearly ? `€${formatNumber(deploymentAnnual)} /yr` : `€${formatNumber(deploymentCost)} /mo`;
+        } else {
+            deploymentEl.textContent = 'Included';
+        }
+    }
+    
+    // Calculate totals
+    const supportAnnual = supportPrice * 11;
+    const deploymentAnnual = deploymentCost * 11;
+    const total = isYearly ? (setup + planAmount + supportAnnual + deploymentAnnual) : (setup + planAmount + supportPrice + deploymentCost);
+    
+    if (totalLabelEl) totalLabelEl.textContent = isYearly ? 'Total First Year' : 'Total First Month';
+    if (totalEl) totalEl.textContent = `€${formatNumber(total)}`;
+    
+    // Ongoing costs
+    if (ongoingEl) {
+        if (isYearly) {
+            const year2Total = planAmount + supportAnnual + deploymentAnnual;
+            ongoingEl.textContent = `Then from year 2: €${formatNumber(year2Total)}/year`;
+        } else {
+            const ongoingMonthly = planAmount + supportPrice + deploymentCost;
+            ongoingEl.textContent = `€${formatNumber(ongoingMonthly)}/month ongoing`;
+        }
+    }
+    
+    // Update CTA button
+    updateModalCTA(planKey);
+}
+
+function updateModalCTA(planKey) {
+    const modal = document.getElementById('pricing-modal');
+    if (!modal) return;
+    
+    const planCfg = getConfigPlan(planKey) || {};
+    const ctaBtn = modal.querySelector('#modal-apply-button');
+    if (!ctaBtn) return;
+    
+    // Different button text per plan
+    const buttonTexts = {
+        'grow': 'Proceed with Grow Plan Configuration',
+        'professional': 'Proceed with Professional Plan Configuration',
+        'enterprise': 'Contact Sales'
+    };
+    ctaBtn.textContent = buttonTexts[planKey] || 'Apply for Plan';
+    
+    // Build URL with parameters
+    let url = planCfg.applyUrl || '#';
+    
+    // Only add parameters if we have a valid URL (not just '#')
+    if (url && url !== '#') {
+        const supportLevel = PRICE_APP.supportLevels[planKey] || 'basic';
+        const deployment = PRICE_APP.deployment || 'self-hosted';
+        const isYearly = modal.querySelector('#modal-billing-switch')?.checked || false;
+        const billingPeriod = isYearly ? 'annual' : 'monthly';
+        
+        const separator = url.includes('?') ? '&' : '?';
+        url = `${url}${separator}support_plan=${encodeURIComponent(supportLevel)}`;
+        url = `${url}&billing_period=${encodeURIComponent(billingPeriod)}`;
+        url = `${url}&deployment=${encodeURIComponent(deployment)}`;
+    }
+    
+    ctaBtn.href = url;
+    console.log('Modal CTA updated:', planKey, url);
+}
+
+function initPricingModal() {
+    const modal = document.getElementById('pricing-modal');
+    if (!modal) return;
+    
+    // Close button
+    const closeBtn = modal.querySelector('.pricing-modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closePricingModal);
+    }
+    
+    // Close on overlay click
+    const overlay = modal.querySelector('.pricing-modal-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', closePricingModal);
+    }
+    
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closePricingModal();
+        }
+    });
+    
+    // Modal billing toggle
+    const modalBillingSwitch = modal.querySelector('#modal-billing-switch');
+    if (modalBillingSwitch) {
+        modalBillingSwitch.addEventListener('change', () => {
+            PRICE_APP.isAnnual = modalBillingSwitch.checked;
+            
+            // Update main page billing toggle
+            const mainBillingSwitch = document.getElementById('billing-switch');
+            if (mainBillingSwitch) mainBillingSwitch.checked = modalBillingSwitch.checked;
+            
+            // Update modal display
+            const planKey = PRICE_APP.selectedPlan;
+            if (planKey) {
+                const planCfg = getConfigPlan(planKey) || {};
+                const priceEl = modal.querySelector('.modal-price-amount');
+                const periodEl = modal.querySelector('.modal-price-period');
+                const amount = modalBillingSwitch.checked ? planCfg.yearly : planCfg.monthly;
+                if (priceEl) priceEl.textContent = `€${formatNumber(amount)}`;
+                if (periodEl) periodEl.textContent = modalBillingSwitch.checked ? '/year' : '/month';
+                
+                updateModalTotals(planKey);
+            }
+            
+            savePriceState(PRICE_APP);
+        });
+    }
+    
+    // Deployment card selection
+    modal.querySelectorAll('.modal-card[data-modal-deployment]').forEach(card => {
+        card.addEventListener('click', () => {
+            const deployment = card.getAttribute('data-modal-deployment');
+            
+            // Update selection state
+            modal.querySelectorAll('.modal-card[data-modal-deployment]').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            
+            // Update radio button
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            
+            // Update app state
+            PRICE_APP.deployment = deployment;
+            savePriceState(PRICE_APP);
+            
+            // Update totals
+            if (PRICE_APP.selectedPlan) {
+                updateModalTotals(PRICE_APP.selectedPlan);
+            }
+        });
+    });
+    
+    // Support card selection
+    modal.querySelectorAll('.modal-card[data-modal-support]').forEach(card => {
+        card.addEventListener('click', () => {
+            const support = card.getAttribute('data-modal-support');
+            const planKey = PRICE_APP.selectedPlan;
+            
+            // Update selection state
+            modal.querySelectorAll('.modal-card[data-modal-support]').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            
+            // Update radio button
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            
+            // Update app state
+            if (planKey) {
+                PRICE_APP.supportLevels[planKey] = support;
+                savePriceState(PRICE_APP);
+                
+                // Update totals
+                updateModalTotals(planKey);
+            }
+        });
+    });
+}
+
 // Consolidated DOMContentLoaded initialization
 document.addEventListener('DOMContentLoaded', () => {
     // Custom Apps iframe
@@ -2459,5 +2851,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // FAQ Accordion
     if (document.querySelector('.faq-item')) {
         try { initFAQAccordion(); } catch (e) { console.error('FAQ accordion error:', e); }
+    }
+    
+    // Pricing Modal
+    if (document.getElementById('pricing-modal')) {
+        try { initPricingModal(); } catch (e) { console.error('Pricing modal error:', e); }
     }
 });

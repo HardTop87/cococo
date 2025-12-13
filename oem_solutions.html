@@ -27,10 +27,10 @@
     </section>
 
     <!-- Intro Section -->
-    <section class="platform-section section-light">
+    <section id="oem-intro" class="platform-section section-light">
         <div class="container">
             <p class="lead-text" style="max-width: 900px; margin: 0 auto;">
-                As a manufacturer, you face two digital challenges. First, you need to monitor the health of your global machine estate. Second, you need to offer your customers a modern software experience that matches the quality of your hardware. We solve both. We offer two distinct solutions tailored to your specific goals: OpenInfra for connectivity and Platform White Label for customer value.
+                As a manufacturer, you face two digital challenges. First, you need to monitor the health of your global machine estate. Second, you need to offer your customers a modern software experience that matches the quality of your hardware. We solve both. We offer two distinct solutions tailored to your specific goals: <strong style="color: #FF79C9;">OpenInfra</strong> for machine insights and connectivity, and <strong style="color: #FF79C9;">Platform White Label</strong> for customer value.
             </p>
         </div>
     </section>
@@ -146,6 +146,13 @@
         </div>
     </section>
 
+    <div class="oem-iframe-container">
+        <iframe 
+        src="openinfra_demo.html" 
+        allowtransparency="true">
+        </iframe>
+    </div>
+
     <!-- Section 3: Platform White Label -->
     <section class="platform-section section-light product-section-whitelabel">
         <div class="container">
@@ -154,6 +161,7 @@
                 <h2 class="section-title">Platform White Label: Your Operating System</h2>
                 <p class="section-subtitle">Your Brand. Your Revenue. Our Engine.</p>
             </div>
+
 
             <div class="solution-detail-content">
                 <p class="lead-text">
@@ -209,6 +217,14 @@
         </div>
     </section>
 
+    <div class="oem-iframe-container">
+        <iframe 
+        src="platform_whitelabel_demo.html" 
+        class="iframe-whitelabel" 
+        allowtransparency="true">
+        </iframe>
+    </div>
+
     <!-- Section 4: Comparison -->
     <section class="platform-section section-dark">
         <div class="container">
@@ -240,12 +256,12 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="platform-cta">
+    <section class="manufacturers-cta">
         <div class="container">
             <div class="cta-content-centered">
-                <h2 class="cta-title">Let's discuss your roadmap.</h2>
-                <p class="cta-subtitle">Our Partner Manager is ready to explore which solution aligns with your business goals.</p>
-                <div class="cta-buttons">
+                <h2 class="manufacturers-cta-title">Let's discuss your roadmap.</h2>
+                <p class="manufacturers-cta-subtitle">Our Partner Manager is ready to explore which solution aligns with your business goals.</p>
+                <div class="manufacturers-cta-buttons">
                     <a href="contact.html" class="btn btn-primary btn-large">Contact our Partner Manager</a>
                 </div>
             </div>
@@ -257,12 +273,5 @@
 
     <script src="config.js?v=1.0.0"></script>
     <script src="script.js?v=1.0.0"></script>
-    <script>
-        // Safe loadPartial calls with existence check
-        if (typeof loadPartial === 'function') {
-            loadPartial('partials/header.html', 'site-header');
-            loadPartial('partials/footer.html', 'site-footer');
-        }
-    </script>
 </body>
 </html>

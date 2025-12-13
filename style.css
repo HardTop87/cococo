@@ -1125,6 +1125,11 @@ body:has(#pricing) .pricing {
     padding: 00px 0 100px 0;
 }
 
+/* Reduce top padding on OEM page intro section specifically */
+body:has(#oem-intro) #oem-intro {
+    padding: 0px 0 80px 0;
+}
+
 .pricing-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -8991,3 +8996,82 @@ body:has(#pricing) .pricing {
         transition: none !important;
     }
 }
+
+/* OEM Page - Centered Iframes */
+.oem-iframe-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.oem-iframe-container iframe {
+    border: none;
+    background: transparent;
+    display: block;
+}
+
+/* Desktop: Tatsächliche Größe des iframe-Inhalts */
+@media (min-width: 769px) {
+    .oem-iframe-container iframe {
+        width: 950px;
+        height: 550px;
+    }
+    
+    .oem-iframe-container iframe.iframe-whitelabel {
+        width: 950px;
+        height: 600px;
+    }
+}
+
+/* Mobile & Tablet: iframes ausblenden */
+@media (max-width: 768px) {
+    .oem-iframe-container {
+        display: none;
+    }
+}
+
+/* TODO: Folgenden auskommentierten Code löschen, wenn Mobile-Lösung bestätigt ist
+@media (max-width: 768px) {
+    .oem-iframe-container {
+        padding: 2rem 0;
+        overflow-x: hidden;
+    }
+    
+    .oem-iframe-container iframe {
+        width: 950px;
+        height: 550px;
+        transform: scale(0.75);
+        transform-origin: top center;
+        margin-bottom: -80px;
+    }
+    
+    .oem-iframe-container iframe.iframe-whitelabel {
+        height: 600px;
+        margin-bottom: -90px;
+    }
+}
+
+@media (max-width: 480px) {
+    .oem-iframe-container {
+        padding: 1rem 0;
+        overflow-x: hidden;
+    }
+    
+    .oem-iframe-container iframe {
+        width: 950px;
+        height: 550px;
+        transform: scale(0.42);
+        transform-origin: top center;
+        margin-bottom: -220px;
+    }
+    
+    .oem-iframe-container iframe.iframe-whitelabel {
+        height: 600px;
+        margin-bottom: -250px;
+    }
+}
+*/

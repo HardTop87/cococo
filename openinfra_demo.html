@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Fleet Command Center (Clean)</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette */
+            --c-pig: #FF79C9;
+            --c-cyan: #00E5FF; 
+            --c-berry: #4D2B41;
+            --c-berry-dark: #2A1220;
+            --c-bg-card: #0F0F0F;
+            --c-bg-panel: #141414;
+            --c-text-main: #FFFFFF;
+            --c-text-peach: #FFEFF8;
+            --c-text-muted: #6B7280;
+            
+            /* Effects */
+            --glow-cyan: 0 0 15px rgba(0, 229, 255, 0.3);
+            --glow-pink: 0 0 15px rgba(255, 121, 201, 0.3);
+            --border-tech: 1px solid rgba(255,255,255,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+    font-family: 'Inter', sans-serif;
+    background-color: transparent;
+    
+    /* ÄNDERUNG: Flexbox entfernen oder auf "Start" setzen */
+    margin: 0;
+    padding: 0;
+    width: auto;      /* Nimmt nur den Platz, den es braucht */
+    height: auto;
+    overflow: hidden;    
+    }
+
+        /* --- THE WIDGET (VENDOR CONSOLE) --- */
+        .fleet-console {
+            position: relative; z-index: 10;
+            width: 950px;
+            height: 550px;
+            
+            background: rgba(15, 15, 15, 0.95);
+            /* KEIN SCHATTEN MEHR, DAFÜR ETWAS STÄRKERE KANTE */
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 12px;
+            /* box-shadow entfernt */
+            
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            
+            animation: expandConsole 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes expandConsole {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* HEADER */
+        .console-header {
+            padding: 20px 30px;
+            border-bottom: var(--border-tech);
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(90deg, rgba(0,229,255,0.05) 0%, transparent 100%);
+        }
+
+        .header-main h1 {
+            font-size: 18px; font-weight: 700; color: var(--c-text-main);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .live-dot { width: 8px; height: 8px; background: var(--c-cyan); border-radius: 50%; box-shadow: var(--glow-cyan); animation: blink 2s infinite; }
+        .header-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--c-cyan); }
+
+        .compliance-badge {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3);
+            padding: 6px 12px; border-radius: 4px;
+            color: #2ECC71; font-size: 11px; font-weight: 600;
+        }
+
+        /* GRID LAYOUT */
+        .console-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 1px; background-color: rgba(255,255,255,0.05); flex: 1;
+        }
+        .col { background-color: var(--c-bg-card); padding: 25px; display: flex; flex-direction: column; position: relative; }
+
+        .section-title {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--c-text-muted);
+            margin-bottom: 20px; font-weight: 700; display: flex; justify-content: space-between;
+        }
+
+        /* COL 1: INGEST */
+        .ingest-visual {
+            flex: 1; border: 1px dashed rgba(255,255,255,0.1); border-radius: 8px;
+            margin-bottom: 15px; position: relative; overflow: hidden;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0F0F0F 70%);
+        }
+        .dot-grid {
+            width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.5;
+        }
+        .active-node {
+            position: absolute; width: 6px; height: 6px; background: var(--c-cyan); border-radius: 50%;
+            box-shadow: 0 0 10px var(--c-cyan); animation: ping 3s infinite;
+        }
+        .n1 { top: 30%; left: 20%; animation-delay: 0s; }
+        .n2 { top: 50%; left: 60%; animation-delay: 1.2s; }
+        .n3 { top: 70%; left: 40%; animation-delay: 0.5s; }
+        .n4 { top: 25%; left: 75%; animation-delay: 2.1s; }
+        @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+
+        .data-ticker {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--c-text-peach);
+            height: 60px; overflow: hidden; position: relative;
+        }
+        .ticker-item {
+            padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between;
+            animation: slideUpList 6s infinite linear;
+        }
+        .ticker-id { color: var(--c-cyan); }
+        @keyframes slideUpList { 0% { transform: translateY(0); } 100% { transform: translateY(-60px); } }
+
+        .tech-label { margin-top: 10px; font-size: 10px; color: var(--c-text-muted); display: flex; align-items: center; gap: 6px; }
+        .tech-indicator { width: 6px; height: 6px; background: var(--c-berry); border-radius: 50%; }
+
+        /* COL 2: LOGIC */
+        .health-chart-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; margin-top: 10px; }
+        .donut-chart {
+            width: 140px; height: 140px; border-radius: 50%;
+            background: conic-gradient(#2ECC71 0% 76%, var(--c-berry) 76% 100%);
+            display: flex; justify-content: center; align-items: center; position: relative;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.1);
+        }
+        .donut-inner {
+            width: 110px; height: 110px; background: var(--c-bg-card); border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .donut-val { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -1px; }
+        .donut-label { font-size: 10px; color: var(--c-text-muted); text-transform: uppercase; margin-top: 2px; }
+
+        .alert-box {
+            background: rgba(77, 43, 65, 0.3); border: 1px solid var(--c-pig);
+            padding: 12px; border-radius: 6px; animation: pulseBorder 3s infinite;
+        }
+        .alert-title { color: var(--c-pig); font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .alert-text { color: var(--c-text-peach); font-size: 11px; line-height: 1.4; }
+        @keyframes pulseBorder { 50% { border-color: rgba(255, 121, 201, 0.3); } }
+
+        /* COL 3: INSIGHT */
+        .chart-bar-group { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
+        .bar-item { width: 100%; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--c-text-main); margin-bottom: 6px; }
+        .bar-val { font-family: 'JetBrains Mono'; color: var(--c-cyan); }
+        .bar-track { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 3px; }
+        .fill-auto { width: 80%; background: var(--c-cyan); box-shadow: var(--glow-cyan); }
+        .fill-manual { width: 15%; background: var(--c-berry); }
+
+        .insight-badge {
+            margin-top: auto; background: linear-gradient(135deg, var(--c-berry-dark), transparent);
+            border-left: 2px solid var(--c-pig); padding: 12px;
+        }
+        .ib-title { color: var(--c-pig); font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+        .ib-text { color: #fff; font-size: 12px; line-height: 1.3; }
+
+        /* FOOTER */
+        .console-footer {
+            padding: 15px 30px; border-top: var(--border-tech); background: var(--c-bg-panel);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .status-bar { display: flex; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--c-text-muted); }
+        .status-item span { color: var(--c-text-main); }
+        .btn-action {
+            background: transparent; color: var(--c-pig); border: 1px solid var(--c-pig);
+            padding: 8px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: 4px; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px rgba(255, 121, 201, 0.2);
+        }
+        .btn-action:hover { background: var(--c-pig); color: #000; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+
+    <div class="fleet-console">
+        <div class="console-header">
+            <div class="header-main">
+                <h1><div class="live-dot"></div> Global Fleet Command</h1>
+                <div class="header-sub">Connected Devices: <span style="color:#fff">14,203</span> | Protocol: <span style="color:#fff">MQTT (Secure)</span></div>
+            </div>
+            <div class="compliance-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                EU Data Act Compliant
+            </div>
+        </div>
+
+        <div class="console-grid">
+            <div class="col col-left">
+                <div class="section-title"><span>Live Ingest</span> <span style="color:var(--c-cyan)">● REC</span></div>
+                <div class="ingest-visual">
+                    <div class="dot-grid"></div>
+                    <div class="active-node n1"></div><div class="active-node n2"></div><div class="active-node n3"></div><div class="active-node n4"></div>
+                </div>
+                <div class="data-ticker">
+                    <div class="ticker-item"><span class="ticker-id">DEV_9921</span> <span>Telemetry Received (2kb)</span></div>
+                    <div class="ticker-item"><span class="ticker-id">DEV_4022</span> <span>Status: IDLE -> RUN</span></div>
+                    <div class="ticker-item"><span class="ticker-id">DEV_1109</span> <span>Firmware Check OK</span></div>
+                </div>
+                <div class="tech-label"><div class="tech-indicator"></div> Lightweight Binary Client</div>
+            </div>
+
+            <div class="col col-center">
+                <div class="section-title">Fleet Health</div>
+                <div class="health-chart-container">
+                    <div class="donut-chart"><div class="donut-inner"><span class="donut-val">-24%</span><span class="donut-label">Warranty Risk</span></div></div>
+                </div>
+                <div class="alert-box">
+                    <div class="alert-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> PRE-EMPTIVE ALERT</div>
+                    <div class="alert-text">32 Units flag potential breakdown based on vibration patterns. Service tickets created.</div>
+                </div>
+            </div>
+
+            <div class="col col-right">
+                <div class="section-title">Usage Intelligence</div>
+                <div class="chart-bar-group">
+                    <div class="bar-item"><div class="bar-label"><span>Auto-Mode</span> <span class="bar-val">80%</span></div><div class="bar-track"><div class="bar-fill fill-auto"></div></div></div>
+                    <div class="bar-item"><div class="bar-label"><span>Manual Override</span> <span class="bar-val" style="color:var(--c-text-muted)">15%</span></div><div class="bar-track"><div class="bar-fill fill-manual"></div></div></div>
+                </div>
+                <div class="insight-badge">
+                    <div class="ib-title">R&D Opportunity</div>
+                    <div class="ib-text">Optimize Auto-Mode. High adoption allows for tighter tolerances in next FW release.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="console-footer">
+            <div class="status-bar"><div class="status-item">Scaling: <span>Auto-Elastic</span></div><div class="status-item">Governance: <span>Active</span></div></div>
+            <button class="btn-action">Deploy Firmware Update</button>
+        </div>
+    </div>
+</body>
+</html>

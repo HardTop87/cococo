@@ -3,7 +3,7 @@
 
 window.SITE_CONFIG = {
   // site version: update this string (e.g. 1.0.0 or timestamp) on every deploy to bust cache
-  version: "1.0.0",
+  version: "1.0.6",
   brand: {
     name: "CoCoCo Platform",
     tagline: "The pioneering open platform for print",
@@ -52,8 +52,8 @@ window.SITE_CONFIG = {
       grow: {
         title: 'Grow',
         subtitle: 'Full power, priced for small teams (≤ 10 employees)',
-        monthly: 500,
-        yearly: 5500,
+        monthly: 499,
+        yearly: 5489,
         setup: 2500,
         cta: 'Configure Plan',
         applyUrl: 'https://2dztun.share-eu1.hsforms.com/2Roz4Vr1gQAmdQ-qgvm9SAw',
@@ -70,8 +70,8 @@ window.SITE_CONFIG = {
       professional: {
         title: 'Professional',
         subtitle: 'The operating system for modern print production',
-        monthly: 1000,
-        yearly: 11000,
+        monthly: 999,
+        yearly: 10989,
         setup: 2500,
         cta: 'Configure Plan',
         applyUrl: 'https://2dztun.share-eu1.hsforms.com/2_kgrHlj0ST-nrcFK803BkA',

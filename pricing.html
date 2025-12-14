@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing - CoCoCo Platform</title>
-    <link rel="stylesheet" href="style.css?v=1.0.6">
+    <link rel="stylesheet" href="style.css?v=1.0.7">
     <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
@@ -329,39 +329,8 @@
             <!-- Step 2: Support Level Selection -->
             <div class="modal-section">
                 <h3 class="modal-section-title">Choose your Support Level</h3>
-                <div class="modal-support-grid">
-                    <label class="modal-card selected" data-modal-support="basic">
-                        <input type="radio" name="modal-support" value="basic" checked aria-hidden="true">
-                        <div class="modal-card-content">
-                            <h4 class="modal-card-title">Basic</h4>
-                            <div class="modal-card-price">Included</div>
-                            <p class="modal-card-description">Email support during business hours.</p>
-                        </div>
-                    </label>
-                    <label class="modal-card" data-modal-support="bronze">
-                        <input type="radio" name="modal-support" value="bronze" aria-hidden="true">
-                        <div class="modal-card-content">
-                            <h4 class="modal-card-title">Bronze</h4>
-                            <div class="modal-card-price">+ €99 /mo</div>
-                            <p class="modal-card-description">Priority email & chat support.</p>
-                        </div>
-                    </label>
-                    <label class="modal-card" data-modal-support="silver">
-                        <input type="radio" name="modal-support" value="silver" aria-hidden="true">
-                        <div class="modal-card-content">
-                            <h4 class="modal-card-title">Silver</h4>
-                            <div class="modal-card-price">+ €299 /mo</div>
-                            <p class="modal-card-description">24/7 support with faster response.</p>
-                        </div>
-                    </label>
-                    <label class="modal-card" data-modal-support="gold">
-                        <input type="radio" name="modal-support" value="gold" aria-hidden="true">
-                        <div class="modal-card-content">
-                            <h4 class="modal-card-title">Gold</h4>
-                            <div class="modal-card-price">+ €499 /mo</div>
-                            <p class="modal-card-description">Dedicated success manager & phone support.</p>
-                        </div>
-                    </label>
+                <div class="modal-support-grid modal-support-cards-container">
+                    <!-- Support cards will be dynamically generated from config.js -->
                 </div>
             </div>
 
@@ -404,7 +373,7 @@
         </div>
     </div>
 
-    <script src="config.js?v=1.0.6"></script>
-    <script src="script.js?v=1.0.6"></script>
+    <script src="config.js?v=1.0.7"></script>
+    <script src="script.js?v=1.0.7"></script>
 </body>
 </html>

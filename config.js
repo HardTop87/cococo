@@ -3,7 +3,7 @@
 
 window.SITE_CONFIG = {
   // site version: update this string (e.g. 1.0.0 or timestamp) on every deploy to bust cache
-  version: "1.0.6",
+  version: "1.0.7",
   brand: {
     name: "CoCoCo Platform",
     tagline: "The pioneering open platform for print",
@@ -120,25 +120,25 @@ window.SITE_CONFIG = {
     supportPackages: [
       {
         key: 'basic',
-        title: 'Basic Support',
+        title: 'Basic',
         priceMonthly: 0,
         description: 'Email & Ticketing (48h response, Mo-Fr 8-5 working hours, CET), Knowledge Base',
       },
       {
         key: 'bronze',
-        title: 'Bronze Support',
+        title: 'Bronze',
         priceMonthly: 99,
         description: 'Basic + 24h response (Mo-Fr 8-5 working hours, CET)',
       },
       {
         key: 'silver',
-        title: 'Silver Support',
+        title: 'Silver',
         priceMonthly: 299,
         description: 'Bronze + 6h response (Mo-Fr 8-8 working hours, CET)\n- incl. Chat (per invite)',
       },
       {
         key: 'gold',
-        title: 'Gold Support',
+        title: 'Gold',
         priceMonthly: 499,
         description: 'Silver + 2h response, dedicated CSM, quarterly reviews',
       }

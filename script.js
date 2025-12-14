@@ -2543,6 +2543,46 @@ function initFAQAccordion() {
 // PRICING MODAL FUNCTIONS
 // ========================================
 
+function initializeSupportCards() {
+    const container = document.querySelector('.modal-support-cards-container');
+    if (!container) return;
+    
+    const supportPackages = window.SITE_CONFIG?.content?.supportPackages;
+    if (!supportPackages || !Array.isArray(supportPackages)) return;
+    
+    // Clear existing content
+    container.innerHTML = '';
+    
+    // Generate cards from config
+    supportPackages.forEach((pkg, index) => {
+        const label = document.createElement('label');
+        label.className = 'modal-card';
+        label.setAttribute('data-modal-support', pkg.key);
+        
+        // First card is selected by default
+        if (index === 0) {
+            label.classList.add('selected');
+        }
+        
+        const priceDisplay = pkg.priceMonthly === 0 
+            ? 'Included' 
+            : `+ €${pkg.priceMonthly} /mo`;
+        
+        const checkedAttr = index === 0 ? 'checked' : '';
+        
+        label.innerHTML = `
+            <input type="radio" name="modal-support" value="${pkg.key}" ${checkedAttr} aria-hidden="true">
+            <div class="modal-card-content">
+                <h4 class="modal-card-title">${pkg.title}</h4>
+                <div class="modal-card-price">${priceDisplay}</div>
+                <p class="modal-card-description">${pkg.description}</p>
+            </div>
+        `;
+        
+        container.appendChild(label);
+    });
+}
+
 function openPricingModal(planKey) {
     const modal = document.getElementById('pricing-modal');
     if (!modal) return;
@@ -2744,6 +2784,9 @@ function updateModalCTA(planKey) {
 function initPricingModal() {
     const modal = document.getElementById('pricing-modal');
     if (!modal) return;
+    
+    // Initialize support cards from config
+    initializeSupportCards();
     
     // Close button
     const closeBtn = modal.querySelector('.pricing-modal-close');

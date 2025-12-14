@@ -1,3 +1,78 @@
+// Mobile dropdown toggle function
+window.toggleMobileDropdown = function(toggle) {
+    if (window.innerWidth <= 1000) {
+        const dropdown = toggle.closest('.dropdown');
+        const megaMenu = dropdown.querySelector('.dropdown-menu');
+        
+        // Toggle active class
+        megaMenu.classList.toggle('active');
+        
+        // Close other dropdowns
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            if (menu !== megaMenu) {
+                menu.classList.remove('active');
+            }
+        });
+    } else {
+        // Desktop: Navigate to page
+        const desktopHref = toggle.getAttribute('data-desktop-href');
+        if (desktopHref && desktopHref !== '') {
+            window.location.href = desktopHref;
+        }
+    }
+};
+
+// Load HTML partials (header, footer)
+function loadPartial(url, targetId) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load ${url}`);
+            }
+            return response.text();
+        })
+        .then(html => {
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.innerHTML = html;
+                
+                // Initialize navigation after header is loaded
+                if (targetId === 'site-header') {
+                    initMobileNavigation();
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading partial:', error);
+        });
+}
+
+// Mobile Navigation Initialization
+function initMobileNavigation() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    if (hamburger && navMenu) {
+        // Hamburger toggle
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link (but not dropdown-toggle)
+        document.querySelectorAll('.nav-menu a:not(.dropdown-toggle)').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                // Close all dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            });
+        });
+    }
+}
+
 // Apply SITE_CONFIG (colors, typography, texts)
 function applySiteConfig() {
     const cfg = window.SITE_CONFIG;
@@ -1182,24 +1257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Mobile Navigation Toggle (guarded for partial-injected header)
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-
-if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            hamburger.classList.remove('active');
-        });
-    });
-}
+// Mobile Navigation wird jetzt in initMobileNavigation() initialisiert (siehe oben)
 
 // Smooth Scrolling for Navigation Links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2006,11 +2064,11 @@ function initLanguageCycler() {
     const languages = [
         defaultText,           // Start with current language
         'Deine Sprache',       // German
-        'ta langue',           // French
-        'la tua lingua',       // Italian
+        'Ta Langue',           // French
+        'La Tua Lingua',       // Italian
         'あなたの言語',         // Japanese
-        'tu idioma',           // Spanish
-        'je taal',             // Dutch
+        'Tu Idioma',           // Spanish
+        'Je Taal',             // Dutch
         defaultText            // End with current language
     ];
 

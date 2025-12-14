@@ -93,40 +93,45 @@
     }
 }
 
-/* Final mobile override: ensure the heart sits behind hero text on small screens */
+/* Final mobile override: hide heart in header, show in heartbeat section */
 @media (max-width: 768px) {
     .cocore-header {
         position: relative !important;
         padding-top: 2.5rem;
-        padding-bottom: 3rem;
+        padding-bottom: 1.5rem;
     }
 
-    .cocore-heart-visual {
-        position: absolute !important;
-        /* Place heart center halfway into the whitespace between header and main content */
-        top: calc(100% - 1rem - 110px) !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: 260px !important;
-        height: 260px !important;
-        z-index: 0 !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        opacity: 0.96;
+    /* Hide heart in cocore-header on mobile */
+    .cocore-header .cocore-heart-visual {
+        display: none !important;
+    }
+    
+    /* Show heart in heartbeat section */
+    .heartbeat-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .heartbeat-content .cocore-heart-visual {
+        position: relative !important;
+        display: flex !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        height: 280px !important;
+        margin: 0 auto 2rem;
+        order: -1;
     }
 
-    .cocore-heart-visual .heart-image {
-        width: 220px !important;
-        z-index: 0 !important;
+    .heartbeat-content .cocore-heart-visual .heart-image {
+        width: 240px !important;
+        height: auto;
     }
 
-    .heart-pulse-ring,
-    .heart-pulse-ring.ring-delay-1,
-    .heart-pulse-ring.ring-delay-2 {
-        width: 320px;
-        height: 320px;
+    .heartbeat-content .heart-pulse-ring,
+    .heartbeat-content .heart-pulse-ring.ring-delay-1,
+    .heartbeat-content .heart-pulse-ring.ring-delay-2 {
+        width: 280px;
+        height: 280px;
         border-width: 2px;
     }
 
@@ -288,6 +293,8 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .dropdown-arrow {
@@ -2856,19 +2863,9 @@ body:has(#oem-intro) #oem-intro {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .hamburger {
         display: flex;
-    }
-
-    /* Hide CoCoCo Platform text on mobile */
-    .logo h2 {
-        display: none;
-    }
-
-    /* Make logo smaller on mobile */
-    .logo-image {
-        height: 20px;
     }
 
     /* Hide desktop CTA button on mobile */
@@ -2876,9 +2873,29 @@ body:has(#oem-intro) #oem-intro {
         display: none;
     }
 
+    /* Deaktiviere Desktop Hover auf Mobile */
+    .dropdown:hover .dropdown-menu,
+    .dropdown-menu:hover {
+        display: none !important;
+    }
+
     /* Mega menu mobile adjustments */
     .mega-dropdown .dropdown-menu {
         min-width: 280px;
+        padding: 0;
+        position: relative;
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        background: rgba(255, 239, 248, 0.5);
+        margin-top: 0.5rem;
+        border-radius: 8px;
+    }
+    
+    .mega-dropdown .dropdown-menu.active {
+        display: block !important;
+        max-height: 500px;
         padding: 1rem;
     }
 
@@ -2917,6 +2934,19 @@ body:has(#oem-intro) #oem-intro {
         display: block;
         margin-top: 0.75rem;
         padding: 0 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Hide CoCoCo Platform text on mobile */
+    .logo h2 {
+        display: none;
+    }
+
+    /* Make logo smaller on mobile */
+    .logo-image {
+        height: 20px;
     }
 
     .nav-menu .mobile-cta .btn {
@@ -4410,12 +4440,13 @@ body:has(#oem-intro) #oem-intro {
 
     .cta-icon.cta-rocket {
         transform-origin: center center;
-        transform: rotate(60deg) scale(1.12);
-        margin-top: 22px;
+        transform: rotate(60deg) scale(1.35);
+        margin-top: 32px;
     }
 
     .cta-buttons {
         flex-direction: column;
+        margin-top: 2rem;
     }
 
     /* Keep large feature card icons on mobile - match desktop sizes */
@@ -5500,6 +5531,12 @@ body:has(#oem-intro) #oem-intro {
     
     .app-builder-mockup {
         width: 100%;
+        min-width: 100%;
+        overflow-x: auto;
+    }
+    
+    .mockup-content {
+        min-width: 280px;
     }
     
     .benefits-grid {
@@ -5731,6 +5768,27 @@ body:has(#oem-intro) #oem-intro {
     margin-top: 3rem;
 }
 
+/* Mobile: Feature-Grid untereinander */
+@media (max-width: 768px) {
+    .feature-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .feature-box .feature-icon {
+        width: 72px;
+        height: 72px;
+    }
+    
+    .feature-box .feature-icon img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
 .feature-box {
     background: var(--white);
     padding: 2rem;
@@ -5799,6 +5857,26 @@ body:has(#oem-intro) #oem-intro {
     width: 450px;
     height: 450px;
     margin: 0 auto;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .connection-diagram {
+        width: 320px;
+        height: 320px;
+    }
+    
+    .central-node {
+        width: 90px !important;
+        height: 90px !important;
+        font-size: 1rem !important;
+    }
+    
+    .satellite-node {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 0.75rem !important;
+    }
 }
 
 .connection-node {
@@ -6574,6 +6652,7 @@ body:has(#oem-intro) #oem-intro {
 .code-body {
     padding: 2rem 1.5rem;
     background: var(--berry);
+    overflow-x: auto;
 }
 
 .code-body pre {
@@ -6586,6 +6665,55 @@ body:has(#oem-intro) #oem-intro {
     font-size: 0.9rem;
     line-height: 1.6;
     color: var(--peach);
+}
+
+@media (max-width: 768px) {
+    .code-window {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .code-window-wrapper {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .code-body {
+        padding: 0.75rem 0.5rem;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    
+    .code-body pre {
+        max-width: 100%;
+        font-size: 0.6rem;
+    }
+    
+    .code-body code {
+        font-size: 0.6rem;
+        line-height: 1.4;
+        white-space: pre;
+        display: block;
+    }
+    
+    .code-header {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .code-title {
+        font-size: 0.65rem;
+    }
+    
+    .code-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+@media (max-width: 430px) {
+    .code-body code {
+        font-size: 0.5rem;
+    }
 }
 
 /* Developer Features */
@@ -6669,6 +6797,111 @@ body:has(#oem-intro) #oem-intro {
 
     .section-header-center {
         margin-bottom: 3rem;
+    }
+    
+    /* Data Model Diagram Mobile Optimierung */
+    .data-model-diagram {
+        height: 280px;
+        max-width: 100%;
+        overflow: visible;
+    }
+    
+    .diagram-node.central {
+        width: 80px;
+        height: 80px;
+        font-size: 0.7rem;
+        padding: 0.5rem;
+    }
+    
+    .diagram-node.satellite {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.6rem;
+        white-space: normal;
+        text-align: center;
+        max-width: 90px;
+        line-height: 1.2;
+    }
+    
+    /* Satellites weiter außen für mehr Platz */
+    .diagram-node.sat-1 {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .diagram-node.sat-2 {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .diagram-node.sat-3 {
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .diagram-node.sat-4 {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    /* Kürzere Verbindungslinien */
+    .diagram-connection {
+        height: 50px;
+        width: 2px;
+    }
+    
+    .diagram-connection.line-1 {
+        top: calc(50% - 40px - 25px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .diagram-connection.line-2 {
+        left: calc(50% + 40px);
+        top: 50%;
+        width: 50px;
+        height: 2px;
+        transform: translateY(-50%);
+    }
+    
+    .diagram-connection.line-3 {
+        top: calc(50% + 40px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .diagram-connection.line-4 {
+        right: calc(50% + 40px);
+        top: 50%;
+        width: 50px;
+        height: 2px;
+        transform: translateY(-50%);
+    }
+    
+    .data-model-diagram-wrapper {
+        padding: 1rem 0;
+    }
+}
+
+/* Alternative: Diagram als Bild auf sehr kleinen Screens */
+@media (max-width: 480px) {
+    .data-model-diagram {
+        height: 260px;
+    }
+    
+    .diagram-node.central {
+        width: 70px;
+        height: 70px;
+        font-size: 0.65rem;
+    }
+    
+    .diagram-node.satellite {
+        font-size: 0.6rem;
+        padding: 0.35rem 0.5rem;
+        max-width: 80px;
     }
 }
 
@@ -8185,6 +8418,7 @@ body:has(#oem-intro) #oem-intro {
     transition: all 0.3s ease;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    max-width: 100%;
 }
 
 .accordion-item:hover {
@@ -8202,12 +8436,27 @@ body:has(#oem-intro) #oem-intro {
     transform: translateX(-4px);
 }
 
+/* Mobile: Kein Transform um Overflow zu vermeiden */
+@media (max-width: 768px) {
+    .accordion-item:hover,
+    .accordion-item.active {
+        transform: none;
+    }
+}
+
 .accordion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.25rem 1.5rem;
     gap: 1rem;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.accordion-header * {
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .accordion-text {
@@ -8490,6 +8739,20 @@ body:has(#oem-intro) #oem-intro {
     
     .trust-logos {
         gap: 2rem;
+    }
+    
+    /* Heartbeat Section Mobile */
+    .heartbeat-section {
+        padding: 4rem 1.5rem;
+        overflow-x: hidden;
+    }
+    
+    .heartbeat-title {
+        font-size: 1.8rem;
+    }
+    
+    .heartbeat-subtitle {
+        font-size: 1.1rem;
     }
     
     .trust-logo {

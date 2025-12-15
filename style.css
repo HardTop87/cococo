@@ -1961,6 +1961,7 @@ body:has(#oem-intro) #oem-intro {
 }
 
 .modal-total-label {
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--text-dark);
 }
@@ -1979,7 +1980,7 @@ body:has(#oem-intro) #oem-intro {
 .modal-total-ongoing-text {
     color: var(--pig) !important;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
 }
 
 /* Modal CTA Section */

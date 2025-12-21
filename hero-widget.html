@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo Ecosystem Background</title>
+    <style>
+        /* Grundlegendes Styling, damit der Canvas das ganze Iframe füllt */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: transparent; /* Transparent, damit deine Webseiten-Hintergrundfarbe wirkt */
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="networkCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+
+    // KONFIGURATION: Hier kannst du Farben und Anzahl anpassen
+    const config = {
+        particleColor: '#FF79C9', // Pig
+        lineColor: '#FFEFF8',     // Peach
+        particleCount: 100,                        // Anzahl der Punkte (weniger ist sauberer)
+        connectionDistance: 150,                  // Wie nah müssen Punkte sein, um sich zu verbinden
+        speed: 0.5                                // Geschwindigkeit der Bewegung
+    };
+
+    // Canvas Größe an das Fenster anpassen
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    // Die "Maschinen/Datenpunkte" Klasse
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * config.speed;
+            this.vy = (Math.random() - 0.5) * config.speed;
+            this.size = Math.random() * 2 + 1; // Größe zwischen 1 und 3px
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Wenn Punkte den Rand verlassen, kommen sie auf der anderen Seite wieder (Ecosystem loop)
+            if (this.x < 0) this.x = width;
+            if (this.x > width) this.x = 0;
+            if (this.y < 0) this.y = height;
+            if (this.y > height) this.y = 0;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = config.particleColor;
+            ctx.fill();
+        }
+    }
+
+    // Initialisierung
+    function init() {
+        resize();
+        for (let i = 0; i < config.particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    // Animationsschleife
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Update und Zeichnen der Punkte
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+
+            // Verbindungen zeichnen (Das "Ecosystem")
+            for (let j = i; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < config.connectionDistance) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = config.lineColor;
+                    ctx.lineWidth = 1 - (distance / config.connectionDistance); // Linien werden dünner, je weiter weg
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    // Event Listener für Größenänderung
+    window.addEventListener('resize', () => {
+        resize();
+        particles = []; // Reset bei Größenänderung für saubere Verteilung
+        init();
+    });
+
+    // Start
+    init();
+    animate();
+
+</script>
+
+</body>
+</html>

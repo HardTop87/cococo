@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo OpenInfra - Westbound Precise</title>
+    <style>
+        /* Iframe-Ready: Transparent & Fullsize */
+        body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; }
+        canvas { display: block; outline: none; }
+    </style>
+</head>
+<body>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- BRANDING COLORS ---
+        const colors = {
+            berry: 0x4D2B41, 
+            ocean: 0x0B1026, 
+            pig: 0xFF79C9,   
+            line: 0x4D2B41   
+        };
+
+        const config = {
+            globeRadius: 5,
+            clusterAltitude: 6.5,
+            rotationSpeed: 0.005 
+        };
+
+        // --- SCENE SETUP ---
+        const scene = new THREE.Scene();
+        scene.background = null; 
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 4, 22);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.enableZoom = false; 
+        controls.enablePan = false;
+        controls.autoRotate = false; 
+
+        // --- LIGHTING ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 3.0); 
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(10, 10, 10);
+        scene.add(dirLight);
+
+        // --- 1. GLOBE SETUP ---
+        
+        // A. Innere Kugel (Berry)
+        const innerGeo = new THREE.SphereGeometry(config.globeRadius - 0.05, 64, 64);
+        const innerMat = new THREE.MeshBasicMaterial({ color: colors.berry });
+        const innerSphere = new THREE.Mesh(innerGeo, innerMat);
+        scene.add(innerSphere);
+
+        // B. Äußere Kugel (Ozeane)
+        const textureLoader = new THREE.TextureLoader();
+        const specMap = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg');
+
+        const oceanGeo = new THREE.SphereGeometry(config.globeRadius, 64, 64);
+        const oceanMat = new THREE.MeshPhongMaterial({
+            color: colors.ocean, 
+            alphaMap: specMap, 
+            transparent: true,
+            opacity: 0.95, 
+            shininess: 90,
+            specular: 0x222222
+        });
+        
+        const oceanSphere = new THREE.Mesh(oceanGeo, oceanMat);
+        scene.add(oceanSphere);
+        oceanSphere.add(innerSphere);
+
+        // START-POSITION: Europa im Fokus
+        oceanSphere.rotation.y = 4.7;
+
+
+        // --- 2. OPENINFRA CLUSTER ---
+        const clusterGroup = new THREE.Group();
+        clusterGroup.position.set(0, config.clusterAltitude, 0);
+        scene.add(clusterGroup);
+
+        // Core
+        const coreGeo = new THREE.IcosahedronGeometry(0.6, 0);
+        const coreMat = new THREE.MeshBasicMaterial({ color: colors.pig });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        clusterGroup.add(core);
+
+        // Wireframe Shell
+        const wireGeo = new THREE.IcosahedronGeometry(1.0, 1);
+        const wireMat = new THREE.MeshBasicMaterial({ 
+            color: colors.berry, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.5 
+        });
+        const wire = new THREE.Mesh(wireGeo, wireMat);
+        clusterGroup.add(wire);
+
+        // Axis
+        const axisGeo = new THREE.CylinderGeometry(0.01, 0.05, config.clusterAltitude, 8);
+        const axisMat = new THREE.MeshBasicMaterial({ color: colors.berry, transparent: true, opacity: 0.2 });
+        const axis = new THREE.Mesh(axisGeo, axisMat);
+        axis.position.y = -config.clusterAltitude / 2;
+        clusterGroup.add(axis);
+
+
+        // --- 3. PRECISE LAND ZONES (NO WATER) ---
+        
+        // Wir definieren "Sichere Zonen" (Rechtecke auf der Kugeloberfläche)
+        // Format: { minLat, maxLat, minLon, maxLon }
+        const safeZones = [
+            // USA East (NY, DC, Ohio)
+            { minLat: 34, maxLat: 42, minLon: -85, maxLon: -74 },
+            // USA West (California, Nevada)
+            { minLat: 34, maxLat: 40, minLon: -120, maxLon: -115 },
+            // USA Midwest (Chicago area)
+            { minLat: 38, maxLat: 45, minLon: -95, maxLon: -85 },
+            
+            // Europe Central (Germany, France, Poland) - WEG vom Atlantik
+            { minLat: 46, maxLat: 52, minLon: 6, maxLon: 18 },
+            // UK (London area specific)
+            { minLat: 51, maxLat: 53, minLon: -2, maxLon: 0 },
+            // Italy North
+            { minLat: 44, maxLat: 46, minLon: 8, maxLon: 12 },
+
+            // China East (Shanghai, Beijing)
+            { minLat: 28, maxLat: 38, minLon: 110, maxLon: 120 },
+            // Japan (Tokyo area)
+            { minLat: 35, maxLat: 36, minLon: 138, maxLon: 140 },
+            
+            // South America (Brazil Inland)
+            { minLat: -25, maxLat: -15, minLon: -55, maxLon: -45 },
+            
+            // Australia (Sydney area)
+            { minLat: -35, maxLat: -30, minLon: 145, maxLon: 150 }
+        ];
+
+        function getSafePoint() {
+            // 1. Wähle eine Zone zufällig aus
+            const zone = safeZones[Math.floor(Math.random() * safeZones.length)];
+            
+            // 2. Generiere Koordinaten innerhalb dieser Zone
+            const lat = zone.minLat + Math.random() * (zone.maxLat - zone.minLat);
+            const lon = zone.minLon + Math.random() * (zone.maxLon - zone.minLon);
+            
+            return { lat, lon };
+        }
+
+        // Umrechnung Kugelkoordinaten -> 3D Vektor
+        function latLonToVector3(lat, lon, radius) {
+            const phi = (90 - lat) * (Math.PI / 180);
+            const theta = (lon + 180) * (Math.PI / 180);
+            const x = -(radius * Math.sin(phi) * Math.cos(theta));
+            const z = (radius * Math.sin(phi) * Math.sin(theta));
+            const y = (radius * Math.cos(phi));
+            return new THREE.Vector3(x, y, z);
+        }
+
+        const particles = [];
+
+        // Wir erzeugen 100 Maschinenpunkte
+        for(let i=0; i<100; i++) {
+            const coords = getSafePoint();
+            const pos = latLonToVector3(coords.lat, coords.lon, config.globeRadius);
+            
+            // DOT
+            const dotGeo = new THREE.SphereGeometry(0.04, 4, 4);
+            const dotMat = new THREE.MeshBasicMaterial({ color: colors.pig });
+            const dot = new THREE.Mesh(dotGeo, dotMat);
+            dot.position.copy(pos);
+            oceanSphere.add(dot); 
+
+            // LINE & ANIMATION SETUP
+            const curveObject = {
+                startPosRel: pos, 
+                lineMesh: null,
+                particleMesh: null,
+                t: Math.random() 
+            };
+
+            // Line Init
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(20 * 3);
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            const lMat = new THREE.LineBasicMaterial({ 
+                color: colors.line, 
+                transparent: true, 
+                opacity: 0.15 
+            });
+            const lMesh = new THREE.Line(geometry, lMat);
+            scene.add(lMesh);
+            curveObject.lineMesh = lMesh;
+
+            // PARTICLE
+            const pGeo = new THREE.SphereGeometry(0.03, 4, 4);
+            const pMat = new THREE.MeshBasicMaterial({ color: colors.pig });
+            const pMesh = new THREE.Mesh(pGeo, pMat);
+            scene.add(pMesh);
+            curveObject.particleMesh = pMesh;
+
+            particles.push(curveObject);
+        }
+
+        const vStart = new THREE.Vector3();
+        const vEnd = new THREE.Vector3(0, config.clusterAltitude, 0);
+        const vMid = new THREE.Vector3();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // 1. MANUELLE DREHUNG (Direction: Westbound)
+            oceanSphere.rotation.y += config.rotationSpeed;
+            
+            clusterGroup.rotation.y -= 0.005;
+            
+            // Core Pulse
+            const scale = 1 + Math.sin(Date.now() * 0.005) * 0.1;
+            core.scale.setScalar(scale);
+
+            // Lines Update
+            particles.forEach(p => {
+                vStart.copy(p.startPosRel).applyMatrix4(oceanSphere.matrixWorld);
+                
+                vMid.addVectors(vStart, vEnd).multiplyScalar(0.5);
+                vMid.x += Math.sin(Date.now() * 0.001 + p.t) * 1.0; 
+                
+                const curve = new THREE.QuadraticBezierCurve3(vStart, vMid, vEnd);
+                const points = curve.getPoints(19);
+                const posArr = p.lineMesh.geometry.attributes.position.array;
+                
+                for(let i=0; i<points.length; i++) {
+                    posArr[i*3] = points[i].x;
+                    posArr[i*3+1] = points[i].y;
+                    posArr[i*3+2] = points[i].z;
+                }
+                p.lineMesh.geometry.attributes.position.needsUpdate = true;
+
+                p.t += 0.004; 
+                if (p.t > 1) p.t = 0;
+                
+                const currentPos = curve.getPoint(p.t);
+                p.particleMesh.position.copy(currentPos);
+                
+                if(p.t < 0.05 || p.t > 0.95) p.particleMesh.visible = false;
+                else p.particleMesh.visible = true;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

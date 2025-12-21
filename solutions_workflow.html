@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo Platform for Workflow Managers - Stop Patching, Start Engineering</title>
+    <meta name="description" content="Replace fragile hotfolders with a robust, data-driven backbone. Full JDF/JMF support, event-driven automation, and bi-directional MIS sync.">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="style.css?v=1.0.9">
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Placeholder -->
+    <div id="site-header"></div>
+
+    <!-- Section 1: Hero -->
+    <section class="workflow-hero section-dark">
+        <div class="container">
+            <div class="workflow-hero-content">
+                <h1 class="workflow-hero-title">Stop Patching.<br>Start Engineering.</h1>
+                <p class="workflow-hero-subtitle">You spend too much time fixing broken hotfolders and chasing missing job data. CoCoCo replaces fragile scripts with a robust, data-driven backbone that connects your MIS to your machines.</p>
+                
+                <div class="hero-buttons">
+                    <a href="https://hid25.wearecococo.com/meetings/cococo/round-robin-salesteam" class="btn btn-primary btn-large">Book a Demo</a>
+                    <a href="data_model.html" class="btn btn-secondary btn-large">Explore Data Model</a>
+                </div>
+            </div>
+
+            <!-- Pipeline Transformation Visual -->
+            <div class="pipeline-visual">
+                <div class="pipeline-chaos">
+                    <svg class="chaos-lines" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50,100 Q150,20 250,100 T450,100 L550,100" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
+                        <path d="M50,80 Q200,140 350,80 T550,120" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
+                        <path d="M50,120 Q180,60 300,120 T550,80" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
+                        <path d="M50,90 Q220,150 400,90 T550,110" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
+                        <circle cx="50" cy="100" r="8" fill="rgba(255,121,201,0.5)"/>
+                        <circle cx="550" cy="100" r="8" fill="rgba(255,121,201,0.5)"/>
+                    </svg>
+                    <div class="pipeline-label">Old: Fragile Scripts</div>
+                </div>
+                
+                <div class="pipeline-transform">→</div>
+                
+                <div class="pipeline-clean">
+                    <svg class="clean-lines" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:rgba(255,121,201,0.5);stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:rgba(255,121,201,1);stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:rgba(255,121,201,0.5);stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="50" y1="100" x2="550" y2="100" stroke="url(#glowGradient)" stroke-width="4"/>
+                        <circle cx="50" cy="100" r="10" fill="var(--pig)"/>
+                        <circle cx="300" cy="100" r="12" fill="var(--pig)">
+                            <animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="550" cy="100" r="10" fill="var(--pig)"/>
+                    </svg>
+                    <div class="pipeline-label">New: Data-Driven Pipeline</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: The Daily Struggle -->
+    <section class="platform-section section-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">The Challenge</span>
+                <h2 class="section-title">Why does "Automated" still feel like so much work?</h2>
+            </div>
+
+            <div class="struggle-blocks">
+                <div class="struggle-block">
+                    <div class="struggle-icon">📁</div>
+                    <h3 class="struggle-heading">The "Hotfolder" Trap</h3>
+                    <p class="struggle-description">You rely on filenames to route jobs. One typo by a sales rep, and the file gets stuck. That's not automation; that's guessing.</p>
+                </div>
+
+                <div class="struggle-block">
+                    <div class="struggle-icon">🔌</div>
+                    <h3 class="struggle-heading">The MIS Disconnect</h3>
+                    <p class="struggle-description">Your MIS knows the customer details. Your RIP knows the color profile. Neither knows what the other is doing. You are the manual copy-paste bridge.</p>
+                </div>
+
+                <div class="struggle-block">
+                    <div class="struggle-icon">⚠️</div>
+                    <h3 class="struggle-heading">The "Exception" Hell</h3>
+                    <p class="struggle-description">Your standard workflow works for 80% of jobs. The other 20% require manual intervention, destroying your efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Data-Driven Solution -->
+    <section class="platform-section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge badge-light">The Solution</span>
+                <h2 class="section-title title-light">The End of "Folder Watching".</h2>
+            </div>
+
+            <div class="solution-features">
+                <div class="solution-feature">
+                    <div class="feature-number">01</div>
+                    <h3 class="solution-feature-title">The Universal Job Ticket</h3>
+                    <p class="solution-feature-text">We don't just move PDF files. We move the entire Job Context (Paper, Qty, Finishing). We normalize data from your MIS into a clean structure that any machine understands.</p>
+                    <a href="data_model.html" class="text-link text-link-light">Explore the Data Model →</a>
+                </div>
+
+                <div class="solution-feature">
+                    <div class="feature-number">02</div>
+                    <h3 class="solution-feature-title">Event-Driven Automation</h3>
+                    <p class="solution-feature-text">Don't wait for a file to land in a folder. Trigger workflows based on real events: "Paper Stock Updated", "Approval Received", or "Press Idle".</p>
+                    <a href="automation.html" class="text-link text-link-light">See Automation Triggers →</a>
+                </div>
+
+                <div class="solution-feature">
+                    <div class="feature-number">03</div>
+                    <h3 class="solution-feature-title">Bi-Directional Sync</h3>
+                    <p class="solution-feature-text">When the press changes a status or ink consumption is calculated, we write that data back to your MIS. Automatically.</p>
+                </div>
+            </div>
+
+            <!-- Data Flow Diagram -->
+            <div class="data-flow-diagram">
+                <div class="flow-node flow-node-mis">
+                    <div class="node-icon">💼</div>
+                    <div class="node-label">MIS</div>
+                    <div class="node-sublabel">Customer, Orders, Planning</div>
+                </div>
+
+                <div class="flow-connector flow-connector-left">
+                    <div class="connector-arrow">→</div>
+                    <div class="connector-label">JDF/XML</div>
+                </div>
+
+                <div class="flow-node flow-node-cococo">
+                    <div class="node-icon">⚙️</div>
+                    <div class="node-label">CoCoCo</div>
+                    <div class="node-sublabel">Data Model<br>Translator</div>
+                </div>
+
+                <div class="flow-connector flow-connector-right">
+                    <div class="connector-arrow">→</div>
+                    <div class="connector-label">Unified API</div>
+                </div>
+
+                <div class="flow-node flow-node-machines">
+                    <div class="node-icon">🖨️</div>
+                    <div class="node-label">Machines</div>
+                    <div class="node-sublabel">Presses, Cutters, Folders</div>
+                </div>
+
+                <!-- Bidirectional arrows -->
+                <div class="flow-bidirectional flow-bid-left">
+                    <div class="bid-arrow">←</div>
+                    <div class="bid-label">Status Updates</div>
+                </div>
+
+                <div class="flow-bidirectional flow-bid-right">
+                    <div class="bid-arrow">←</div>
+                    <div class="bid-label">Machine Data</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Custom Apps Toolkit -->
+    <section class="platform-section section-light">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">The Toolkit</span>
+                <h2 class="section-title">Fill the Gaps in Your Workflow.</h2>
+                <p class="section-subtitle">Standard software never fits perfectly. Use Custom Apps to build the missing links for your team.</p>
+            </div>
+
+            <div class="toolkit-grid">
+                <div class="toolkit-card">
+                    <div class="toolkit-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--pig)" stroke-width="2"/>
+                            <path d="M3 9H21" stroke="var(--pig)" stroke-width="2"/>
+                            <circle cx="12" cy="15" r="2" fill="var(--pig)"/>
+                            <path d="M8 15L12 13L16 15" stroke="var(--pig)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="toolkit-title">The "Soft Proof" Approval</h3>
+                    <p class="toolkit-text">Build a simple app where Sales can approve a proof without needing access to your complex prepress system.</p>
+                </div>
+
+                <div class="toolkit-card">
+                    <div class="toolkit-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="16" height="16" rx="1" stroke="var(--pig)" stroke-width="2"/>
+                            <path d="M4 8H20M4 12H20M4 16H20M8 4V20M12 4V20M16 4V20" stroke="var(--pig)" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="toolkit-title">The "Imposition Check"</h3>
+                    <p class="toolkit-text">Let operators verify the imposition layout on a tablet before they plate the job.</p>
+                </div>
+            </div>
+
+            <div class="toolkit-cta">
+                <a href="custom_apps.html" class="btn btn-primary">See Custom App Examples →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Integration Standards -->
+    <section class="platform-section section-dark">
+        <div class="container">
+            <span class="section-badge badge-light">The Standards</span>
+            <div class="integration-content">
+                <div class="integration-text">
+                    <h2 class="integration-title">Fluent in Print.</h2>
+                    <p class="integration-description">We aren't just another IT tool. We understand the print industry standards natively.</p>
+
+                    <div class="integration-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <div class="spec-content">
+                                <h4>Standards</h4>
+                                <p>Full support for JDF, JMF, and XJDF</p>
+                            </div>
+                        </div>
+
+                        <div class="spec-item">
+                            <div class="spec-icon">✓</div>
+                            <div class="spec-content">
+                                <h4>Connectivity</h4>
+                                <p>Major MIS providers, Enfocus Switch, Kodak Prinergy</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="integration.html" class="text-link text-link-light">View Integration Capabilities →</a>
+                </div>
+
+                <div class="integration-visual">
+                    <div class="standards-box">
+                        <div class="standard-badge">JDF</div>
+                        <div class="standard-badge">JMF</div>
+                        <div class="standard-badge">XJDF</div>
+                        <div class="standard-badge">XML</div>
+                        <div class="standard-badge">REST API</div>
+                        <div class="standard-badge">GraphQL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Closing CTA -->
+    <section class="platform-section section-highlight">
+        <div class="container">
+            <div class="cta-content-centered">
+                <h2 class="workflow-cta-title">Build a workflow that doesn't break.</h2>
+                <p class="workflow-cta-subtitle">Read our documentation or book a demo to see how we handle JDF tickets.</p>
+                <a href="https://hid25.wearecococo.com/meetings/cococo/round-robin-salesteam" class="btn btn-primary btn-large">Book a Workflow Audit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="site-footer"></div>
+
+    <script src="config.js?v=1.0.9"></script>
+    <script src="script.js?v=1.0.9"></script>
+    <script>
+        loadPartial('partials/header.html', 'site-header');
+        loadPartial('partials/footer.html', 'site-footer');
+    </script>
+</body>
+</html>

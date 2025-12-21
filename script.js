@@ -190,25 +190,44 @@ function applySiteConfig() {
                 if (card) {
                     const amountEl = card.querySelector('.amount');
                     if (amountEl) {
+                        // Get currency-specific prices or fallback to legacy fields (EUR)
+                        const currency = window.currentPricingCurrency || 'EUR';
+                        let monthly, yearly, setup;
+                        
+                        if (plan.prices && plan.prices[currency]) {
+                            monthly = plan.prices[currency].monthly;
+                            yearly = plan.prices[currency].yearly;
+                            setup = plan.prices[currency].setup;
+                        } else {
+                            monthly = plan.monthly;
+                            yearly = plan.yearly;
+                            setup = plan.setup;
+                        }
+                        
                         // Store raw numbers in data attributes
-                        amountEl.setAttribute('data-monthly', String(plan.monthly));
-                        amountEl.setAttribute('data-yearly', String(plan.yearly));
+                        amountEl.setAttribute('data-monthly', String(monthly));
+                        amountEl.setAttribute('data-yearly', String(yearly));
+                        amountEl.setAttribute('data-currency', currency);
 
                         // If billing switch exists, choose display accordingly, else default to monthly
                         const billingSwitchEl = document.getElementById('billing-switch');
                         const isYearly = billingSwitchEl ? billingSwitchEl.checked : false;
-                        const displayPrice = isYearly ? plan.yearly : plan.monthly;
+                        const displayPrice = isYearly ? yearly : monthly;
                         amountEl.textContent = formatter.format(displayPrice);
                     }
 
                     // Ensure setup fee is present on the card element (for support totals)
-                    if (plan.setup !== undefined) {
-                        card.setAttribute('data-setup', String(plan.setup));
+                    if (plan.setup !== undefined || (plan.prices && plan.prices[window.currentPricingCurrency || 'EUR'])) {
+                        const currency = window.currentPricingCurrency || 'EUR';
+                        const setup = (plan.prices && plan.prices[currency]) ? plan.prices[currency].setup : plan.setup;
+                        
+                        card.setAttribute('data-setup', String(setup));
                         
                         // Update setup fee display in the card
                         const setupAmountEl = card.querySelector('.setup-amount');
-                        if (setupAmountEl && plan.setup > 0) {
-                            setupAmountEl.textContent = `€${formatter.format(plan.setup)}`;
+                        if (setupAmountEl && setup > 0) {
+                            const currencySymbol = (currencySymbols && currencySymbols[currency]) || '€';
+                            setupAmountEl.textContent = `${currencySymbol}${formatter.format(setup)}`;
                         }
                     }
 
@@ -1544,12 +1563,68 @@ const PRICE_APP = {
 
 function getConfigPlan(planKey) {
     if (window.SITE_CONFIG && SITE_CONFIG.content && SITE_CONFIG.content.pricingPlans) {
-        return SITE_CONFIG.content.pricingPlans[planKey] || null;
+        const plan = SITE_CONFIG.content.pricingPlans[planKey];
+        if (!plan) return null;
+        
+        // Clone the plan object to avoid mutating the config
+        const planCopy = { ...plan };
+        
+        // Get currency-specific prices if available
+        const currency = window.currentPricingCurrency || 'EUR';
+        if (plan.prices && plan.prices[currency]) {
+            planCopy.monthly = plan.prices[currency].monthly;
+            planCopy.yearly = plan.prices[currency].yearly;
+            planCopy.setup = plan.prices[currency].setup;
+        }
+        
+        return planCopy;
     }
     return null;
 }
 
 function formatNumber(n) { try { return new Intl.NumberFormat('de-DE').format(Math.round(n)); } catch (e) { return String(n); } }
+
+// Get support package price for current currency
+function getSupportPrice(supportKey) {
+    const currency = window.currentPricingCurrency || 'EUR';
+    try {
+        const pkgs = window.SITE_CONFIG?.content?.supportPackages;
+        if (pkgs && Array.isArray(pkgs)) {
+            const found = pkgs.find(p => p.key === supportKey);
+            if (found) {
+                // Try currency-specific price first
+                if (found.prices && found.prices[currency]) {
+                    return Number(found.prices[currency].monthly || 0);
+                }
+                // Fallback to legacy priceMonthly field
+                return Number(found.priceMonthly || 0);
+            }
+        }
+    } catch (e) {}
+    // Fallback to default prices
+    return DEFAULT_SUPPORT_PRICES[supportKey] || 0;
+}
+
+// Get deployment option price for current currency
+function getDeploymentPrice(deploymentKey) {
+    const currency = window.currentPricingCurrency || 'EUR';
+    try {
+        const deployments = window.SITE_CONFIG?.content?.deploymentOptions;
+        if (deployments && Array.isArray(deployments)) {
+            const found = deployments.find(d => d.key === deploymentKey);
+            if (found) {
+                // Try currency-specific price first
+                if (found.prices && found.prices[currency]) {
+                    return Number(found.prices[currency].monthly || 0);
+                }
+                // Fallback to legacy priceMonthly field
+                return Number(found.priceMonthly || 0);
+            }
+        }
+    } catch (e) {}
+    // Hardcoded fallback
+    return deploymentKey === 'cloud' ? 100 : 0;
+}
 
 function renderSupportPanel(cardEl, planKey) {
     removeSupportPanel(cardEl);
@@ -1649,15 +1724,8 @@ function updateSupportTotals(panel, cardEl, planKey) {
     const planAmount = isYearly ? yearly : monthly;
     const setup = Number(cardEl.getAttribute('data-setup') || planCfg.setup || 0);
     const supportLevel = PRICE_APP.supportLevels[planKey] || 'basic';
-    // Resolve support price from config if available
-    let supportPrice = DEFAULT_SUPPORT_PRICES[supportLevel] || 0;
-    try {
-        const pkgs = (window.SITE_CONFIG && window.SITE_CONFIG.content && Array.isArray(window.SITE_CONFIG.content.supportPackages)) ? window.SITE_CONFIG.content.supportPackages : null;
-        if (pkgs) {
-            const found = pkgs.find(p => p.key === supportLevel);
-            if (found) supportPrice = Number(found.priceMonthly || supportPrice);
-        }
-    } catch (e) {}
+    // Get currency-aware support price
+    const supportPrice = getSupportPrice(supportLevel);
 
     const subTextEl = panel.querySelector('.support-subscription');
     const setupEl = panel.querySelector('.support-setup');
@@ -1670,22 +1738,27 @@ function updateSupportTotals(panel, cardEl, planKey) {
     const year2Wrap = panel.querySelector('.support-year2');
     const year2AmtEl = panel.querySelector('.support-year2-amount');
 
-    // Get deployment cost (100€/mo for cloud, 0 for self-hosted)
-    const deploymentCost = PRICE_APP.deployment === 'cloud' ? 100 : 0;
+    // Get currency-aware deployment cost
+    const deployment = PRICE_APP.deployment || 'self-hosted';
+    const deploymentCost = getDeploymentPrice(deployment);
 
     // Update total label based on billing period
     if (totalLabelEl) {
         totalLabelEl.textContent = isYearly ? 'Total First Year' : 'Total First Month';
     }
 
+    // Get currency symbol
+    const currency = window.currentPricingCurrency || 'EUR';
+    const currencySymbol = currencySymbols[currency] || '€';
+    
     // Update display values (format depends on billing cadence)
-    subTextEl.textContent = `€${formatNumber(planAmount)} ${isYearly ? '/yr' : '/mo'}`;
-    setupEl.textContent = `€${formatNumber(setup)}`;
+    subTextEl.textContent = `${currencySymbol}${formatNumber(planAmount)} ${isYearly ? '/yr' : '/mo'}`;
+    setupEl.textContent = `${currencySymbol}${formatNumber(setup)}`;
     if (supportPrice > 0) {
         supportElWrap.classList.remove('hidden');
         // Annual: 11 months pricing (1 month free), Monthly: normal price
         const supportAnnual = supportPrice * 11;
-        supportAmtEl.textContent = isYearly ? `€${formatNumber(supportAnnual)} /yr` : `€${formatNumber(supportPrice)} /mo`;
+        supportAmtEl.textContent = isYearly ? `${currencySymbol}${formatNumber(supportAnnual)} /yr` : `${currencySymbol}${formatNumber(supportPrice)} /mo`;
     } else {
         supportElWrap.classList.add('hidden');
     }
@@ -1694,7 +1767,7 @@ function updateSupportTotals(panel, cardEl, planKey) {
     if (deploymentCost > 0) {
         deploymentElWrap.classList.remove('hidden');
         const deploymentAnnual = deploymentCost * 11; // 11 months = 1 month free
-        deploymentAmtEl.textContent = isYearly ? `€${formatNumber(deploymentAnnual)} /yr` : `€${formatNumber(deploymentCost)} /mo`;
+        deploymentAmtEl.textContent = isYearly ? `${currencySymbol}${formatNumber(deploymentAnnual)} /yr` : `${currencySymbol}${formatNumber(deploymentCost)} /mo`;
     } else {
         deploymentElWrap.classList.add('hidden');
     }
@@ -1703,17 +1776,17 @@ function updateSupportTotals(panel, cardEl, planKey) {
     const supportAnnual = supportPrice * 11; // 11 months = 1 month free
     const deploymentAnnual = deploymentCost * 11; // 11 months = 1 month free
     const total = isYearly ? (setup + planAmount + supportAnnual + deploymentAnnual) : (setup + planAmount + supportPrice + deploymentCost);
-    totalEl.textContent = `€${formatNumber(total)}`;
+    totalEl.textContent = `${currencySymbol}${formatNumber(total)}`;
 
     // Show year 2 onwards for annual, ongoing monthly for monthly billing
     if (isYearly) {
         year2Wrap.classList.remove('hidden');
         const year2Total = planAmount + supportAnnual + deploymentAnnual; // no setup fee from year 2
-        year2AmtEl.textContent = `Then from year 2: €${formatNumber(year2Total)}/year`;
+        year2AmtEl.textContent = `Then from year 2: ${currencySymbol}${formatNumber(year2Total)}/year`;
     } else {
         year2Wrap.classList.remove('hidden');
         const ongoingMonthly = planAmount + supportPrice + deploymentCost; // monthly ongoing (no setup)
-        year2AmtEl.textContent = `€${formatNumber(ongoingMonthly)}/month ongoing`;
+        year2AmtEl.textContent = `${currencySymbol}${formatNumber(ongoingMonthly)}/month ongoing`;
     }
 
     // Update Apply for Plan link with support_plan and billing_period parameters
@@ -2608,6 +2681,10 @@ function initializeSupportCards() {
     const supportPackages = window.SITE_CONFIG?.content?.supportPackages;
     if (!supportPackages || !Array.isArray(supportPackages)) return;
     
+    // Get current currency
+    const currency = window.currentPricingCurrency || 'EUR';
+    const currencySymbol = currencySymbols[currency] || '€';
+    
     // Clear existing content
     container.innerHTML = '';
     
@@ -2622,9 +2699,17 @@ function initializeSupportCards() {
             label.classList.add('selected');
         }
         
-        const priceDisplay = pkg.priceMonthly === 0 
+        // Get currency-specific price
+        let priceMonthly = 0;
+        if (pkg.prices && pkg.prices[currency]) {
+            priceMonthly = pkg.prices[currency].monthly;
+        } else {
+            priceMonthly = pkg.priceMonthly || 0;
+        }
+        
+        const priceDisplay = priceMonthly === 0 
             ? 'Included' 
-            : `+ €${pkg.priceMonthly} /mo`;
+            : `+ ${currencySymbol}${priceMonthly} /mo`;
         
         const checkedAttr = index === 0 ? 'checked' : '';
         
@@ -2639,6 +2724,33 @@ function initializeSupportCards() {
         
         container.appendChild(label);
     });
+}
+
+// Update deployment pricing in modal based on currency
+function updateModalDeploymentPricing(currency) {
+    const currencySymbol = currencySymbols[currency] || '€';
+    const cloudPrice = getDeploymentPrice('cloud');
+    
+    // Update cloud deployment card price
+    const cloudPriceDisplay = document.querySelector('.cloud-price-display');
+    if (cloudPriceDisplay) {
+        const currencySpan = cloudPriceDisplay.querySelector('.currency-symbol');
+        if (currencySpan) {
+            currencySpan.textContent = currencySymbol;
+        }
+        // Update the price number
+        cloudPriceDisplay.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('/mo')) {
+                node.textContent = ` ${cloudPrice} /mo`;
+            }
+        });
+    }
+    
+    // Update deployment price text in description
+    const deploymentPriceText = document.querySelector('.deployment-price-text');
+    if (deploymentPriceText) {
+        deploymentPriceText.textContent = `+${currencySymbol}${cloudPrice}/mo`;
+    }
 }
 
 function openPricingModal(planKey) {
@@ -2719,20 +2831,13 @@ function updateModalTotals(planKey) {
     const planAmount = isYearly ? yearly : monthly;
     const setup = Number(planCfg.setup || 0);
     
-    // Get deployment cost
+    // Get currency-aware deployment cost
     const deployment = PRICE_APP.deployment || 'self-hosted';
-    const deploymentCost = deployment === 'cloud' ? 100 : 0;
+    const deploymentCost = getDeploymentPrice(deployment);
     
-    // Get support cost
+    // Get currency-aware support cost
     const supportLevel = PRICE_APP.supportLevels[planKey] || 'basic';
-    let supportPrice = DEFAULT_SUPPORT_PRICES[supportLevel] || 0;
-    try {
-        const pkgs = (window.SITE_CONFIG && window.SITE_CONFIG.content && Array.isArray(window.SITE_CONFIG.content.supportPackages)) ? window.SITE_CONFIG.content.supportPackages : null;
-        if (pkgs) {
-            const found = pkgs.find(p => p.key === supportLevel);
-            if (found) supportPrice = Number(found.priceMonthly || supportPrice);
-        }
-    } catch (e) {}
+    const supportPrice = getSupportPrice(supportLevel);
     
     // Update display elements
     const subLabelEl = modal.querySelector('.modal-subscription-label');
@@ -2748,10 +2853,14 @@ function updateModalTotals(planKey) {
     const totalEl = modal.querySelector('.modal-total-amount');
     const ongoingEl = modal.querySelector('.modal-total-ongoing-text');
     
+    // Get currency symbol
+    const currency = window.currentPricingCurrency || 'EUR';
+    const currencySymbol = currencySymbols[currency] || '€';
+    
     // Update subscription label and value
     if (subLabelEl) subLabelEl.textContent = `Subscription (${isYearly ? 'annual' : 'monthly'})`;
-    if (subEl) subEl.textContent = `€${formatNumber(planAmount)} ${isYearly ? '/yr' : '/mo'}`;
-    if (setupEl) setupEl.textContent = `€${formatNumber(setup)}`;
+    if (subEl) subEl.textContent = `${currencySymbol}${formatNumber(planAmount)} ${isYearly ? '/yr' : '/mo'}`;
+    if (setupEl) setupEl.textContent = `${currencySymbol}${formatNumber(setup)}`;
     
     // Always show support row (included or paid)
     if (supportRowEl) supportRowEl.classList.remove('hidden');
@@ -2761,7 +2870,7 @@ function updateModalTotals(planKey) {
     if (supportEl) {
         if (supportPrice > 0) {
             const supportAnnual = supportPrice * 11;
-            supportEl.textContent = isYearly ? `€${formatNumber(supportAnnual)} /yr` : `€${formatNumber(supportPrice)} /mo`;
+            supportEl.textContent = isYearly ? `${currencySymbol}${formatNumber(supportAnnual)} /yr` : `${currencySymbol}${formatNumber(supportPrice)} /mo`;
         } else {
             supportEl.textContent = 'Included';
         }
@@ -2774,7 +2883,7 @@ function updateModalTotals(planKey) {
     if (deploymentEl) {
         if (deploymentCost > 0) {
             const deploymentAnnual = deploymentCost * 11;
-            deploymentEl.textContent = isYearly ? `€${formatNumber(deploymentAnnual)} /yr` : `€${formatNumber(deploymentCost)} /mo`;
+            deploymentEl.textContent = isYearly ? `${currencySymbol}${formatNumber(deploymentAnnual)} /yr` : `${currencySymbol}${formatNumber(deploymentCost)} /mo`;
         } else {
             deploymentEl.textContent = 'Included';
         }
@@ -2786,16 +2895,16 @@ function updateModalTotals(planKey) {
     const total = isYearly ? (setup + planAmount + supportAnnual + deploymentAnnual) : (setup + planAmount + supportPrice + deploymentCost);
     
     if (totalLabelEl) totalLabelEl.textContent = isYearly ? 'Total First Year' : 'Total First Month';
-    if (totalEl) totalEl.textContent = `€${formatNumber(total)}`;
+    if (totalEl) totalEl.textContent = `${currencySymbol}${formatNumber(total)}`;
     
     // Ongoing costs
     if (ongoingEl) {
         if (isYearly) {
             const year2Total = planAmount + supportAnnual + deploymentAnnual;
-            ongoingEl.textContent = `Then from year 2: €${formatNumber(year2Total)}/year`;
+            ongoingEl.textContent = `Then from year 2: ${currencySymbol}${formatNumber(year2Total)}/year`;
         } else {
             const ongoingMonthly = planAmount + supportPrice + deploymentCost;
-            ongoingEl.textContent = `€${formatNumber(ongoingMonthly)}/month ongoing`;
+            ongoingEl.textContent = `${currencySymbol}${formatNumber(ongoingMonthly)}/month ongoing`;
         }
     }
     
@@ -2845,6 +2954,9 @@ function initPricingModal() {
     
     // Initialize support cards from config
     initializeSupportCards();
+    
+    // Initialize deployment pricing
+    updateModalDeploymentPricing(window.currentPricingCurrency || 'EUR');
     
     // Close button
     const closeBtn = modal.querySelector('.pricing-modal-close');
@@ -2916,11 +3028,16 @@ function initPricingModal() {
         });
     });
     
-    // Support card selection
-    modal.querySelectorAll('.modal-card[data-modal-support]').forEach(card => {
-        card.addEventListener('click', () => {
+    // Support card selection - use event delegation since cards are dynamically generated
+    const supportContainer = modal.querySelector('.modal-support-cards-container');
+    if (supportContainer) {
+        supportContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.modal-card[data-modal-support]');
+            if (!card) return;
+            
             const support = card.getAttribute('data-modal-support');
             const planKey = PRICE_APP.selectedPlan;
+            if (!planKey) return;
             
             // Update selection state
             modal.querySelectorAll('.modal-card[data-modal-support]').forEach(c => c.classList.remove('selected'));
@@ -2931,15 +3048,13 @@ function initPricingModal() {
             if (radio) radio.checked = true;
             
             // Update app state
-            if (planKey) {
-                PRICE_APP.supportLevels[planKey] = support;
-                savePriceState(PRICE_APP);
-                
-                // Update totals
-                updateModalTotals(planKey);
-            }
+            PRICE_APP.supportLevels[planKey] = support;
+            savePriceState(PRICE_APP);
+            
+            // Update totals
+            updateModalTotals(planKey);
         });
-    });
+    }
 }
 
 // Consolidated DOMContentLoaded initialization
@@ -2958,4 +3073,137 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('pricing-modal')) {
         try { initPricingModal(); } catch (e) { console.error('Pricing modal error:', e); }
     }
+    
+    // Auto-detect currency and update pricing if on pricing page
+    if (document.querySelector('.pricing-card')) {
+        try { initPricingCurrencyDetection(); } catch (e) { console.error('Pricing currency detection error:', e); }
+    }
 });
+
+// Global state for current currency
+window.currentPricingCurrency = 'EUR';
+
+// Currency symbols mapping
+const currencySymbols = {
+    'EUR': '€',
+    'USD': '$',
+    'GBP': '£',
+    'CHF': 'CHF'
+};
+
+// Initialize pricing with automatic currency detection
+async function initPricingCurrencyDetection() {
+    // Detect user currency
+    if (typeof window.detectUserCurrency === 'function') {
+        try {
+            const detectedCurrency = await window.detectUserCurrency();
+            window.currentPricingCurrency = detectedCurrency;
+            
+            // Update all pricing displays
+            updatePricingDisplay(detectedCurrency);
+        } catch (error) {
+            console.log('Currency auto-detection failed, using default EUR');
+            updatePricingDisplay('EUR');
+        }
+    } else {
+        updatePricingDisplay('EUR');
+    }
+}
+
+// Update pricing display based on currency
+function updatePricingDisplay(currency) {
+    if (!window.SITE_CONFIG?.content?.pricingPlans) return;
+    
+    const formatter = new Intl.NumberFormat('de-DE');
+    const currencySymbol = currencySymbols[currency] || '€';
+    
+    // Update all currency symbols on the page
+    document.querySelectorAll('.currency-symbol').forEach(el => {
+        el.textContent = currencySymbol;
+    });
+    
+    Object.keys(window.SITE_CONFIG.content.pricingPlans).forEach(planKey => {
+        if (planKey === 'setupNote') return;
+        
+        const plan = window.SITE_CONFIG.content.pricingPlans[planKey];
+        const card = document.querySelector(`.pricing-card[data-plan="${planKey}"]`);
+        
+        if (!card) return;
+        
+        // Get prices for the current currency
+        let monthly, yearly, setup;
+        
+        if (plan.prices && plan.prices[currency]) {
+            monthly = plan.prices[currency].monthly;
+            yearly = plan.prices[currency].yearly;
+            setup = plan.prices[currency].setup;
+        } else {
+            // Fallback to legacy fields (EUR)
+            monthly = plan.monthly;
+            yearly = plan.yearly;
+            setup = plan.setup;
+        }
+        
+        // Update amount element
+        const amountEl = card.querySelector('.amount');
+        if (amountEl) {
+            // Update data attributes
+            amountEl.setAttribute('data-monthly', String(monthly));
+            amountEl.setAttribute('data-yearly', String(yearly));
+            amountEl.setAttribute('data-currency', currency);
+            
+            // Update displayed price
+            const billingSwitchEl = document.getElementById('billing-switch');
+            const isYearly = billingSwitchEl ? billingSwitchEl.checked : false;
+            const displayPrice = isYearly ? yearly : monthly;
+            amountEl.textContent = formatter.format(displayPrice);
+        }
+        
+        // Update currency symbol in period text
+        const periodEl = card.querySelector('.period');
+        if (periodEl) {
+            const periodText = periodEl.textContent;
+            // Replace any existing currency symbol with the new one
+            periodEl.textContent = periodText.replace(/[€$£]|CHF/, currencySymbol);
+        }
+        
+        // Update setup fee
+        if (setup !== undefined) {
+            card.setAttribute('data-setup', String(setup));
+            
+            const setupAmountEl = card.querySelector('.setup-amount');
+            if (setupAmountEl && setup > 0) {
+                setupAmountEl.textContent = `${currencySymbol}${formatter.format(setup)}`;
+            }
+        }
+    });
+    
+    // Update modal if it exists and has been initialized
+    if (window.pricingModalState && window.pricingModalState.selectedPlan) {
+        updateModalPricing(currency);
+    }
+    
+    // Update modal deployment pricing
+    updateModalDeploymentPricing(currency);
+    
+    // Reinitialize support cards with new currency
+    if (document.querySelector('.modal-support-cards-container')) {
+        initializeSupportCards();
+    }
+}
+
+// Update modal pricing based on currency
+function updateModalPricing(currency) {
+    const formatter = new Intl.NumberFormat('de-DE');
+    const currencySymbol = currencySymbols[currency] || '€';
+    
+    // Update all currency symbols in modal
+    document.querySelectorAll('#pricing-modal .currency-symbol').forEach(el => {
+        el.textContent = currencySymbol;
+    });
+    
+    // Recalculate and update totals
+    if (typeof updateModalTotal === 'function') {
+        updateModalTotal();
+    }
+}

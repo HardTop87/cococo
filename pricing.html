@@ -50,14 +50,14 @@
                         <p class="plan-subtitle" data-config="pricing.grow.subtitle"></p>
                     </div>
                     <div class="price">
-                        <span class="currency">€</span>
+                        <span class="currency currency-symbol">€</span>
                         <span class="amount" data-config="pricing.grow.monthly" data-config-yearly="pricing.grow.yearly"></span>
                         <span class="period">/month</span>
                     </div>
                     <div class="price-savings hidden"></div>
                     <div class="setup-fee">
                         <span class="setup-label">One-time Onboarding:</span>
-                        <span class="setup-amount" data-config="pricing.grow.setup">/span>
+                        <span class="setup-amount" data-config="pricing.grow.setup"></span>
                     </div>
                     <button class="btn btn-outline plan-select-btn" data-config="pricing.grow.cta">Configure Support</button>
                     
@@ -73,7 +73,7 @@
                         <p class="plan-subtitle" data-config="pricing.professional.subtitle"></p>
                     </div>
                     <div class="price">
-                        <span class="currency">€</span>
+                        <span class="currency currency-symbol">€</span>
                         <span class="amount" data-config="pricing.professional.monthly" data-config-yearly="pricing.professional.yearly"></span>
                         <span class="period">/month</span>
                     </div>
@@ -203,7 +203,7 @@
                         <p><strong>You have the choice.</strong></p>
                         <ul class="faq-feature-list">
                             <li><strong>Self-Hosted (Included):</strong> By default, you run the platform on your own local server or VM (Docker provided). This gives you full control, maximum data privacy, and zero latency on the shop floor.</li>
-                            <li><strong>Managed Cloud (+€100/mo):</strong> If you prefer a worry-free solution, we can host the instance for you. This add-on includes automated daily backups, security updates, and global access without VPN configuration.</li>
+                            <li><strong>Managed Cloud (<span class="deployment-price-text">+€100/mo</span>):</strong> If you prefer a worry-free solution, we can host the instance for you. This add-on includes automated daily backups, security updates, and global access without VPN configuration.</li>
                         </ul>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
                         <input type="radio" name="modal-deployment" value="cloud" aria-hidden="true">
                         <div class="modal-card-content">
                             <h4 class="modal-card-title">CoCoCo Managed Cloud</h4>
-                            <div class="modal-card-price cloud-price">+ €100 /mo</div>
+                            <div class="modal-card-price cloud-price-display">+ <span class="currency-symbol">€</span>100 /mo</div>
                             <p class="modal-card-description">We host, secure & backup for you. Worry-free.</p>
                         </div>
                     </label>

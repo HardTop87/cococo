@@ -1294,6 +1294,29 @@ body:has(#oem-intro) #oem-intro {
 .support-title-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 .support-title { font-family: 'Sofia Sans Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--berry); flex: 1; }
 .support-desc { color: var(--text-light); font-size: 0.85rem; line-height: 1.4; margin-top: 0; opacity: 0.85; }
+.support-desc-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0.5rem 0 0 0; 
+    color: var(--text-light); 
+    font-size: 0.85rem; 
+    line-height: 1.6;
+}
+.support-desc-list li { 
+    padding: 0.25rem 0 0.25rem 1.25rem; 
+    position: relative; 
+}
+.support-desc-list li:before { 
+    content: "•"; 
+    position: absolute; 
+    left: 0; 
+    color: var(--pig); 
+    font-weight: 700; 
+}
+.support-desc-list li strong {
+    color: var(--berry);
+    font-weight: 700;
+}
 .support-price { font-weight: 700; color: var(--berry); font-family: 'Sofia Sans Condensed', sans-serif; font-size: 0.85rem; text-align: right; white-space: nowrap; flex-shrink: 0; }
 .support-save-hint { font-size: 0.85rem; font-weight: 400; color: var(--pig); margin-left: 0.5rem; }
 .support-totals-box .totals-row {
@@ -1809,6 +1832,12 @@ body:has(#oem-intro) #oem-intro {
     font-weight: 600;
     color: var(--text-dark);
     font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.modal-billing-option.active {
+    color: var(--pig);
+    font-weight: 700;
 }
 
 .modal-toggle-switch {
@@ -1857,7 +1886,7 @@ body:has(#oem-intro) #oem-intro {
 }
 
 .modal-savings-badge {
-    background: linear-gradient(135deg, var(--peach), var(--pig));
+    background: linear-gradient(135deg, var(--pig), var(--berry));
     color: var(--white);
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
@@ -1936,7 +1965,7 @@ body:has(#oem-intro) #oem-intro {
     display: inline-block;
     padding: 0.35rem 0.9rem;
     border-radius: 16px;
-    background: linear-gradient(135deg, var(--peach), var(--pig));
+    background: linear-gradient(135deg, var(--pig), var(--pig));
     color: var(--white);
     font-weight: 700;
     font-size: 0.95rem;
@@ -1944,7 +1973,11 @@ body:has(#oem-intro) #oem-intro {
 }
 
 .modal-card-price.cloud-price {
-    background: linear-gradient(135deg, var(--pig), var(--berry));
+    background: linear-gradient(135deg, var(--pig), var(--pig));
+}
+
+.modal-card-price .currency-symbol {
+    color: var(--white);
 }
 
 .modal-card-description {
@@ -1952,6 +1985,33 @@ body:has(#oem-intro) #oem-intro {
     font-size: 0.85rem;
     line-height: 1.5;
     margin: 0;
+}
+
+.modal-support-desc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: var(--text-light);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.modal-support-desc-list li {
+    padding: 0.35rem 0 0.35rem 1.25rem;
+    position: relative;
+}
+
+.modal-support-desc-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--pig);
+    font-weight: 700;
+}
+
+.modal-support-desc-list li strong {
+    color: var(--berry);
+    font-weight: 700;
 }
 
 /* Modal Summary Section */

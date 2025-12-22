@@ -1649,11 +1649,24 @@ function renderSupportPanel(cardEl, planKey) {
             const price = Number(pkg.priceMonthly || DEFAULT_SUPPORT_PRICES[pkg.key] || 0);
             const priceLabel = price > 0 ? `+€${formatNumber(price)}/mo` : 'included';
             const checked = (pkg.key === supportLevel) ? 'checked' : '';
+            
+            // Handle description as array (bullet points) or string (legacy)
+            let descHtml = '';
+            if (Array.isArray(pkg.description)) {
+                descHtml = '<ul class="support-desc-list">';
+                pkg.description.forEach(item => {
+                    descHtml += `<li>${item}</li>`;
+                });
+                descHtml += '</ul>';
+            } else {
+                descHtml = `<div class="support-desc">${pkg.description}</div>`;
+            }
+            
             supportHtml += `<label class="support-option card-support ${checked ? 'selected' : ''}" data-support-key="${pkg.key}">`;
             supportHtml += `<input type="radio" name="support-${planKey}" value="${pkg.key}" ${checked} aria-hidden="true">`;
             supportHtml += `<div class="support-main-row">`;
             supportHtml += `<div class="support-title-row"><span class="support-title">${pkg.title}</span><span class="support-price">${priceLabel}</span></div>`;
-            supportHtml += `<div class="support-desc">${pkg.description}</div>`;
+            supportHtml += descHtml;
             supportHtml += `</div>`;
             supportHtml += `</label>`;
         });
@@ -2711,6 +2724,18 @@ function initializeSupportCards() {
             ? 'Included' 
             : `+ ${currencySymbol}${priceMonthly} /mo`;
         
+        // Handle description as array (bullet points) or string (legacy)
+        let descHtml = '';
+        if (Array.isArray(pkg.description)) {
+            descHtml = '<ul class="modal-support-desc-list">';
+            pkg.description.forEach(item => {
+                descHtml += `<li>${item}</li>`;
+            });
+            descHtml += '</ul>';
+        } else {
+            descHtml = `<p class="modal-card-description">${pkg.description}</p>`;
+        }
+        
         const checkedAttr = index === 0 ? 'checked' : '';
         
         label.innerHTML = `
@@ -2718,7 +2743,7 @@ function initializeSupportCards() {
             <div class="modal-card-content">
                 <h4 class="modal-card-title">${pkg.title}</h4>
                 <div class="modal-card-price">${priceDisplay}</div>
-                <p class="modal-card-description">${pkg.description}</p>
+                ${descHtml}
             </div>
         `;
         
@@ -2774,7 +2799,21 @@ function openPricingModal(planKey) {
     
     // Sync billing toggle with main page
     const modalBillingSwitch = modal.querySelector('#modal-billing-switch');
-    if (modalBillingSwitch) modalBillingSwitch.checked = isYearly;
+    const modalMonthlyLabel = modal.querySelector('#modal-monthly-label');
+    const modalYearlyLabel = modal.querySelector('#modal-yearly-label');
+    
+    if (modalBillingSwitch) {
+        modalBillingSwitch.checked = isYearly;
+        
+        // Update label active states
+        if (isYearly) {
+            modalMonthlyLabel?.classList.remove('active');
+            modalYearlyLabel?.classList.add('active');
+        } else {
+            modalMonthlyLabel?.classList.add('active');
+            modalYearlyLabel?.classList.remove('active');
+        }
+    }
     
     // Restore selections from state
     const deployment = PRICE_APP.deployment || 'self-hosted';
@@ -2979,9 +3018,21 @@ function initPricingModal() {
     
     // Modal billing toggle
     const modalBillingSwitch = modal.querySelector('#modal-billing-switch');
+    const modalMonthlyLabel = modal.querySelector('#modal-monthly-label');
+    const modalYearlyLabel = modal.querySelector('#modal-yearly-label');
+    
     if (modalBillingSwitch) {
         modalBillingSwitch.addEventListener('change', () => {
             PRICE_APP.isAnnual = modalBillingSwitch.checked;
+            
+            // Update modal labels
+            if (modalBillingSwitch.checked) {
+                modalMonthlyLabel?.classList.remove('active');
+                modalYearlyLabel?.classList.add('active');
+            } else {
+                modalMonthlyLabel?.classList.add('active');
+                modalYearlyLabel?.classList.remove('active');
+            }
             
             // Update main page billing toggle
             const mainBillingSwitch = document.getElementById('billing-switch');

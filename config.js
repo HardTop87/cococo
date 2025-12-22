@@ -56,9 +56,9 @@ window.SITE_CONFIG = {
         // Prices by currency
         prices: {
           EUR: { monthly: 499, yearly: 5489, setup: 2500 },
-          USD: { monthly: 749, yearly: 8239, setup: 2750 },
-          GBP: { monthly: 549, yearly: 6039, setup: 2500 },
-          CHF: { monthly: 649, yearly: 7139, setup: 2690 }
+          USD: { monthly: 749, yearly: 8239, setup: 2500 },
+          GBP: { monthly: 499, yearly: 5489, setup: 2500 },
+          CHF: { monthly: 649, yearly: 7139, setup: 2500 }
         },
         // Legacy fields for backward compatibility (EUR prices)
         monthly: 499,
@@ -82,9 +82,9 @@ window.SITE_CONFIG = {
         // Prices by currency
         prices: {
           EUR: { monthly: 999, yearly: 10989, setup: 2500 },
-          USD: { monthly: 1499, yearly: 16489, setup: 2750 },
-          GBP: { monthly: 1099, yearly: 12089, setup: 2500 },
-          CHF: { monthly: 1299, yearly: 14289, setup: 2690 }
+          USD: { monthly: 1499, yearly: 16489, setup: 2500 },
+          GBP: { monthly: 999, yearly: 10989, setup: 2500 },
+          CHF: { monthly: 1299, yearly: 14289, setup: 2500 }
         },
         // Legacy fields for backward compatibility (EUR prices)
         monthly: 999,
@@ -154,7 +154,12 @@ window.SITE_CONFIG = {
           CHF: { monthly: 0 }
         },
         priceMonthly: 0, // Legacy field for backward compatibility (EUR)
-        description: 'Email & Ticketing (48h response, Mo-Fr 8-5 working hours, CET), Knowledge Base',
+        description: [
+          'Response Time: 48h',
+          'Channels: Email & Ticketing',
+          'Mo-Fr 8-5 working hours (CET)',
+          'Knowledge Base Access'
+        ],
       },
       {
         key: 'bronze',
@@ -166,7 +171,12 @@ window.SITE_CONFIG = {
           CHF: { monthly: 109 }
         },
         priceMonthly: 99, // Legacy field for backward compatibility (EUR)
-        description: 'Basic + 24h response (Mo-Fr 8-5 working hours, CET)',
+        description: [
+          '<strong>Response Time: 24h</strong>',
+          'Channels: Email & Ticketing',
+          'Mo-Fr 8-5 working hours (CET)',
+          'Knowledge Base Access'
+        ],
       },
       {
         key: 'silver',
@@ -178,7 +188,12 @@ window.SITE_CONFIG = {
           CHF: { monthly: 319 }
         },
         priceMonthly: 299, // Legacy field for backward compatibility (EUR)
-        description: 'Bronze + 6h response (Mo-Fr 8-8 working hours, CET)\n- incl. Chat (per invite)',
+        description: [
+          '<strong>Response Time: 6h</strong>',
+          'Channels: Email, Ticketing & <strong>Chat (per invite)</strong>',
+          '<strong>Mo-Fr 8-8 working hours (CET)</strong>',
+          'Knowledge Base Access'
+        ],
       },
       {
         key: 'gold',
@@ -190,7 +205,13 @@ window.SITE_CONFIG = {
           CHF: { monthly: 539 }
         },
         priceMonthly: 499, // Legacy field for backward compatibility (EUR)
-        description: 'Silver + 2h response, dedicated CSM, quarterly reviews',
+        description: [
+          '<strong>Response Time: 2h</strong>',
+          'Channels: Email, Ticketing & Chat (per invite)',
+          'Mo-Fr 8-8 working hours (CET)',
+          '<strong>Dedicated Customer Success Manager</strong>',
+          '<strong>Priority Support Queue</strong>',
+        ],
       }
     ],
     // Deployment options (hosting/deployment)

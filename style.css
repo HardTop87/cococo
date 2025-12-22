@@ -13101,3 +13101,163 @@ DELETE THESE AFTER ALL SOLUTIONS PAGES ARE REFACTORED:
 - Lines ~12830-12850 (.partner-success section styles)
 - Lines ~12900-12920 (.partner-cta section styles)
 */
+
+/* ============================================
+   NEWSLETTER PAGE
+   ============================================ */
+
+.newsletter-page {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.newsletter-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+/* Left Column: Value Proposition */
+.newsletter-value {
+    max-width: 600px;
+}
+
+.newsletter-eyebrow {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--pig);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.newsletter-headline {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 3.5rem;
+    color: var(--berry);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.newsletter-subline {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.newsletter-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.benefit-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.benefit-check {
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.benefit-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.benefit-text strong {
+    color: var(--berry);
+    font-weight: 700;
+}
+
+.newsletter-social-proof {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-top: 2px solid var(--peach);
+    border-bottom: 2px solid var(--peach);
+    margin-bottom: 1.5rem;
+}
+
+.social-proof-number {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    color: var(--pig);
+    line-height: 1;
+}
+
+.social-proof-text {
+    font-weight: 600;
+    color: var(--berry);
+    font-size: 1.1rem;
+}
+
+.newsletter-trust {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Right Column: Form Card */
+.newsletter-form-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newsletter-form-card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--peach);
+    width: 100%;
+    max-width: 500px;
+    min-height: 400px;
+}
+
+#hubspot-newsletter-container {
+    min-height: 350px;
+}
+
+/* Newsletter CTA Wrapper on Index */
+.newsletter-cta-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .newsletter-split {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .newsletter-headline {
+        font-size: 2.5rem;
+    }
+
+    .newsletter-value {
+        max-width: 100%;
+    }
+
+    .newsletter-form-card {
+        padding: 2rem;
+    }
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter - Stay Ahead of the Curve | CoCoCo Platform</title>
+    <meta name="description" content="Join print industry leaders who receive monthly insights on automation, JDF/JMF, and shop floor connectivity. Real use cases, technical advice, and product updates.">
+    <link rel="stylesheet" href="style.css?v=1.0.9">
+    <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="images/icons/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#FF79C9">
+</head>
+<body>
+    <!-- Header Placeholder -->
+    <div id="site-header"></div>
+
+    <!-- Newsletter Subscription Section -->
+    <section class="newsletter-page">
+        <div class="container">
+            <div class="newsletter-split">
+                <!-- Left Column: Value Proposition -->
+                <div class="newsletter-value">
+                    <div class="newsletter-eyebrow">Stay Ahead of the Curve.</div>
+                    <h1 class="newsletter-headline">The Pulse of Smart Production.</h1>
+                    <p class="newsletter-subline">Join print industry leaders who receive our monthly insights on automation, JDF/JMF, and shop floor connectivity.</p>
+                    
+                    <div class="newsletter-benefits">
+                        <div class="benefit-item">
+                            <svg class="benefit-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" fill="var(--pig)"/>
+                                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>No Fluff:</strong> Only actionable technical advice and strategic insights.
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <svg class="benefit-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" fill="var(--pig)"/>
+                                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>Real Use Cases:</strong> See how other print shops solve integration challenges.
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <svg class="benefit-check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" fill="var(--pig)"/>
+                                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>Product Updates:</strong> Be the first to know about new API features and release notes.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="newsletter-social-proof">
+                        <div class="social-proof-number">500+</div>
+                        <div class="social-proof-text">Print Professionals</div>
+                    </div>
+
+                    <div class="newsletter-trust">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 1L10.5 6L16 6.75L12 10.5L13 16L8 13.25L3 16L4 10.5L0 6.75L5.5 6L8 1Z" fill="var(--pig)"/>
+                        </svg>
+                        Unsubscribe at any time. We respect your inbox.
+                    </div>
+                </div>
+
+                <!-- Right Column: HubSpot Form -->
+                <div class="newsletter-form-column">
+                    <div class="newsletter-form-card">
+                        <div id="hubspot-newsletter-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="site-footer"></div>
+
+    <script src="config.js?v=1.0.9"></script>
+    <script src="script.js?v=1.0.9"></script>
+    <script>
+        loadPartial('partials/header.html', 'site-header');
+        loadPartial('partials/footer.html', 'site-footer');
+    </script>
+
+    <!-- HubSpot Newsletter Form -->
+    <script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
+    <script>
+      hbspt.forms.create({
+        region: "eu1",
+        portalId: "144439007",
+        formId: "6550da89-9cc0-4dec-9ceb-621b0006afff",
+        target: "#hubspot-newsletter-container"
+      });
+    </script>
+</body>
+</html>

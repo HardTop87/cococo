@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottleneck Stress Test - Tall Version</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --col-berry: #4D2B41;    
+            --col-pink: #FF79C6;     
+            --col-white: #FFFFFF;    
+            --col-bg-light: #f8fafc;
+            --col-border: #e2e8f0;
+            --col-warning: #be123c; 
+            --col-success: #10b981;
+            --col-line-gray: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+            width: 100%;
+            color: var(--col-berry);
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        .simulator-card {
+            background-color: var(--col-white);
+            width: 100%;
+            max-width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            border: 1px solid rgba(77, 43, 65, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        .title-group h2 { font-size: 22px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1;}
+        .title-group p { font-size: 14px; opacity: 0.6; margin: 4px 0 0 0; }
+
+        .controls { display: flex; gap: 40px; align-items: flex-end; }
+
+        /* SLIDERS */
+        .slider-group { display: flex; flex-direction: column; align-items: flex-end; }
+        .slider-label { font-size: 11px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; color: var(--col-berry);}
+        
+        input[type=range] { -webkit-appearance: none; width: 160px; background: transparent; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%;
+            background: var(--col-berry); cursor: pointer; margin-top: -8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: #e2e8f0; border-radius: 3px; }
+
+        /* TOGGLE */
+        .toggle-group { display: flex; flex-direction: column; align-items: center; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider-switch { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .slider-switch:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider-switch { background-color: var(--col-pink); }
+        input:checked + .slider-switch:before { transform: translateX(22px); }
+
+        /* CANVAS AREA - TALLER */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 220px; /* Deutlich höher für besseres Filling */
+            background: var(--col-bg-light);
+            border-radius: 20px;
+            border: 1px solid var(--col-border);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+        }
+        canvas { display: block; width: 100%; height: 100%; position: relative; z-index: 1;}
+
+        /* MARKERS */
+        .admin-zone {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+            background: repeating-linear-gradient(to bottom, var(--col-line-gray) 0, var(--col-line-gray) 4px, transparent 4px, transparent 10px);
+            transform: translateX(-50%); z-index: 0;
+            transition: background 0.3s ease;
+        }
+        .admin-label {
+            position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+            font-size: 10px; font-weight: 800; color: var(--col-line-gray); white-space: nowrap;
+            letter-spacing: 0.8px;
+            background: var(--col-bg-light); padding: 4px 8px; border-radius: 4px;
+            z-index: 2;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* CTA OVERLAY */
+        .cta-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            z-index: 20;
+        }
+        .cta-visible { opacity: 1; pointer-events: all; }
+        
+        .cta-card {
+            background: white; padding: 30px 40px; border-radius: 20px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2); border: 1px solid rgba(77,43,65,0.1);
+            text-align: center; transform: translateY(15px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .cta-visible .cta-card { transform: translateY(0); }
+        
+        .cta-title { font-size: 20px; font-weight: 800; color: var(--col-warning); margin-bottom: 6px; text-transform: uppercase;}
+        .cta-sub { font-size: 15px; color: var(--col-berry); margin-bottom: 24px; font-weight: 500;}
+        
+        .btn-fix {
+            background: var(--col-pink); color: white; border: none; padding: 14px 28px;
+            font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 121, 198, 0.4);
+            transition: transform 0.2s;
+        }
+        .btn-fix:hover { transform: scale(1.03); }
+
+        /* FOOTER */
+        .footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 30px; border-top: 1px solid var(--col-border); margin-top: auto; }
+        .stat-box { display: flex; flex-direction: column; }
+        .stat-label { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--col-berry); opacity: 0.6; letter-spacing: 0.5px; margin-bottom: 4px;}
+        
+        .stat-value-big {
+            font-size: 40px; /* Größere Zahl für mehr Balance */
+            font-weight: 800; color: var(--col-success); 
+            font-feature-settings: "tnum"; transition: color 0.3s; line-height: 1;
+        }
+        
+        .metric-danger { color: var(--col-warning) !important; }
+        .metric-warn { color: #f59e0b !important; }
+        
+        .backlog-count {
+            font-size: 15px; font-weight: 700; color: var(--col-berry); background: #f1f5f9;
+            padding: 6px 12px; border-radius: 8px; display: inline-block;
+        }
+        .backlog-critical { background: #fee2e2; color: #be123c; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body { min-height: auto; }
+            
+            .simulator-card { 
+                padding: 16px; 
+                min-height: auto;
+                border-radius: 12px;
+                position: relative;
+            }
+            
+            .header { 
+                flex-direction: column; 
+                align-items: flex-start;
+                gap: 12px; 
+                margin-bottom: 16px;
+            }
+            
+            .title-group { 
+                padding-right: 60px;
+            }
+            
+            .title-group h2 { 
+                font-size: 16px;
+                line-height: 1.2;
+            }
+            
+            .title-group p { 
+                font-size: 11px;
+                margin-top: 2px;
+            }
+            
+            .controls { 
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .slider-group { 
+                order: 2;
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .slider-label {
+                font-size: 9px;
+                margin-bottom: 4px;
+            }
+            
+            #vol-display {
+                font-size: 10px;
+            }
+            
+            input[type=range] {
+                width: 100%;
+            }
+            
+            input[type=range]::-webkit-slider-thumb {
+                height: 16px;
+                width: 16px;
+                margin-top: -6px;
+            }
+            
+            input[type=range]::-webkit-slider-runnable-track {
+                height: 4px;
+            }
+            
+            .toggle-group { 
+                order: 1;
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            
+            .switch {
+                width: 40px;
+                height: 22px;
+            }
+            
+            .slider-switch:before {
+                height: 18px;
+                width: 18px;
+                left: 2px;
+                bottom: 2px;
+            }
+            
+            input:checked + .slider-switch:before {
+                transform: translateX(18px);
+            }
+            
+            .metrics { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .metric-value { 
+                font-size: 16px; 
+            }
+            
+            .metric-label { 
+                font-size: 8px; 
+            }
+            
+            .canvas-container { 
+                height: 160px;
+                margin-bottom: 12px;
+                border-radius: 12px;
+            }
+            
+            .admin-label {
+                font-size: 7px;
+                padding: 2px 5px;
+            }
+            
+            .footer { 
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 12px;
+                padding-top: 12px;
+                margin-top: 12px;
+            }
+            
+            .stat-label {
+                font-size: 8px;
+                margin-bottom: 2px;
+            }
+            
+            .stat-value-big {
+                font-size: 22px;
+            }
+            
+            .backlog-count {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+            
+            .cta-card {
+                padding: 16px;
+            }
+            
+            .cta-title {
+                font-size: 16px;
+            }
+            
+            .cta-sub {
+                font-size: 11px;
+            }
+            
+            .btn-fix {
+                font-size: 12px;
+                padding: 10px 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="simulator-card">
+        <div class="cta-overlay" id="cta">
+            <div class="cta-card">
+                <div class="cta-title">⚠️ Capacity Limit Reached</div>
+                <div class="cta-sub">Processes are stalling. Delivery rate is critical.</div>
+                <button class="btn-fix" onclick="activateAuto()">⚡ Activate CoCoCo Automation</button>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="title-group">
+                <h2>The Bottleneck<br>Stress Test</h2>
+                <p>Visualize your workflow capacity</p>
+            </div>
+            
+            <div class="controls">
+                <div class="slider-group">
+                    <span class="slider-label">Job Volume: <span id="vol-display" style="color:var(--col-pink);">100%</span></span>
+                    <input type="range" id="volumeSlider" min="100" max="200" value="100">
+                </div>
+                <div class="toggle-group">
+                    <span class="slider-label" style="margin-bottom: 8px;">Automation</span>
+                    <label class="switch">
+                        <input type="checkbox" id="automationToggle">
+                        <span class="slider-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="admin-zone"></div>
+            <div class="admin-label">MANUAL STEPS</div>
+            <canvas id="simCanvas"></canvas>
+        </div>
+
+        <div class="footer">
+            <div class="stat-box">
+                <span class="stat-label">Backlog Counter</span>
+                <div class="backlog-count" id="backlogDisplay">0 Jobs Waiting</div>
+            </div>
+            
+            <div class="stat-box" style="text-align: right;">
+                <span class="stat-label">On-time Delivery Rate</span>
+                <div class="stat-value-big" id="deliveryRate">100%</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const config = {
+            colors: {
+                manual: '#4D2B41', 
+                auto: '#FF79C6',
+                stuck: '#be123c',
+                processing: '#f59e0b'
+            },
+            gap: 16,          
+            processTime: 75,  
+            speed: { move: 4.0, fast: 8 },
+            spawnThreshold: 60 
+        };
+
+        // --- STATE ---
+        let state = {
+            volume: 1.0,      
+            isAuto: false,
+            particles: [],    
+            adminTimer: 0,    
+            adminOccupied: false, 
+            metricRate: 100,
+            autoRamp: true,
+            spawnAccumulator: 50 
+        };
+
+        // --- DOM ---
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, adminX, stopLineX;
+
+        function resize() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            width = rect.width;
+            height = rect.height;
+            
+            adminX = width * 0.5; 
+            stopLineX = adminX - 25; 
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- PARTICLE LOGIC ---
+        class Particle {
+            constructor() {
+                this.x = -15; 
+                // Y-Spread: Fill the taller canvas!
+                // Random position +/- 20px from center to create a "thicker" stream
+                this.y = (height / 2) + (Math.random() * 40 - 20);
+                this.radius = 5;
+                this.color = config.colors.manual;
+                this.currentSpeed = config.speed.move;
+                
+                this.isDone = false;
+                this.isProcessing = false;
+            }
+        }
+
+        // --- LOOP ---
+        let frame = 0;
+
+        function loop() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // 0. AUTO RAMP LOGIC
+            if (state.autoRamp && !state.isAuto) {
+                if(state.volume < 2.0) state.volume += 0.0005;
+                updateSliderUI();
+            }
+
+            // 1. SPAWN LOGIC
+            state.spawnAccumulator += state.volume;
+            if (state.spawnAccumulator >= config.spawnThreshold) {
+                state.particles.push(new Particle());
+                state.spawnAccumulator -= config.spawnThreshold;
+            }
+
+            // 2. ADMIN TIMER
+            if (state.adminOccupied) {
+                state.adminTimer--;
+                if (state.adminTimer <= 0) state.adminOccupied = false; 
+            }
+
+            // 3. MOVEMENT LOGIC
+            state.particles.sort((a, b) => b.x - a.x);
+            let backlogCount = 0;
+
+            for (let i = 0; i < state.particles.length; i++) {
+                let p = state.particles[i];
+                let targetX = width + 50; 
+                let maxSpeed = config.speed.move;
+
+                if (state.isAuto) {
+                    maxSpeed = config.speed.fast;
+                    p.color = config.colors.auto;
+                    p.isQueued = false; 
+                    state.adminOccupied = false; 
+                } 
+                else {
+                    p.color = config.colors.manual;
+
+                    // A. Check particle ahead
+                    if (i > 0) {
+                        let ahead = state.particles[i-1];
+                        // If they are somewhat on the same Y-level (visual clutter check), stop.
+                        // Actually, logic needs to be strict X-based for the queue to work physically.
+                        targetX = Math.min(targetX, ahead.x - config.gap);
+                    }
+
+                    // B. Admin Station Logic
+                    if (!p.isDone) {
+                        if (p.isProcessing) {
+                            if (state.adminTimer > 0) {
+                                targetX = adminX + 10; 
+                                maxSpeed = 0.5; 
+                                p.color = config.colors.processing;
+                                // Center Y while processing for visual clarity
+                                p.y += ((height/2) - p.y) * 0.1; 
+                            } else {
+                                p.isDone = true;
+                                p.isProcessing = false;
+                                maxSpeed = config.speed.move;
+                            }
+                        } else {
+                            if (!state.adminOccupied) {
+                                if (p.x >= stopLineX - 5 && p.x <= adminX) {
+                                    state.adminOccupied = true;
+                                    state.adminTimer = config.processTime;
+                                    p.isProcessing = true;
+                                }
+                            } else {
+                                targetX = Math.min(targetX, stopLineX);
+                            }
+                        }
+                    }
+                }
+
+                // Physics
+                let dist = targetX - p.x;
+                let step = 0;
+                
+                if (dist > 0.5) { 
+                    step = Math.min(dist, maxSpeed) * 0.8; 
+                    if(step < 0.1 && dist > 0.1) step = 0.1;
+                    p.x += step;
+                } else {
+                    p.x = targetX;
+                    step = 0;
+                }
+                
+                p.currentSpeed = step;
+
+                // BACKLOG COUNTING
+                if (!state.isAuto && !p.isDone && !p.isProcessing && p.x < adminX && p.currentSpeed < 0.8) {
+                    backlogCount++;
+                    p.color = config.colors.stuck;
+                }
+
+                // Draw
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                if(state.isAuto) {
+                    ctx.shadowBlur = 10; ctx.shadowColor = config.colors.auto;
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+                ctx.fill();
+            }
+
+            state.particles = state.particles.filter(p => p.x < width + 20);
+            updateUI(backlogCount);
+            frame++;
+            requestAnimationFrame(loop);
+        }
+
+        // --- UI LOGIC ---
+        const elMetric = document.getElementById('deliveryRate');
+        const elBacklog = document.getElementById('backlogDisplay');
+        const elCTA = document.getElementById('cta');
+        const slider = document.getElementById('volumeSlider');
+        const display = document.getElementById('vol-display');
+        const toggle = document.getElementById('automationToggle');
+        const labelAdmin = document.querySelector('.admin-label');
+        const lineAdmin = document.querySelector('.admin-zone');
+
+        function updateUI(backlog) {
+            let targetRate = 100;
+            
+            if (state.isAuto) {
+                targetRate = 100;
+                elBacklog.innerText = "0 Jobs Waiting";
+                elBacklog.className = "backlog-count";
+                elCTA.classList.remove('cta-visible');
+                
+                labelAdmin.innerText = "AUTO PROCESSING";
+                labelAdmin.style.color = "#FF79C6";
+                lineAdmin.style.background = "#FF79C6";
+            } 
+            else {
+                labelAdmin.innerText = "MANUAL STEPS";
+                labelAdmin.style.color = "#94a3b8";
+                lineAdmin.style.background = "repeating-linear-gradient(to bottom, #94a3b8 0, #94a3b8 4px, transparent 4px, transparent 8px)";
+
+                elBacklog.innerText = backlog + " Jobs Waiting";
+                if(backlog > 4) elBacklog.className = "backlog-count backlog-critical";
+                else elBacklog.className = "backlog-count";
+
+                if (backlog > 2) {
+                    let penalty = (backlog - 2) * 5; 
+                    targetRate = Math.max(40, 100 - penalty);
+                }
+                
+                if (state.volume > 1.0 && state.metricRate < 80) {
+                    elCTA.classList.add('cta-visible');
+                } else {
+                    elCTA.classList.remove('cta-visible');
+                }
+            }
+
+            let easing = (targetRate < state.metricRate) ? 0.1 : 0.02;
+            state.metricRate += (targetRate - state.metricRate) * easing;
+            
+            let displayRate = Math.round(state.metricRate);
+            elMetric.innerText = displayRate + "%";
+            
+            if (displayRate < 80) elMetric.className = "stat-value-big metric-danger";
+            else if (displayRate < 95) elMetric.className = "stat-value-big metric-warn";
+            else elMetric.className = "stat-value-big";
+        }
+
+        function updateSliderUI() {
+            slider.value = Math.round(state.volume * 100);
+            display.innerText = slider.value + "%";
+            if(!state.isAuto) {
+                if(state.volume > 1.2) display.style.color = "#be123c";
+                else display.style.color = "#FF79C6";
+            }
+        }
+
+        slider.addEventListener('input', (e) => {
+            state.volume = e.target.value / 100;
+            updateSliderUI();
+            state.autoRamp = false; 
+        });
+
+        toggle.addEventListener('change', (e) => {
+            state.isAuto = e.target.checked;
+            state.autoRamp = false;
+            if(state.isAuto) state.adminOccupied = false;
+        });
+
+        window.activateAuto = function() {
+            state.isAuto = true;
+            state.autoRamp = false;
+            toggle.checked = true;
+            state.adminOccupied = false;
+        };
+
+        loop();
+
+    </script>
+</body>
+</html>

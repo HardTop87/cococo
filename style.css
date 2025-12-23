@@ -5890,6 +5890,9 @@ body:has(#oem-intro) #oem-intro {
     text-align: center;
     border: 2px solid var(--peach);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .feature-box:hover {
@@ -5903,16 +5906,18 @@ body:has(#oem-intro) #oem-intro {
     border-color: var(--pig);
 }
 
-.feature-icon {
+.feature-box .feature-icon {
     width: 60px;
     height: 60px;
     margin: 0 auto 1.5rem;
+    flex-shrink: 0;
 }
 
-.feature-icon img {
+.feature-box .feature-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    display: block;
 }
 
 .feature-box h3 {
@@ -5921,12 +5926,18 @@ body:has(#oem-intro) #oem-intro {
     font-weight: 700;
     color: var(--text-dark);
     margin-bottom: 0.75rem;
+    margin-top: 0;
+    display: block;
+    width: 100%;
 }
 
 .feature-box p {
     font-size: 1rem;
     line-height: 1.6;
     color: var(--text-light);
+    margin: 0;
+    display: block;
+    width: 100%;
 }
 
 /* Connectivity Layout */
@@ -5985,6 +5996,15 @@ body:has(#oem-intro) #oem-intro {
     box-shadow: 0 0 30px rgba(255, 121, 201, 0.4);
     text-align: center;
     line-height: 1.2;
+}
+
+/* Platform-specific node label styling */
+.connection-diagram .node-label {
+    font-family: 'Sofia Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: inherit;
+    margin: 0;
 }
 
 .central-node {
@@ -6285,18 +6305,21 @@ body:has(#oem-intro) #oem-intro {
     margin-right: auto;
 }
 
-.benefit-card {
+.platform-section .benefit-card {
     background: var(--white);
-    padding: 2.5rem 2rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius);
     border: 2px solid var(--peach);
     text-align: center;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.benefit-card::before {
+.platform-section .benefit-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -6308,17 +6331,17 @@ body:has(#oem-intro) #oem-intro {
     transition: transform 0.3s ease;
 }
 
-.benefit-card:hover::before {
+.platform-section .benefit-card:hover::before {
     transform: scaleX(1);
 }
 
-.benefit-card:hover {
+.platform-section .benefit-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
     border-color: var(--pig);
 }
 
-.benefit-number {
+.platform-section .benefit-number {
     font-family: 'Sofia Sans Condensed', sans-serif;
     font-size: 4rem;
     font-weight: 900;
@@ -6327,19 +6350,19 @@ body:has(#oem-intro) #oem-intro {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     opacity: 0.3;
 }
 
-.benefit-card h3 {
+.platform-section .benefit-card h3 {
     font-family: 'Sofia Sans Condensed', sans-serif;
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
-.benefit-card p {
+.platform-section .benefit-card p {
     font-size: 1.05rem;
     line-height: 1.7;
     color: var(--text-light);
@@ -10031,8 +10054,6 @@ body:has(#oem-intro) #oem-intro {
 
 .ceo-hero-image {
     width: 100%;
-    height: 500px;
-    background: var(--peach);
     border-radius: var(--border-radius);
     display: flex;
     align-items: center;
@@ -10057,7 +10078,12 @@ body:has(#oem-intro) #oem-intro {
     }
     
     .ceo-hero-image {
-        height: 350px;
+        height: auto;
+    }
+
+    .ceo-hero-image img {
+        height: auto;
+        object-fit: contain;
     }
 }
 
@@ -10081,9 +10107,21 @@ body:has(#oem-intro) #oem-intro {
     transition: all 0.3s ease;
 }
 
+.ceo-problem-card .card-icon {
+    display: block;
+    margin: 0 auto 1.5rem;
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
 .ceo-problem-card:hover {
     border-color: var(--pig);
     box-shadow: 0 8px 24px rgba(255, 121, 201, 0.12);
+}
+
+.ceo-problem-card:hover .card-icon {
+    transform: translateY(-4px);
+    opacity: 1;
 }
 
 .ceo-problem-card h3 {
@@ -10108,6 +10146,125 @@ body:has(#oem-intro) #oem-intro {
 /* Section 3: CEO Solution */
 .ceo-solution {
     padding: 5rem 0;
+}
+
+.ceo-solution-interactive {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.solution-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ceo-solution-interactive .solution-card {
+    background: rgba(156, 87, 132, 0.4);
+    border: 2px solid rgba(77, 43, 65, 0.6);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ceo-solution-interactive .solution-card:hover {
+    background: rgba(77, 43, 65, 0.55);
+    border-color: rgba(255, 121, 201, 0.4);
+    transform: translateX(4px);
+}
+
+.ceo-solution-interactive .solution-card.active {
+    background: rgba(255, 121, 201, 0.18);
+    border-color: var(--pig);
+    border-width: 3px;
+}
+
+.ceo-solution-interactive .solution-card.active:hover {
+    background: rgba(255, 121, 201, 0.22);
+}
+
+.ceo-solution-interactive .solution-card h3 {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+}
+
+.ceo-solution-interactive .solution-card p {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.solution-demo-area {
+    position: relative;
+    background: rgba(255, 121, 201, 0.05);
+    border: 2px solid rgba(255, 121, 201, 0.2);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    height: 500px;
+}
+
+.demo-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.demo-content.active {
+    display: block;
+}
+
+.demo-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.demo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 500px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.demo-placeholder p {
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.placeholder-note {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+@media (max-width: 968px) {
+    .ceo-solution-interactive {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .solution-demo-area {
+        min-height: 400px;
+    }
+
+    .demo-content iframe,
+    .demo-placeholder {
+        min-height: 400px;
+    }
 }
 
 .ceo-solution-split {
@@ -10183,11 +10340,14 @@ body:has(#oem-intro) #oem-intro {
 
 .ceo-comparison {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
     margin-top: 3rem;
-    flex-wrap: wrap;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .comparison-old,
@@ -10195,8 +10355,20 @@ body:has(#oem-intro) #oem-intro {
     background: rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius);
     padding: 2rem;
-    flex: 1;
-    min-width: 250px;
+    width: 100%;
+    text-align: center;
+}
+
+.comparison-old img,
+.comparison-new img {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin-top: 1.5rem;
+    border-radius: var(--border-radius);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .comparison-old h3,
@@ -10210,21 +10382,16 @@ body:has(#oem-intro) #oem-intro {
 
 .comparison-old p,
 .comparison-new p {
-    color: var(--white);
+    color: var(--berry);
     font-size: 1.1rem;
     line-height: 1.5;
+    margin-bottom: 0;
 }
 
 .comparison-arrow {
     font-size: 3rem;
     color: var(--pig);
     font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    .comparison-arrow {
-        transform: rotate(90deg);
-    }
 }
 
 /* Section 5: CEO Alignment */
@@ -10378,6 +10545,18 @@ body:has(#oem-intro) #oem-intro {
     text-align: center;
 }
 
+.ceo-pillar .card-icon {
+    display: block;
+    margin: 0 auto 1.5rem;
+    opacity: 0.9;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.ceo-pillar:hover .card-icon {
+    transform: scale(1.08);
+    opacity: 1;
+}
+
 .ceo-pillar h3 {
     font-family: 'Sofia Sans Condensed', sans-serif;
     font-weight: 700;
@@ -10393,11 +10572,70 @@ body:has(#oem-intro) #oem-intro {
 }
 
 .ceo-benefit {
-    margin-top: 3rem;
-    text-align: center;
-    padding: 2rem;
-    background: rgba(255, 121, 201, 0.05);
+    margin-top: 4rem;
+    padding: 0;
+    background: transparent;
+}
+
+.benefit-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(255, 239, 248, 0.6) 0%, rgba(255, 121, 201, 0.08) 100%);
+    border: 2px solid var(--peach);
     border-radius: var(--border-radius);
+    padding: 3rem;
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.benefit-content:hover {
+    border-color: var(--pig);
+    box-shadow: 0 8px 24px rgba(255, 121, 201, 0.15);
+}
+
+.benefit-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1;
+}
+
+.benefit-image img {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    display: block;
+}
+
+.benefit-lightbulb {
+    filter: drop-shadow(0 4px 12px rgba(255, 121, 201, 0.2));
+}
+
+.benefit-text {
+    grid-column: 2;
+}
+
+.benefit-text h3 {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--berry);
+    margin-bottom: 1rem;
+}
+
+.benefit-text p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.benefit-text strong {
+    color: var(--berry);
+    font-weight: 700;
 }
 
 @media (max-width: 968px) {
@@ -10439,6 +10677,42 @@ body:has(#oem-intro) #oem-intro {
     
     .ceo-pillars {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .benefit-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .benefit-image img {
+        max-width: 250px;
+        margin: 0 auto;
+    }
+
+    .benefit-text h3 {
+        font-size: 1.5rem;
+    }
+
+    .benefit-text p {
+        font-size: 1.1rem;
+    }
+
+    .ceo-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .ceo-hero-image {
+        order: -1;
+    }
+
+    .comparison-old img,
+    .comparison-new img {
+        max-width: 100%;
     }
 }
 
@@ -10497,18 +10771,84 @@ body:has(#oem-intro) #oem-intro {
     padding: 5rem 0;
 }
 
+.ceo-cta-grid {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 3rem;
+    align-items: center;
+}
+
+.ceo-cta-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ceo-cta-text .btn {
+    width: auto;
+    align-self: flex-start;
+}
+
+.ceo-cta-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ceo-cta-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+}
+
 .ceo-cta-title {
     font-family: 'Sofia Sans Condensed', sans-serif;
     font-weight: 800;
     font-size: 2.5rem;
     color: var(--berry);
     margin-bottom: 1rem;
+    line-height: 1.1;
 }
 
 .ceo-cta-subtitle {
     font-size: 1.25rem;
     color: var(--text-light);
     margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 968px) {
+    .ceo-cta-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .ceo-cta-image {
+        order: -1;
+    }
+    
+    .ceo-cta-title {
+        font-size: 2rem;
+    }
+    
+    .ceo-cta-subtitle {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .ceo-cta-grid {
+        gap: 1.5rem;
+    }
+    
+    .ceo-cta-title {
+        font-size: 1.75rem;
+    }
+    
+    .ceo-cta-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
 }
 
 /* CEO Hero Buttons */
@@ -12869,7 +13209,7 @@ DELETE THESE AFTER ALL SOLUTIONS PAGES ARE REFACTORED:
     line-height: 1;
 }
 
-.benefit-content {
+.benefit-card .benefit-content {
     display: flex;
     flex-direction: column;
     gap: 1rem;

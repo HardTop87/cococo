@@ -3258,3 +3258,42 @@ function updateModalPricing(currency) {
         updateModalTotal();
     }
 }
+
+// ========================================
+// Solution Cards Interactive Demo Switcher
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const solutionCards = document.querySelectorAll('.solution-card');
+    const demoContents = document.querySelectorAll('.demo-content');
+
+    if (solutionCards.length === 0) return;
+
+    solutionCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Get the demo type from data attribute
+            const demoType = card.getAttribute('data-demo');
+
+            // Remove active class from all cards
+            solutionCards.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked card
+            card.classList.add('active');
+
+            // Hide all demo contents
+            demoContents.forEach(demo => demo.classList.remove('active'));
+
+            // Show the corresponding demo
+            const targetDemo = document.getElementById(`demo-${demoType}`);
+            if (targetDemo) {
+                targetDemo.classList.add('active');
+                
+                // Lazy load iframe if it has data-src attribute
+                const iframe = targetDemo.querySelector('iframe[data-src]');
+                if (iframe && !iframe.hasAttribute('src')) {
+                    iframe.src = iframe.getAttribute('data-src');
+                    iframe.removeAttribute('data-src');
+                }
+            }
+        });
+    });
+});

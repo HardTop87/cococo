@@ -10149,16 +10149,16 @@ body:has(#oem-intro) #oem-intro {
 }
 
 .ceo-solution-interactive {
-    display: grid;
-    grid-template-columns: 35% 65%;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
     margin-top: 3rem;
 }
 
 .solution-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
 }
 
 .ceo-solution-interactive .solution-card {
@@ -10173,7 +10173,7 @@ body:has(#oem-intro) #oem-intro {
 .ceo-solution-interactive .solution-card:hover {
     background: rgba(77, 43, 65, 0.55);
     border-color: rgba(255, 121, 201, 0.4);
-    transform: translateX(4px);
+    transform: translateY(-4px);
 }
 
 .ceo-solution-interactive .solution-card.active {
@@ -10253,8 +10253,12 @@ body:has(#oem-intro) #oem-intro {
 
 @media (max-width: 968px) {
     .ceo-solution-interactive {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 2rem;
+    }
+    
+    .solution-cards {
+        grid-template-columns: 1fr;
     }
 
     .solution-demo-area {

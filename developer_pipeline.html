@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Architecture - Cloud Pulse</title>
+    <style>
+        /* THEME VARIABLES */
+        :root {
+            --c-peach: #FFEFF8;
+            --c-pink: #FF79C9;
+            --font-mono: 'Courier New', monospace;
+        }
+
+        body {
+            background: transparent;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        svg {
+            font-family: var(--font-mono);
+            overflow: visible;
+            max-width: 100%;
+        }
+
+        /* TYPOGRAPHY */
+        .label {
+            font-size: 12px;
+            fill: var(--c-peach);
+            text-anchor: middle;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        
+        .label-subtext {
+            font-size: 9px;
+            fill: var(--c-peach);
+            text-anchor: middle;
+        }
+        
+        .label-highlight {
+            fill: var(--c-pink);
+        }
+        
+        .label-highlight-subtext {
+            fill: var(--c-pink);
+            font-size: 9px;
+            text-anchor: middle;
+        }
+
+        /* STATIC STRUCTURES */
+        .line-connector {
+            stroke: #FFEFF8;
+            stroke-width: 2;
+            stroke-dasharray: 4 4; /* Dashed lines for flow */
+        }
+
+        .node-stroke-peach {
+            fill: none;
+            stroke: var(--c-peach);
+            stroke-width: 2;
+        }
+
+        .node-stroke-pink {
+            fill: #4D2B41; /* Dark fill to hide line behind */
+            stroke: var(--c-pink);
+            stroke-width: 2;
+        }
+
+        .node-fill-peach {
+            fill: var(--c-peach);
+        }
+
+        /* ANIMATIONS */
+
+        /* 1. Dirty Data (Jittery) */
+        .dot-dirty {
+            fill: var(--c-peach);
+        }
+
+        @keyframes jitterMove {
+            0% { transform: translate(120px, 125px); opacity: 0; }
+            10% { opacity: 1; }
+            20% { transform: translate(150px, 120px); } /* Jitter Up */
+            40% { transform: translate(190px, 130px); } /* Jitter Down */
+            60% { transform: translate(230px, 122px); } /* Jitter Up */
+            80% { transform: translate(260px, 128px); opacity: 1; }
+            90% { transform: translate(280px, 125px); opacity: 0; } /* Hit Gateway */
+            100% { transform: translate(280px, 125px); opacity: 0; }
+        }
+
+        .anim-dirty-1 { animation: jitterMove 2s infinite linear; }
+        .anim-dirty-2 { animation: jitterMove 2s infinite linear 0.3s; }
+        .anim-dirty-3 { animation: jitterMove 2s infinite linear 0.6s; }
+
+
+        /* 2. Shield Pulse (Gateway Processing) */
+        @keyframes shieldPulse {
+            0%, 40% { stroke: var(--c-pink); filter: drop-shadow(0 0 0 transparent); stroke-width: 2; }
+            50% { stroke: white; filter: drop-shadow(0 0 8px var(--c-pink)); stroke-width: 3; }
+            60%, 100% { stroke: var(--c-pink); filter: drop-shadow(0 0 0 transparent); stroke-width: 2; }
+        }
+        
+        .node-shield {
+            animation: shieldPulse 2s infinite linear 0.9s;
+        }
+
+        /* NEW: 3. Cloud Pulse (API Processing) */
+        /* Subtler pulse synced with the passing clean data dots */
+        @keyframes cloudPulse {
+            0%, 20% { stroke: var(--c-pink); filter: drop-shadow(0 0 0 transparent); }
+            35% { stroke: white; filter: drop-shadow(0 0 10px var(--c-pink)); } /* Glow peak as dots pass center */
+            50%, 100% { stroke: var(--c-pink); filter: drop-shadow(0 0 0 transparent); }
+        }
+
+        .node-cloud-pulse {
+            /* Synced with smoothFlow animation duration (1.5s) + offset */
+            animation: cloudPulse 1.5s infinite linear 1.2s;
+        }
+
+
+        /* 4. Clean Data (Smooth Flow) */
+        .dot-clean {
+            fill: var(--c-pink);
+            filter: drop-shadow(0 0 4px var(--c-pink));
+        }
+
+        @keyframes smoothFlow {
+            0% { transform: translate(320px, 125px); opacity: 0; } /* Start after gateway */
+            5% { opacity: 1; }
+            100% { transform: translate(680px, 125px); opacity: 1; } /* End at App */
+        }
+
+        .anim-clean-1 { animation: smoothFlow 1.5s infinite ease-out 1.0s; }
+        .anim-clean-2 { animation: smoothFlow 1.5s infinite ease-out 1.2s; }
+        .anim-clean-3 { animation: smoothFlow 1.5s infinite ease-out 1.4s; }
+
+    </style>
+</head>
+<body>
+
+<svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+    
+    <line x1="100" y1="125" x2="700" y2="125" class="line-connector" />
+
+
+    <g id="node-source">
+        <rect x="85" y="110" width="10" height="10" class="node-fill-peach" />
+        <rect x="105" y="110" width="10" height="10" class="node-fill-peach" />
+        <rect x="95" y="130" width="10" height="10" class="node-fill-peach" />
+        <text x="100" y="190" class="label">Machines & Software</text>
+        <text x="100" y="210" class="label-subtext">Legacy Protocols</text>
+    </g>
+
+
+    <g>
+        <circle r="3" class="dot-dirty anim-dirty-1" />
+        <circle r="3" class="dot-dirty anim-dirty-2" />
+        <circle r="3" class="dot-dirty anim-dirty-3" />
+    </g>
+
+
+    <g id="node-edge">
+        <rect x="280" y="85" width="40" height="80" rx="10" class="node-stroke-pink node-shield" />
+        <rect x="290" y="110" width="20" height="30" rx="4" fill="none" stroke="#FF79C9" opacity="0.5"/>
+        <text x="300" y="190" class="label label-highlight">CoCoCo Platform</text>
+        <text x="300" y="210" class="label-highlight-subtext">Data Normalization</text>
+    </g>
+
+
+    <g id="node-cloud">
+        <path d="M500 95 L526 110 L526 140 L500 155 L474 140 L474 110 Z" class="node-stroke-pink node-cloud-pulse" />
+        <circle cx="500" cy="125" r="10" fill="#FF79C9" opacity="0.3" />
+        <text x="500" y="190" class="label label-highlight">Cloud API</text>
+        <text x="500" y="210" class="label-highlight-subtext">Unified Data Model</text>
+    </g>
+
+
+    <g>
+        <circle r="4" class="dot-clean anim-clean-1" />
+        <circle r="4" class="dot-clean anim-clean-2" />
+        <circle r="4" class="dot-clean anim-clean-3" />
+    </g>
+
+
+    <g id="node-app">
+        <rect x="665" y="100" width="70" height="50" rx="4" class="node-stroke-peach" fill="#FFEFF8" />
+        <line x1="665" y1="112" x2="735" y2="112" stroke="#FFEFF8" stroke-width="1" />
+        <circle cx="672" cy="106" r="2" fill="#FFEFF8" />
+        <circle cx="678" cy="106" r="2" fill="#FFEFF8" />
+        <rect x="675" y="120" width="50" height="20" rx="2" fill="#FFEFF8" opacity="0.5" />
+        <text x="700" y="190" class="label">Your Apps</text>
+        <text x="700" y="210" class="label-subtext">Custom Tools</text>
+    </g>
+
+</svg>
+
+</body>
+</html>

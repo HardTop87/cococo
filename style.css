@@ -10029,7 +10029,7 @@ body:has(#oem-intro) #oem-intro {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: center;
+    align-items: start;
 }
 
 .ceo-hero-text {
@@ -10073,12 +10073,17 @@ body:has(#oem-intro) #oem-intro {
         gap: 2rem;
     }
     
-    .ceo-hero-title {
-        font-size: 2.25rem;
+    .ceo-hero-text {
+        order: 1;
     }
     
     .ceo-hero-image {
+        order: 2;
         height: auto;
+    }
+    
+    .ceo-hero-title {
+        font-size: 2.25rem;
     }
 
     .ceo-hero-image img {
@@ -11272,6 +11277,8 @@ html {
     padding: 5rem 0;
 }
 
+/* DEPRECATED - MARK FOR DELETION: Replaced with .benefits-grid and .benefit-card */
+/*
 .struggle-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -11318,6 +11325,7 @@ html {
     line-height: 1.7;
     font-size: 1.05rem;
 }
+*/
 
 /* Section 3: Floor Visibility */
 .prod-visibility {
@@ -11428,6 +11436,66 @@ html {
 }
 
 /* Section 4: Kiosk Mode */
+.kiosk-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.kiosk-card {
+    background: var(--white);
+    border: 2px solid var(--peach);
+    border-radius: var(--border-radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.kiosk-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--pig);
+}
+
+.kiosk-card h3 {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--berry);
+    margin-bottom: 1rem;
+}
+
+.kiosk-card p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.kiosk-image-container {
+    margin: 0 auto;
+    max-width: 900px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.kiosk-screenshot {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 968px) {
+    .kiosk-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* Old Kiosk Styles - Keep for other pages if needed */
 .prod-kiosk {
     padding: 5rem 0;
 }
@@ -11555,6 +11623,105 @@ html {
     padding: 5rem 0;
 }
 
+/* Section 5: Reactive to Proactive - SVG Animation */
+.simulation-wrapper { 
+    width: 100%; 
+    max-width: 900px; 
+    margin: 3rem auto 0; 
+    background: var(--white); 
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.main-svg { 
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    font-family: 'Inter', sans-serif; 
+}
+
+.label-badge { 
+    font-size: 10px; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    alignment-baseline: middle; 
+}
+
+.label-badge.new { 
+    fill: var(--pig); 
+}
+
+.label-badge.old { 
+    fill: var(--text-light); 
+}
+
+.label-text { 
+    font-size: 14px; 
+    font-weight: 600; 
+    fill: var(--berry); 
+    alignment-baseline: middle; 
+}
+
+.status-label { 
+    font-size: 14px; 
+    fill: var(--text-light); 
+    font-family: monospace; 
+}
+
+.status-value-normal, 
+.status-value-delayed, 
+.status-value-optimized { 
+    font-size: 14px; 
+    font-family: monospace; 
+}
+
+@media (max-width: 968px) {
+    .simulation-wrapper {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .main-svg {
+        font-size: 12px;
+    }
+    
+    .label-badge {
+        font-size: 8px;
+    }
+    
+    .label-text {
+        font-size: 12px;
+    }
+    
+    .status-label,
+    .status-value-normal,
+    .status-value-delayed,
+    .status-value-optimized {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simulation-wrapper {
+        padding: 1rem;
+    }
+    
+    .main-svg {
+        font-size: 10px;
+    }
+    
+    .label-badge {
+        font-size: 7px;
+    }
+    
+    .label-text {
+        font-size: 10px;
+    }
+}
+
+/* DEPRECATED - scenario-comparison elements replaced with SVG animation */
+/*
 .scenario-comparison {
     display: flex;
     flex-direction: column;
@@ -11620,6 +11787,7 @@ html {
     font-size: 2rem;
     flex-shrink: 0;
 }
+*/
 
 .proactive-cta {
     text-align: center;
@@ -11705,9 +11873,12 @@ html {
         min-height: 200px;
     }
     
+    /* DEPRECATED - MARK FOR DELETION */
+    /*
     .struggle-grid {
         grid-template-columns: 1fr;
     }
+    */
     
     .visibility-features {
         grid-template-columns: 1fr;
@@ -12018,28 +12189,173 @@ html {
     margin-bottom: 1rem;
 }
 
-/* Data Flow Diagram */
-.data-flow-diagram {
-    position: relative;
+/* Data Flow Container - Two Column Layout */
+.data-flow-container {
     display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr;
-    gap: 0;
-    align-items: center;
-    padding: 3rem;
-    background: rgba(255, 121, 201, 0.05);
-    border: 2px solid rgba(255, 121, 201, 0.2);
-    border-radius: var(--border-radius);
+    grid-template-columns: 1.9fr 1fr;  /* Links 1.9 Teile, Rechts 1 Teil = ca. 65% zu 35% */
+    gap: 2rem;
     margin-top: 3rem;
+    align-items: start;
 }
 
-.flow-node {
-    background: rgba(77, 43, 65, 0.8);
-    border: 2px solid var(--pig);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    text-align: center;
-    position: relative;
+.data-flow-left iframe {
+    display: block;
 }
+
+.data-flow-right {
+    display: flex;
+    align-items: center;
+    min-height: 450px;
+}
+
+/* Terminal Window Styling */
+.terminal-window {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 121, 201, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #d1d1d1;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.terminal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.terminal-indicator {
+    color: var(--pig);
+}
+
+.log-line {
+    margin-bottom: 0.4rem;
+}
+
+.log-time {
+    color: #888;
+    margin-right: 8px;
+    user-select: none;
+    font-size: 0.75em;
+}
+
+.log-dir-out {
+    color: var(--pig);
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.log-dir-in {
+    color: #FFEFF8;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.log-sys {
+    color: #fff;
+    font-weight: bold;
+}
+
+.log-val {
+    color: #eee;
+}
+
+.cursor {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    background: var(--pig);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .data-flow-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .data-flow-right {
+        min-height: auto;
+    }
+    
+    .data-flow-left iframe {
+        height: 350px;
+    }
+    
+    .terminal-window {
+        font-size: 0.7rem;
+        padding: 14px;
+    }
+    
+    .terminal-header {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .struggle-icon svg[style*="scale(2.0)"] {
+        transform: scale(1.5) !important;
+        top: 6px !important;
+    }
+    
+    .data-flow-left iframe {
+        height: 300px;
+    }
+    
+    .terminal-window {
+        font-size: 0.65rem;
+        padding: 12px;
+    }
+    
+    .log-time {
+        display: block;
+        margin-bottom: 2px;
+    }
+    
+    .toolkit-iframe-mobile {
+        width: 280px;
+        height: 498px;
+    }
+    
+    .toolkit-iframe-tablet {
+        height: 350px;
+    }
+    
+    .toolkit-app-container {
+        min-height: 350px;
+    }
+}
+
+/* OLD Data Flow Diagram Styles */
+.data-flow-diagram {
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius);
+    margin-top: 3rem;
+    overflow: hidden;
+}
+
+.data-flow-diagram iframe {
+    display: block;
+}
+
+
 
 .flow-node-cococo {
     background: var(--pig);
@@ -12123,19 +12439,22 @@ html {
 
 .toolkit-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3rem;
+    grid-template-columns: 40% 60%;
+    gap: 2rem;
     margin-top: 3rem;
     margin-bottom: 3rem;
+    align-items: start;
 }
 
 .toolkit-card {
     background: var(--white);
     border: 3px solid var(--peach);
     border-radius: var(--border-radius);
-    padding: 3rem;
+    padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .toolkit-card:hover {
@@ -12144,8 +12463,44 @@ html {
     box-shadow: 0 8px 24px rgba(255, 121, 201, 0.15);
 }
 
-.toolkit-icon {
+.toolkit-app-container {
     margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 667px;
+}
+
+.toolkit-title {
+    font-family: "Sofia Sans Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--berry);
+    margin-bottom: 1rem;
+}
+
+.toolkit-text {
+    color: var(--text-light);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.toolkit-iframe {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.toolkit-iframe-mobile {
+    width: 375px;
+    height: 667px;
+    max-width: 100%;
+}
+
+.toolkit-iframe-tablet {
+    width: 100%;
+    height: 667px;
+    max-width: 100%;
 }
 
 .toolkit-title {
@@ -12318,6 +12673,20 @@ html {
     
     .toolkit-grid {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .toolkit-app-container {
+        min-height: 400px;
+    }
+    
+    .toolkit-iframe-mobile {
+        width: 320px;
+        height: 568px;
+    }
+    
+    .toolkit-iframe-tablet {
+        height: 400px;
     }
     
     .integration-content {
@@ -12382,7 +12751,10 @@ html {
     pointer-events: none;
 }
 
-.dev-hero-content {
+/* ============================================
+   TODO: DELETE - Old dev-hero-content (replaced by ceo-hero-grid)
+   ============================================ */
+/* .dev-hero-content {
     text-align: center;
     max-width: 900px;
     margin: 0 auto 4rem;
@@ -12410,7 +12782,8 @@ html {
 .dev-hero-subtitle strong {
     color: var(--pig);
     font-weight: 700;
-}
+} */
+/* ============================================ */
 
 /* Terminal Window */
 .terminal-window {
@@ -12463,40 +12836,50 @@ html {
 }
 
 .terminal-body {
-    padding: 2rem;
+    padding: 1.5rem;
     overflow-x: auto;
 }
 
 .code-block {
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.85rem;
+    line-height: 1.6;
     color: #c9d1d9;
     margin: 0;
 }
 
 .code-comment {
-    color: #8b949e;
+    color: #6a9955; /* VS Code Grün */
+    font-style: italic;
 }
 
 .code-key {
-    color: #79c0ff;
+    color: #9cdcfe; /* VS Code Hellblau für Properties */
 }
 
 .code-string {
-    color: #a5d6ff;
+    color: #ce9178; /* VS Code Orange/Braun für Strings */
 }
 
 .code-number {
-    color: #ffa657;
+    color: #b5cea8; /* VS Code Hellgrün für Zahlen */
 }
 
 .code-keyword {
-    color: #ff7b72;
+    color: #c586c0; /* VS Code Lila für Keywords */
+    font-weight: bold;
 }
 
 .code-const {
-    color: #d2a8ff;
+    color: #4fc1ff; /* VS Code Blau für Konstanten */
+}
+
+.code-function {
+    color: #dcdcaa; /* VS Code Gelb für Funktionen */
+}
+
+.code-param {
+    color: #9cdcfe; /* VS Code Hellblau für Parameter */
 }
 
 /* Section 2: The Problem */
@@ -12530,6 +12913,19 @@ html {
 .problem-icon {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.problem-icon img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    /* High-res images (256x256) für perfekte Retina-Darstellung */
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
 }
 
 .problem-heading {
@@ -12707,6 +13103,24 @@ html {
     line-height: 1.3;
 }
 
+/* Architecture Diagram Iframe Wrapper */
+.architecture-diagram-wrapper {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 121, 201, 0.3);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.architecture-iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+    display: block;
+    background: transparent;
+}
+
 /* Section 4: Customization */
 .dev-customization {
     padding: 5rem 0;
@@ -12757,40 +13171,61 @@ html {
 }
 
 /* Code Example */
+/* VS Code Editor Simulation */
 .code-example {
-    max-width: 1000px;
-    margin: 0 auto;
-    background: #0d1117;
-    border-radius: 12px;
+    background: #1e1e1e; /* Original VS Code Dark Background */
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Der Header (Tabs & Traffic Lights) */
 .code-example-header {
-    background: #161b22;
-    padding: 0.75rem 1.5rem;
+    background: #252526; /* VS Code Header Grau */
+    padding: 10px 15px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #30363d;
+    border-bottom: 1px solid #1e1e1e;
+}
+
+/* Simuliert die Mac-Ampel-Buttons */
+.code-example-header::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56; /* Rot */
+    box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f; /* Gelb & Grün */
+    margin-right: 60px; /* Abstand zum Filename */
+}
+
+/* Der Dateiname als "Tab" */
+.code-filename {
+    color: #ffffff;
+    background: #1e1e1e;
+    padding: 5px 15px;
+    border-radius: 5px 5px 0 0;
+    font-size: 13px;
+    border-top: 2px solid #FF79C9; /* Pinker Akzent für CoCoCo Branding */
 }
 
 .code-language {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.8rem;
-    color: #8b949e;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: none; /* Brauchen wir visuell nicht, Dateiendung reicht */
 }
 
-.code-filename {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.85rem;
-    color: #c9d1d9;
-}
-
+/* Der Code Body */
 .code-example-body {
-    padding: 2rem;
+    padding: 20px;
+    color: #d4d4d4; /* Standard VS Code Textfarbe */
     overflow-x: auto;
 }
 
@@ -12913,24 +13348,35 @@ html {
 
 /* Responsive Design */
 @media (max-width: 968px) {
+    /* TODO: DELETE - Old dev-hero styles (now using ceo-hero-title)
     .dev-hero-title {
         font-size: 2.5rem;
     }
 
     .dev-hero-subtitle {
         font-size: 1.1rem;
+    } */
+
+    .dev-hero .terminal-window {
+        margin-top: 3rem;
     }
 
     .terminal-body {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
     .code-block {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        line-height: 1.5;
     }
 
     .problem-grid {
         grid-template-columns: 1fr;
+    }
+
+    .problem-icon img {
+        width: 56px;
+        height: 56px;
     }
 
     .solution-grid {
@@ -12941,6 +13387,15 @@ html {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 2rem;
+    }
+
+    .architecture-diagram-wrapper {
+        padding: 1.5rem;
+        margin-top: 3rem;
+    }
+
+    .architecture-iframe {
+        height: 350px;
     }
 
     .arch-arrow {
@@ -12962,8 +13417,26 @@ html {
         grid-template-columns: 1fr;
     }
 
+    .code-example {
+        font-size: 13px;
+        margin-top: 30px;
+    }
+
+    .code-example-header::before {
+        width: 10px;
+        height: 10px;
+        box-shadow: 16px 0 0 #ffbd2e, 32px 0 0 #27c93f;
+        margin-right: 45px;
+    }
+
+    .code-filename {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
     .code-example-body {
-        padding: 1.5rem;
+        padding: 15px;
+        font-size: 12px;
     }
 
     .tech-categories {
@@ -12977,6 +13450,70 @@ html {
 
     .cta-box {
         padding: 3rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .problem-icon img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .dev-hero .terminal-window {
+        margin-top: 2rem;
+    }
+
+    .terminal-body {
+        padding: 1rem;
+    }
+
+    .code-block {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+
+    .terminal-header {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .terminal-title {
+        font-size: 0.75rem;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .architecture-diagram-wrapper {
+        padding: 1rem;
+        margin-top: 2rem;
+    }
+
+    .architecture-iframe {
+        height: 300px;
+    }
+
+    .code-example {
+        font-size: 12px;
+        margin-top: 25px;
+    }
+
+    .code-example-header::before {
+        width: 8px;
+        height: 8px;
+        box-shadow: 14px 0 0 #ffbd2e, 28px 0 0 #27c93f;
+        margin-right: 35px;
+    }
+
+    .code-filename {
+        font-size: 11px;
+        padding: 3px 10px;
+    }
+
+    .code-example-body {
+        padding: 12px;
+        font-size: 11px;
     }
 }
 

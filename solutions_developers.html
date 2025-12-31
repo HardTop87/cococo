@@ -19,44 +19,64 @@
     <!-- Section 1: Hero - The Developer Experience -->
     <section class="dev-hero">
         <div class="container">
-            <div class="dev-hero-content">
-                <h1 class="dev-hero-title">Stop Building Plumbing.<br>Start Building Value.</h1>
-                <p class="dev-hero-subtitle">Don't waste your sprint cycles parsing proprietary machine protocols. We provide a unified, secure abstraction layer for your entire shop floor. <strong>One API for everything.</strong></p>
-                <div class="hero-buttons">
-                    <a href="https://docs.wearecococo.com" target="_blank" class="btn btn-primary">Read the Documentation</a>
-                    <a href="integration.html" class="btn btn-secondary">View Connectivity</a>
+            <div class="ceo-hero-grid">
+                <div class="ceo-hero-text">
+                    <h1 class="ceo-hero-title">Stop Building Plumbing.<br>Start Building Value.</h1>
+                    <p class="ceo-hero-subtitle">Don't waste your sprint cycles parsing proprietary machine protocols. We provide a unified, secure abstraction layer for your entire shop floor. <strong>One API for everything.</strong></p>
+                    <div class="ceo-hero-buttons">
+                        <a href="https://docs.wearecococo.com" target="_blank" class="btn btn-primary btn-large">Read the Documentation</a>
+                        <a href="integration.html" class="btn btn-secondary btn-large">View Connectivity</a>
+                    </div>
+                </div>
+
+                <div class="ceo-hero-image">
+                    <img src="images/solutions/developer_hero.png" alt="Visualization of the concept 'Stop Building Plumbing': A unified API layer organizes complex industrial processes and generates value, represented by a glowing diamond.">
                 </div>
             </div>
 
-            <!-- Terminal Visual -->
-            <div class="terminal-window">
+            <!-- Terminal Visual moved below hero -->
+            <div class="terminal-window" style="margin-top: 4rem;">
                 <div class="terminal-header">
                     <div class="terminal-dots">
                         <span class="dot dot-red"></span>
                         <span class="dot dot-yellow"></span>
                         <span class="dot dot-green"></span>
                     </div>
-                    <div class="terminal-title">CoCoCo API Response</div>
+                    <div class="terminal-title">CoCoCo GraphQL API</div>
                 </div>
                 <div class="terminal-body">
-<pre class="code-block"><span class="code-comment">// GET /api/v1/jobs/12345</span>
+<pre class="code-block"><span class="code-comment"># GraphQL Request</span>
+<span class="code-keyword">query</span> <span class="code-function">GetJobStatus</span> {
+  <span class="code-function">getPrintJob</span>(<span class="code-param">id:</span> <span class="code-string">"job-4092"</span>) {
+    jobNumber
+    state
+    <span class="code-function">operations</span>(<span class="code-param">limit:</span> <span class="code-number">1</span>) {
+      results {
+        name
+        productionQuantity
+        resource { name, currentStatus }
+      }
+    }
+  }
+}
 
+<span class="code-comment"># Response</span>
 {
-  <span class="code-key">"id"</span>: <span class="code-string">"12345"</span>,
-  <span class="code-key">"status"</span>: <span class="code-string">"running"</span>,
-  <span class="code-key">"machine"</span>: {
-    <span class="code-key">"id"</span>: <span class="code-string">"press-01"</span>,
-    <span class="code-key">"name"</span>: <span class="code-string">"Heidelberg XL 106"</span>,
-    <span class="code-key">"status"</span>: <span class="code-string">"online"</span>
-  },
-  <span class="code-key">"progress"</span>: {
-    <span class="code-key">"completed"</span>: <span class="code-number">8450</span>,
-    <span class="code-key">"total"</span>: <span class="code-number">10000</span>,
-    <span class="code-key">"percentage"</span>: <span class="code-number">84.5</span>
-  },
-  <span class="code-key">"timestamps"</span>: {
-    <span class="code-key">"started"</span>: <span class="code-string">"2025-12-21T08:15:00Z"</span>,
-    <span class="code-key">"estimated_completion"</span>: <span class="code-string">"2025-12-21T11:30:00Z"</span>
+  <span class="code-key">"data"</span>: {
+    <span class="code-key">"getPrintJob"</span>: {
+      <span class="code-key">"jobNumber"</span>: <span class="code-string">"JOB-4092"</span>,
+      <span class="code-key">"state"</span>: <span class="code-string">"IN_PRODUCTION"</span>,
+      <span class="code-key">"operations"</span>: {
+        <span class="code-key">"results"</span>: [{
+          <span class="code-key">"name"</span>: <span class="code-string">"Offset Printing"</span>,
+          <span class="code-key">"productionQuantity"</span>: <span class="code-number">5000</span>,
+          <span class="code-key">"resource"</span>: {
+            <span class="code-key">"name"</span>: <span class="code-string">"Heidelberg XL 106"</span>,
+            <span class="code-key">"currentStatus"</span>: { <span class="code-key">"code"</span>: <span class="code-string">"RUNNING"</span> }
+          }
+        }]
+      }
+    }
   }
 }</pre>
                 </div>
@@ -74,19 +94,25 @@
 
             <div class="problem-grid">
                 <div class="problem-card">
-                    <div class="problem-icon">🦁</div>
+                    <div class="problem-icon">
+                        <img src="images/icons/lion_256x256.png" alt="Protocol Zoo" width="256" height="256">
+                    </div>
                     <h3 class="problem-heading">Protocol Zoo</h3>
                     <p class="problem-description">OPC-UA, MQTT, CIP, JMF, proprietary serial connections... You need a team of specialists just to keep the connections alive.</p>
                 </div>
 
                 <div class="problem-card">
-                    <div class="problem-icon">🔓</div>
+                    <div class="problem-icon">
+                        <img src="images/icons/server_256x256.png" alt="Shadow IT & Security" width="256" height="256">
+                    </div>
                     <h3 class="problem-heading">Shadow IT & Security</h3>
                     <p class="problem-description">Production machines often run outdated OS versions. Connecting them directly to your network is a massive security risk.</p>
                 </div>
 
                 <div class="problem-card">
-                    <div class="problem-icon">🔧</div>
+                    <div class="problem-icon">
+                        <img src="images/icons/bug_256x256.png" alt="Maintenance Burden" width="256" height="256">
+                    </div>
                     <h3 class="problem-heading">Maintenance Burden</h3>
                     <p class="problem-description">Every time a machine gets a firmware update, your custom scripts break. You are stuck in reactive maintenance mode.</p>
                 </div>
@@ -106,7 +132,7 @@
                 <div class="solution-card">
                     <div class="solution-number">01</div>
                     <h3 class="solution-heading">Normalize Everything</h3>
-                    <p class="solution-text">We ingest data from any source (Legacy, IoT, API) and normalize it into a clean, typed JSON schema. You query <code class="inline-code">job.status</code>, regardless of whether it's a digital press or a folder.</p>
+                    <p class="solution-text">We ingest and normalize data from any source. You get <strong>auto-generated TypeScript definitions</strong> for our entire schema. Query <code class="inline-code">job.status</code> with full IDE IntelliSense support - no guessing required.</p>
                     <a href="data_model.html" class="text-link">Explore the Data Model →</a>
                 </div>
 
@@ -126,48 +152,8 @@
             </div>
 
             <!-- Architecture Diagram -->
-            <div class="architecture-diagram">
-                <div class="arch-node">
-                    <div class="arch-icon">🏭</div>
-                    <div class="arch-label">Production Machines</div>
-                    <div class="arch-sublabel">Legacy Protocols<br>OPC-UA, MQTT, Serial</div>
-                </div>
-
-                <div class="arch-arrow">
-                    <div class="arrow-line"></div>
-                    <div class="arrow-head">→</div>
-                    <div class="arrow-label">Encrypted<br>Outbound Only</div>
-                </div>
-
-                <div class="arch-node arch-node-primary">
-                    <div class="arch-icon">🛡️</div>
-                    <div class="arch-label">Edge Gateway</div>
-                    <div class="arch-sublabel">Local Buffering<br>Data Normalization</div>
-                </div>
-
-                <div class="arch-arrow">
-                    <div class="arrow-line"></div>
-                    <div class="arrow-head">→</div>
-                    <div class="arrow-label">TLS 1.3<br>REST/GraphQL</div>
-                </div>
-
-                <div class="arch-node">
-                    <div class="arch-icon">☁️</div>
-                    <div class="arch-label">CoCoCo Cloud API</div>
-                    <div class="arch-sublabel">Unified Data Model<br>Event Streaming</div>
-                </div>
-
-                <div class="arch-arrow">
-                    <div class="arrow-line"></div>
-                    <div class="arrow-head">→</div>
-                    <div class="arrow-label">Webhooks<br>SDKs</div>
-                </div>
-
-                <div class="arch-node">
-                    <div class="arch-icon">💼</div>
-                    <div class="arch-label">Your Apps</div>
-                    <div class="arch-sublabel">ERP, Custom Tools<br>React, Vue, Any Stack</div>
-                </div>
+            <div class="architecture-diagram-wrapper">
+                <iframe src="developer_pipeline.html" class="architecture-iframe" loading="lazy"></iframe>
             </div>
         </div>
     </section>

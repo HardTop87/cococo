@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Flow Schematic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: rgba(77, 43, 65, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 450px;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Node Styles */
+        .node-glow {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .center-node {
+            animation: centerPulse 12s ease-in-out infinite;
+            transform-origin: 400px 200px;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            stroke: #FF79C9;
+            stroke-width: 1.5;
+            opacity: 0.3;
+            stroke-dasharray: 5, 5;
+        }
+
+        /* Data Flow Dots */
+        .flow-dot-pink {
+            fill: #FF79C9;
+            filter: drop-shadow(0 0 6px #FF79C9);
+        }
+
+        .flow-dot-cyan {
+            fill: #FFEFF8;
+            filter: drop-shadow(0 0 6px #FFEFF8);
+        }
+
+        /* Labels */
+        text {
+            font-family: 'Sofia Sans', sans-serif;
+            font-size: 18px;
+            fill: #FFEFF8;
+            text-anchor: middle;
+        }
+
+        .sublabel {
+            font-size: 14px;
+            fill: #FFEFF8;
+        }
+
+        /* Keyframe Animations */
+        @keyframes centerPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px #FF79C9);
+            }
+            9%, 11% {
+                filter: drop-shadow(0 0 20px #FF79C9) drop-shadow(0 0 30px #FF79C9);
+            }
+            29%, 31% {
+                filter: drop-shadow(0 0 20px #FFEFF8) drop-shadow(0 0 30px #FFEFF8);
+            }
+            59%, 61% {
+                filter: drop-shadow(0 0 20px #FF79C9) drop-shadow(0 0 30px #FF79C9);
+            }
+            79%, 81% {
+                filter: drop-shadow(0 0 20px #FFEFF8) drop-shadow(0 0 30px #FFEFF8);
+            }
+        }
+
+        /* Zyklus 1: MIS -> CoCoCo -> Press (Pink) */
+        @keyframes jobFlowToPress {
+            0%, 2% {
+                cx: 120;
+                cy: 200;
+                opacity: 0;
+            }
+            3% {
+                opacity: 1;
+            }
+            10% {
+                cx: 400;
+                cy: 200;
+            }
+            20% {
+                cx: 680;
+                cy: 140;
+                opacity: 1;
+            }
+            21% {
+                opacity: 0;
+            }
+            100% {
+                cx: 680;
+                cy: 140;
+                opacity: 0;
+            }
+        }
+
+        /* Zyklus 1: Press -> CoCoCo -> MIS (Teal) */
+        @keyframes feedbackFlowFromPress {
+            0%, 22% {
+                cx: 680;
+                cy: 140;
+                opacity: 0;
+            }
+            23% {
+                opacity: 1;
+            }
+            30% {
+                cx: 400;
+                cy: 200;
+            }
+            40% {
+                cx: 120;
+                cy: 200;
+                opacity: 1;
+            }
+            41% {
+                opacity: 0;
+            }
+            100% {
+                cx: 120;
+                cy: 200;
+                opacity: 0;
+            }
+        }
+
+        /* Zyklus 2: MIS -> CoCoCo -> Finisher (Pink) */
+        @keyframes jobFlowToFinisher {
+            0%, 52% {
+                cx: 120;
+                cy: 200;
+                opacity: 0;
+            }
+            53% {
+                opacity: 1;
+            }
+            60% {
+                cx: 400;
+                cy: 200;
+            }
+            70% {
+                cx: 680;
+                cy: 260;
+                opacity: 1;
+            }
+            71% {
+                opacity: 0;
+            }
+            100% {
+                cx: 680;
+                cy: 260;
+                opacity: 0;
+            }
+        }
+
+        /* Zyklus 2: Finisher -> CoCoCo -> MIS (Teal) */
+        @keyframes feedbackFlowFromFinisher {
+            0%, 72% {
+                cx: 680;
+                cy: 260;
+                opacity: 0;
+            }
+            73% {
+                opacity: 1;
+            }
+            80% {
+                cx: 400;
+                cy: 200;
+            }
+            90% {
+                cx: 120;
+                cy: 200;
+                opacity: 1;
+            }
+            91% {
+                opacity: 0;
+            }
+            100% {
+                cx: 120;
+                cy: 200;
+                opacity: 0;
+            }
+        }
+
+        .job-flow-press {
+            animation: jobFlowToPress 12s ease-in-out infinite;
+        }
+
+        .job-flow-finisher {
+            animation: jobFlowToFinisher 12s ease-in-out infinite;
+        }
+
+        .feedback-flow-press {
+            animation: feedbackFlowFromPress 12s ease-in-out infinite;
+        }
+
+        .feedback-flow-finisher {
+            animation: feedbackFlowFromFinisher 12s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg viewBox="0 60 800 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Connection Lines -->
+            <line x1="120" y1="200" x2="400" y2="200" class="connection-line"/>
+            <line x1="400" y1="200" x2="680" y2="140" class="connection-line"/>
+            <line x1="400" y1="200" x2="680" y2="260" class="connection-line"/>
+
+            <!-- Left Node: MIS (Database Icon) -->
+            <g class="node-glow" style="color: #FF79C9;">
+                <circle cx="120" cy="200" r="35" fill="none" stroke="#FF79C9" stroke-width="2"/>
+                <rect x="105" y="190" width="30" height="5" fill="#FF79C9" opacity="0.6"/>
+                <rect x="105" y="197" width="30" height="5" fill="#FF79C9" opacity="0.8"/>
+                <rect x="105" y="204" width="30" height="5" fill="#FF79C9"/>
+            </g>
+            <text x="120" y="260">MIS</text>
+            <!-- <text x="120" y="275" class="sublabel">Management</text> -->  
+
+            <!-- Center Node: CoCoCo (Hexagon) -->
+            <g class="center-node">
+                <polygon points="400,160 430,180 430,220 400,240 370,220 370,180" 
+                         fill="none" stroke="#FF79C9" stroke-width="3" style="color: #FF79C9;"/>
+                <circle cx="400" cy="200" r="15" fill="#FF79C9" opacity="0.3"/>
+            </g>
+            <text x="400" y="270">CoCoCo Platform</text>
+            <!-- <text x="400" y="285" class="sublabel">Platform</text> -->
+
+            <!-- Top Right Node: Digital Press -->
+            <g class="node-glow" style="color: #FF79C9;">
+                <circle cx="680" cy="140" r="32" fill="none" stroke="#FF79C9" stroke-width="2"/>
+                <rect x="668" y="128" width="24" height="24" rx="2" fill="none" stroke="#FF79C9" stroke-width="2"/>
+                <line x1="674" y1="134" x2="686" y2="134" stroke="#FF79C9" stroke-width="1.5"/>
+                <line x1="674" y1="140" x2="686" y2="140" stroke="#FF79C9" stroke-width="1.5"/>
+                <line x1="674" y1="146" x2="686" y2="146" stroke="#FF79C9" stroke-width="1.5"/>
+            </g>
+            <text x="680" y="93">Press</text>
+           <!-- <text x="680" y="95" class="sublabel">Digital</text> -->
+
+            <!-- Bottom Right Node: Cutter/Finisher -->
+            <g class="node-glow" style="color: #FF79C9;">
+                <circle cx="680" cy="260" r="32" fill="none" stroke="#FF79C9" stroke-width="2"/>
+                <path d="M 668 250 L 680 262 L 692 250" fill="none" stroke="#FF79C9" stroke-width="2" stroke-linecap="round"/>
+                <line x1="680" y1="262" x2="680" y2="270" stroke="#FF79C9" stroke-width="2" stroke-linecap="round"/>
+                <line x1="670" y1="268" x2="690" y2="268" stroke="#FF79C9" stroke-width="2"/>
+            </g>
+            <text x="680" y="320">PostPress</text>
+           <!-- <text x="680" y="335" class="sublabel">Finishing</text> -->
+
+            <!-- Animated Flow Dots -->
+            <!-- Job Flow (Pink) - to Press -->
+            <circle r="6" class="flow-dot-pink job-flow-press" cx="120" cy="200"/>
+
+            <!-- Job Flow (Pink) - to Finisher -->
+            <circle r="6" class="flow-dot-pink job-flow-finisher" cx="120" cy="200"/>
+
+            <!-- Feedback Flow (Cyan) - from Press -->
+            <circle r="5" class="flow-dot-cyan feedback-flow-press" cx="680" cy="140"/>
+
+            <!-- Feedback Flow (Cyan) - from Finisher -->
+            <circle r="5" class="flow-dot-cyan feedback-flow-finisher" cx="680" cy="260"/>
+        </svg>
+    </div>
+</body>
+</html>

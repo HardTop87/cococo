@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Workflow Automation - High Visibility</title>
+<style>
+  /* ========================================= */
+  /* 🛠️ KONFIGURATION & LAYOUT */
+  /* ========================================= */
+  :root {
+    --bg-color: #050510; 
+    --neon-color: #FF79C9;
+    
+    /* NEU: Berry für bessere Sichtbarkeit der Pfade */
+    --dim-color: #4D2B41; 
+    
+    --error-color: #FF4444;
+    --text-color: #FF79C9;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace, sans-serif;
+  }
+
+  .graphic-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 400px;
+  }
+
+  /* TEXT LABEL STYLING */
+  .labels-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px; /* Etwas mehr Abstand */
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .pipeline-label {
+    color: var(--dim-color); /* Berry Farbe für Text, wirkt edler */
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 40%;
+  }
+
+  /* SVG STYLES */
+  .gate-static {
+    stroke: var(--neon-color);
+    stroke-width: 5px; /* Dicker für mehr Präsenz */
+    filter: drop-shadow(0 0 8px var(--neon-color));
+    opacity: 1;
+  }
+
+  .track-dash-static {
+    stroke: var(--dim-color);
+    stroke-dasharray: 6 6; /* Größere Striche */
+    stroke-width: 2px; /* Dicker */
+  }
+  
+  .path-line {
+    fill: none;
+    stroke: var(--dim-color);
+    stroke-width: 2px; /* Dicker (vorher 1px) */
+    stroke-dasharray: 4 4;
+    opacity: 0.8; /* Höhere Deckkraft */
+  }
+  
+  .solid-line {
+    stroke: var(--dim-color);
+    stroke-width: 2px; /* Dicker */
+  }
+</style>
+</head>
+<body>
+
+  <div class="graphic-container">
+    
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
+      
+      <defs>
+        <filter id="neon-glow-static" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.0" result="blur" />
+          <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glow" />
+          <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+
+        <linearGradient id="fade-gradient" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="black" />
+          <stop offset="5%" stop-color="white" />
+          <stop offset="95%" stop-color="white" />
+          <stop offset="100%" stop-color="black" />
+        </linearGradient>
+        <mask id="edge-mask">
+          <rect x="0" y="0" width="800" height="300" fill="url(#fade-gradient)" />
+        </mask>
+
+        <symbol id="icon-file-base" viewBox="0 0 40 50">
+          <path d="M5,0 L25,0 L40,15 L40,50 L5,50 Z" fill="var(--bg-color)" stroke-width="2.5" />
+          <polyline points="25,0 25,15 40,15" fill="none" stroke-width="2.5" />
+        </symbol>
+
+        <symbol id="icon-error-general" viewBox="0 0 40 50">
+          <use href="#icon-file-base" stroke="var(--dim-color)" />
+          <text x="22.5" y="35" text-anchor="middle" fill="#FF4444" font-weight="bold" font-size="24">!</text>
+        </symbol>
+        <symbol id="icon-error-font" viewBox="0 0 40 50">
+          <use href="#icon-file-base" stroke="var(--dim-color)" />
+          <text x="22.5" y="35" text-anchor="middle" fill="#FF4444" font-weight="bold" font-size="20">A?</text>
+        </symbol>
+        <symbol id="icon-error-rgb" viewBox="0 0 40 50">
+          <use href="#icon-file-base" stroke="var(--dim-color)" />
+          <text x="22.5" y="33" text-anchor="middle" fill="#FF4444" font-weight="bold" font-size="14">RGB</text>
+        </symbol>
+        <symbol id="icon-clean-check" viewBox="0 0 40 50">
+          <use href="#icon-file-base" stroke="var(--neon-color)" />
+          <path d="M12,28 L20,36 L32,20" fill="none" stroke="var(--neon-color)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+        <symbol id="icon-data-xml" viewBox="0 0 40 40">
+          <text x="20" y="28" text-anchor="middle" fill="var(--neon-color)" font-weight="bold" font-size="24">&lt;/&gt;</text>
+        </symbol>
+      </defs>
+
+      <g mask="url(#edge-mask)">
+        
+        <path class="path-line" d="M -50,60 C 100,20 200,180 400,150" />
+        <path class="path-line" d="M -50,240 C 120,280 250,50 400,150" />
+        <path class="path-line" d="M -50,150 C 50,150 150,250 250,150 S 350,80 400,150" />
+        
+        <line x1="425" y1="120" x2="900" y2="120" class="solid-line" />
+        <line x1="425" y1="180" x2="900" y2="180" class="solid-line" />
+        <line x1="425" y1="150" x2="900" y2="150" stroke="none" class="track-dash-static" />
+
+        <g transform="translate(400, 150)">
+           <path d="M -15,-100 L -25,-100 L -25,100 L -15,100" fill="none" stroke-linecap="square" class="gate-static" />
+           <path d="M 15,-100 L 25,-100 L 25,100 L 15,100" fill="none" stroke-linecap="square" class="gate-static" />
+           <line x1="-25" y1="0" x2="25" y2="0" stroke="var(--neon-color)" stroke-width="3" opacity="1" />
+        </g>
+
+        <g transform="translate(80, 70) rotate(-15)">
+           <use href="#icon-error-general" width="30" height="37.5" x="-15" y="-18.75" />
+        </g>
+        <g transform="translate(195, 185) rotate(-35)">
+           <use href="#icon-error-rgb" width="30" height="37.5" x="-15" y="-18.75" />
+        </g>
+        <g transform="translate(320, 120) rotate(-10)">
+           <use href="#icon-error-font" width="30" height="37.5" x="-15" y="-18.75" />
+        </g>
+
+        <g filter="url(#neon-glow-static)">
+          <g transform="translate(500, 120)"><use href="#icon-clean-check" width="30" height="37.5" x="-15" y="-18.75" /></g>
+          <g transform="translate(500, 180)"><use href="#icon-data-xml" width="40" height="40" x="-20" y="-20" /></g>
+
+          <g transform="translate(680, 120)"><use href="#icon-clean-check" width="30" height="37.5" x="-15" y="-18.75" /></g>
+          <g transform="translate(680, 180)"><use href="#icon-data-xml" width="40" height="40" x="-20" y="-20" /></g>
+        </g>
+
+      </g>
+    </svg>
+
+    <div class="labels-wrapper">
+      <div class="pipeline-label">File-Based Routing</div>
+      <div class="pipeline-label">Data-Driven Engineering</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Operations Live View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- DARK THEME VARIABLES --- */
+        :root {
+            --bg-app: #0f1115;       
+            --bg-card: #181b21;      
+            --bg-hover: #22262e;
+            --border: #2d333b;
+            
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            
+            --col-green: #10b981;    
+            --col-green-dim: rgba(16, 185, 129, 0.15);
+            --col-yellow: #f59e0b;   
+            --col-yellow-dim: rgba(245, 158, 11, 0.15);
+            --col-red: #ef4444;      
+            --col-red-dim: rgba(239, 68, 68, 0.15);
+            --col-blue: #3b82f6;     
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #0f1115;
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 1fr;
+        }
+
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .header h1 { font-size: 20px; margin: 0; font-weight: 700; letter-spacing: -0.5px; }
+        .header-meta { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 10px; }
+        .live-indicator { width: 8px; height: 8px; background: var(--col-green); border-radius: 50%; box-shadow: 0 0 8px var(--col-green); animation: blink 2s infinite; }
+
+        /* KPI CARDS */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .kpi-label { font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+        .kpi-value { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .kpi-sub { font-size: 12px; margin-top: 6px; }
+        .trend-good { color: var(--col-green); }
+
+        /* MACHINE LIST */
+        .section-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; margin-top: 10px; display: flex; justify-content: space-between; }
+        
+        .machine-card {
+            background-color: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; margin-bottom: 12px;
+            display: grid; grid-template-columns: 4px 1fr 1.5fr 1fr;
+            gap: 20px; align-items: center; cursor: pointer;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .machine-card:hover { border-color: #4b5563; background-color: var(--bg-hover); }
+
+        /* Status Stripe */
+        .status-stripe { height: 100%; border-radius: 2px; transition: background 0.3s; }
+        
+        /* State Styles */
+        .machine-card.running .status-stripe { background: var(--col-green); box-shadow: 0 0 10px var(--col-green); }
+        .machine-card.setup .status-stripe { background: var(--col-yellow); }
+        .machine-card.error { border-color: var(--col-red); } 
+        .machine-card.error .status-stripe { background: var(--col-red); box-shadow: 0 0 15px var(--col-red); }
+
+        .machine-info h3 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: var(--text-main); }
+        .machine-job { font-size: 12px; color: var(--text-muted); display: flex; gap: 8px; }
+        
+        .badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; transition: all 0.3s; }
+        .bg-green { background: var(--col-green-dim); color: var(--col-green); }
+        .bg-yellow { background: var(--col-yellow-dim); color: var(--col-yellow); }
+        .bg-red { background: var(--col-red-dim); color: var(--col-red); }
+
+        /* Progress */
+        .progress-container { width: 100%; }
+        .progress-meta { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px; color: var(--text-muted); }
+        
+        /* Track & Bar */
+        .progress-track { height: 6px; background: #2d333b; border-radius: 3px; overflow: hidden; position: relative; }
+        
+        /* Transition Matches JS Interval (5s) */
+        .progress-bar { 
+            height: 100%; 
+            border-radius: 3px; 
+            transition: width 5s linear, background-color 0.3s; 
+        }
+
+        /* Helpers */
+        .no-transition { transition: none !important; }
+
+        /* SETUP VISUALIZATION (Stripes) */
+        .setup-indicator {
+            display: none; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--col-yellow-dim),
+                var(--col-yellow-dim) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            animation: slideStripes 20s linear infinite;
+        }
+        /* Hide bar during setup to prevent "sliding back" visual */
+        .machine-card.setup .progress-bar { display: none; }
+        .machine-card.setup .setup-indicator { display: block; }
+
+        @keyframes slideStripes { from { background-position: 0 0; } to { background-position: 100% 0; } }
+        
+        /* Speed */
+        .speed-box { text-align: right; }
+        .speed-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; transition: color 0.3s;}
+        .speed-unit { font-size: 11px; color: var(--text-muted); }
+        .machine-card.error .speed-val { color: var(--col-red); }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 100;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--bg-card); border: 1px solid var(--border); width: 90%; max-width: 500px;
+            border-radius: 16px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: translateY(20px); transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+        
+        .detail-group { margin-bottom: 20px; }
+        .detail-group h4 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.5px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; }
+        .detail-label { color: #6b7280; }
+        .detail-val { font-weight: 600; font-family: 'JetBrains Mono', monospace; color: var(--text-main); }
+        .source-link { margin-top: 15px; padding: 10px; background: rgba(59, 130, 246, 0.1); border: 1px dashed var(--col-blue); border-radius: 6px; font-size: 12px; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
+
+        /* TOAST */
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--bg-card); border-left: 4px solid var(--col-red);
+            padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(100px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 13px; z-index: 200;
+        }
+        .toast.success { border-left-color: var(--col-green); }
+        .toast.success .toast-title { color: var(--col-green); }
+        
+        .toast.show { transform: translateY(0); }
+        .toast-title { font-weight: 700; color: var(--col-red); margin-bottom: 2px; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        @media (max-width: 600px) {
+            .machine-card { grid-template-columns: 4px 1fr; gap: 10px; }
+            .machine-info { grid-column: 2; }
+            .progress-container { grid-column: 1 / -1; margin-left: 14px; margin-right: 10px; }
+            .speed-box { position: absolute; top: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header">
+            <div>
+                <h1>Operations Live View</h1>
+                <div class="header-meta">
+                    <span class="live-indicator"></span> 
+                    LIVE DATA STREAM &bull; REFRESH: 5s
+                </div>
+            </div>
+            <button style="background:var(--bg-hover); color:white; border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-size:12px; cursor:pointer;">Export</button>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="card">
+                <div class="kpi-label">Avg. OEE (Shift)</div>
+                <div class="kpi-value" id="kpi-oee">78%</div>
+                <div class="kpi-sub trend-good">▲ 2.4% vs Target</div>
+            </div>
+            <div class="card">
+                <div class="kpi-label">Active Jobs</div>
+                <div class="kpi-value">12</div>
+                <div class="kpi-sub" style="color:var(--text-muted)">3 Queued</div>
+            </div>
+            <div class="card">
+                <div class="kpi-label">Energy Load</div>
+                <div class="kpi-value" id="kpi-energy">404 kW</div>
+                <div class="kpi-sub trend-good">Within Baseline</div>
+            </div>
+            <div class="card">
+                <div class="kpi-label">Paper Inventory</div>
+                <div class="kpi-value" style="color:var(--col-yellow)">LOW</div>
+                <div class="kpi-sub">Gloss 150g < 10%</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">
+                <span>Machine Utilization</span>
+            </div>
+            <div id="machine-list-container"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 style="margin:0; font-size:18px;">Job Details</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="alertToast">
+        <div class="toast-title">⚠️ System Alert</div>
+        <div id="toastMessage">Error detected</div>
+    </div>
+
+    <script>
+        // --- DATA POOLS ---
+        const customers = ["IKEA DE", "Lufthansa", "Rewe Group", "Siemens AG", "Volkswagen", "StartUp Inc.", "EduPublish"];
+        const materials = ["Gloss 135g", "Matte 350g", "Roll Inkjet 80g", "Silk 170g", "Uncoated 90g"];
+        const jobNames = ["Summer Catalog", "Annual Report", "Flyer Campaign", "Tech Manual", "Biz Cards", "Poster Run"];
+
+        // --- MACHINES INITIAL STATE ---
+        const machines = [
+            // Machine 1
+            { id: 1, name: "Heidelberg XL-106", status: "running", job: "JOB-2341", speed: 15000, maxSpeed: 18000, unit: "sph", progress: 42, total: 25000, color: "var(--col-green)", setupTimer: 0, details: { customer: "IKEA DE", material: "Gloss 135g" } },
+            // Machine 2 (HP Indigo) - UPDATED: Now Running / Green
+            { id: 2, name: "HP Indigo 12k", status: "running", job: "JOB-2344", speed: 2100, maxSpeed: 3000, unit: "sph", progress: 12, total: 3000, color: "var(--col-green)", setupTimer: 0, details: { customer: "StartUp Inc.", material: "Matte 350g" } },
+            // Machine 3
+            { id: 3, name: "Canon ProStream", status: "running", job: "JOB-2348", speed: 80, maxSpeed: 130, unit: "m/min", progress: 65, total: 300, color: "var(--col-green)", setupTimer: 0, details: { customer: "EduPublish", material: "Roll Inkjet 80g" } },
+            // Machine 4
+            { id: 4, name: "Stahlfolder KH 82", status: "running", job: "JOB-2341", speed: 9500, maxSpeed: 12000, unit: "sph", progress: 28, total: 15000, color: "var(--col-green)", source: "Heidelberg XL-106", setupTimer: 0, details: { customer: "IKEA DE", material: "Printed Sheets" } },
+            // Machine 5
+            { id: 5, name: "Müller Martini", status: "running", job: "JOB-2330", speed: 11000, maxSpeed: 14000, unit: "cph", progress: 88, total: 20000, color: "var(--col-green)", source: "Stahlfolder KH 82", setupTimer: 0, details: { customer: "Vogue Weekly", material: "Folded Signatures" } }
+        ];
+
+        const container = document.getElementById('machine-list-container');
+
+        // --- RENDER ---
+        function renderMachines() {
+            container.innerHTML = '';
+            machines.forEach(m => {
+                const current = Math.floor((m.progress / 100) * m.total);
+                const card = document.createElement('div');
+                card.id = `machine-card-${m.id}`; 
+                card.className = `machine-card ${m.status}`;
+                card.onclick = () => openModal(m);
+
+                let badgeText = m.status === 'running' ? 'Running' : (m.status === 'setup' ? 'Setup' : 'Error');
+                let badgeClass = m.status === 'running' ? 'bg-green' : (m.status === 'setup' ? 'bg-yellow' : 'bg-red');
+
+                card.innerHTML = `
+                    <div class="status-stripe"></div>
+                    <div class="machine-info">
+                        <h3>${m.name}</h3>
+                        <div class="machine-job">
+                            <span class="badge ${badgeClass}" id="badge-${m.id}">${badgeText}</span>
+                            <span id="jobname-${m.id}">${m.job}</span>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-meta">
+                            <span id="prog-lbl-${m.id}">${m.status === 'setup' ? 'Changeover' : 'Progress'}</span>
+                            <span id="text-prog-${m.id}">${current.toLocaleString()} / ${m.total.toLocaleString()}</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="bar-${m.id}" class="progress-bar" style="width: ${m.progress}%; background-color: ${m.color}"></div>
+                            <div class="setup-indicator"></div>
+                        </div>
+                    </div>
+                    <div class="speed-box">
+                        <div id="speed-${m.id}" class="speed-val">${m.speed.toLocaleString()}</div>
+                        <div class="speed-unit">${m.unit}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- HELPER: TRANSITION TO SETUP ---
+        function enterSetup(machine) {
+            machine.status = 'setup';
+            machine.speed = 0;
+            machine.progress = 0;
+            machine.setupTimer = 2; // 10 seconds
+            
+            // PREVENT BACKWARD SLIDE:
+            // 1. Hide bar (done via CSS .machine-card.setup .progress-bar { display: none; })
+            // 2. Reset width instantly without transition
+            const bar = document.getElementById(`bar-${machine.id}`);
+            if(bar) {
+                bar.classList.add('no-transition');
+                bar.style.width = '0%';
+                setTimeout(() => bar.classList.remove('no-transition'), 100);
+            }
+            
+            // Generate New Data
+            const randId = Math.floor(Math.random() * 8999) + 1000;
+            const randJob = jobNames[Math.floor(Math.random() * jobNames.length)];
+            machine.job = `JOB-${randId} (${randJob})`;
+            machine.total = 5000 + Math.floor(Math.random() * 45000);
+            machine.details.customer = customers[Math.floor(Math.random() * customers.length)];
+            machine.details.material = materials[Math.floor(Math.random() * materials.length)];
+
+            updateMachineUI(machine);
+        }
+
+        // --- UPDATE UI FUNCTION ---
+        function updateMachineUI(m) {
+            const card = document.getElementById(`machine-card-${m.id}`);
+            if(!card) return;
+
+            card.className = `machine-card ${m.status}`;
+            const badge = document.getElementById(`badge-${m.id}`);
+            const jobName = document.getElementById(`jobname-${m.id}`);
+            
+            jobName.innerText = m.job;
+
+            if(m.status === 'setup') {
+                badge.innerText = "SETUP"; badge.className = "badge bg-yellow";
+                document.getElementById(`prog-lbl-${m.id}`).innerText = "Make Ready";
+                document.getElementById(`text-prog-${m.id}`).innerText = "Preparing...";
+                document.getElementById(`speed-${m.id}`).innerText = "0";
+            } else if (m.status === 'error') {
+                badge.innerText = "STOPPED"; badge.className = "badge bg-red";
+                document.getElementById(`speed-${m.id}`).style.color = "var(--col-red)";
+            } else {
+                badge.innerText = "RUNNING"; badge.className = "badge bg-green";
+                document.getElementById(`prog-lbl-${m.id}`).innerText = "Progress";
+                document.getElementById(`speed-${m.id}`).style.color = "var(--text-main)";
+                
+                const current = Math.floor((m.progress / 100) * m.total);
+                document.getElementById(`text-prog-${m.id}`).innerText = `${current.toLocaleString()} / ${m.total.toLocaleString()}`;
+            }
+
+            // Only update bar width if NOT in setup (CSS handles visibility)
+            if(m.status !== 'setup') {
+                const bar = document.getElementById(`bar-${m.id}`);
+                // Ensure transition is active for running state
+                bar.classList.remove('no-transition');
+                bar.style.width = `${m.progress}%`;
+                bar.style.backgroundColor = m.status === 'error' ? 'var(--col-red)' : m.color;
+            }
+            
+            if(m.status !== 'setup' && m.status !== 'error') {
+                document.getElementById(`speed-${m.id}`).innerText = m.speed.toLocaleString();
+            }
+        }
+
+        // --- MAIN SIMULATION LOOP (Every 5 Seconds) ---
+        function startSimulation() {
+            setInterval(() => {
+                machines.forEach(m => {
+                    
+                    if(m.status === 'error') return; // No updates during error
+
+                    // CASE: SETUP
+                    if(m.status === 'setup') {
+                        m.setupTimer--;
+                        if(m.setupTimer <= 0) {
+                            m.status = 'running';
+                            m.speed = Math.floor(m.maxSpeed * 0.8);
+                            updateMachineUI(m);
+                        }
+                        return;
+                    }
+
+                    // CASE: RUNNING
+                    const fluctuation = Math.floor(Math.random() * 200) - 100;
+                    m.speed = Math.max(0, Math.min(m.maxSpeed, m.speed + fluctuation));
+
+                    // Calc Progress
+                    let itemsPerSecond = 0;
+                    if(m.unit === 'm/min') itemsPerSecond = m.speed / 60;
+                    else itemsPerSecond = m.speed / 3600;
+
+                    let itemsInInterval = itemsPerSecond * 5;
+                    // Demo factor 20x speed
+                    itemsInInterval = itemsInInterval * 20;
+
+                    let percentStep = (itemsInInterval / m.total) * 100;
+                    m.progress += percentStep;
+
+                    // FINISH LOGIC
+                    if(m.progress >= 100) {
+                        m.progress = 100;
+                        updateMachineUI(m);
+                        // Force Setup immediately
+                        setTimeout(() => enterSetup(m), 500); 
+                    } else {
+                        updateMachineUI(m);
+                    }
+                });
+
+                const energy = 400 + Math.floor(Math.random() * 10);
+                document.getElementById('kpi-energy').innerText = `${energy} kW`;
+
+            }, 5000); 
+
+            // TRIGGER ERROR on INDIGO (Machine 2) after 12 seconds
+            setTimeout(() => {
+                triggerMachineError(2, "⚠️ Low Ink Supply", "HP Indigo 12k stopped.");
+            }, 12000);
+        }
+
+        function triggerMachineError(id, title, msg) {
+            const machine = machines.find(m => m.id === id);
+            if(machine) {
+                machine.status = 'error';
+                machine.speed = 0; 
+                updateMachineUI(machine);
+                showToast(title, msg, 'error');
+
+                // AUTO RESTART AFTER 15 SECONDS
+                setTimeout(() => {
+                    resolveError(id);
+                }, 15000);
+            }
+        }
+
+        function resolveError(id) {
+            const machine = machines.find(m => m.id === id);
+            if(machine) {
+                machine.status = 'running';
+                machine.speed = Math.floor(machine.maxSpeed * 0.5); // Start slower
+                updateMachineUI(machine);
+                showToast("System Recovered", `${machine.name} restarting operation.`, 'success');
+            }
+        }
+
+        // --- MODAL & TOAST ---
+        function openModal(machine) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            let sourceHtml = machine.source ? `<div class="source-link"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 11H5m14 0-7 7m7-7-7-7"></path></svg>Source Input: ${machine.source}</div>` : '';
+            
+            let statusColor = machine.status === 'running' ? 'var(--col-green)' : (machine.status === 'error' ? 'var(--col-red)' : 'var(--col-yellow)');
+
+            const now = new Date();
+            const deliveryDate = new Date(now);
+            deliveryDate.setDate(now.getDate() + 2);
+            const deliveryStr = deliveryDate.toLocaleDateString('de-DE');
+
+            let finishStr = "--";
+            if(machine.status === 'running' && machine.speed > 0) {
+                const remaining = machine.total - Math.floor((machine.progress/100)*machine.total);
+                let speedPerMin = machine.unit === 'm/min' ? machine.speed : machine.speed / 60;
+                speedPerMin = speedPerMin * 20; // Match demo speed
+                
+                const minsLeft = Math.floor(remaining / speedPerMin);
+                const finishTime = new Date(now.getTime() + minsLeft * 60000);
+                finishStr = "Today, " + finishTime.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+            } else if (machine.status === 'setup') {
+                finishStr = "Starting soon...";
+            } else {
+                finishStr = "Delayed (Stopped)";
+            }
+
+            content.innerHTML = `
+                <div class="detail-group">
+                    <h4>Production Data</h4>
+                    <div class="detail-row"><span class="detail-label">Machine:</span> <span class="detail-val">${machine.name}</span></div>
+                    <div class="detail-row"><span class="detail-label">Status:</span> <span class="detail-val" style="color:${statusColor}">${machine.status.toUpperCase()}</span></div>
+                    <div class="detail-row"><span class="detail-label">Run Length:</span> <span class="detail-val">${machine.total.toLocaleString()}</span></div>
+                </div>
+
+                <div class="detail-group" style="border-top:1px solid var(--border); padding-top:15px;">
+                    <h4>Job Context</h4>
+                    <div class="detail-row"><span class="detail-label">Customer:</span> <span class="detail-val">${machine.details.customer}</span></div>
+                    <div class="detail-row"><span class="detail-label">Material:</span> <span class="detail-val">${machine.details.material}</span></div>
+                </div>
+
+                <div class="detail-group" style="border-top:1px solid var(--border); padding-top:15px;">
+                    <h4>Planning</h4>
+                    <div class="detail-row"><span class="detail-label">Step Completion:</span> <span class="detail-val" style="color:var(--col-blue)">${finishStr}</span></div>
+                    <div class="detail-row"><span class="detail-label">Delivery Date:</span> <span class="detail-val">${deliveryStr}</span></div>
+                </div>
+                ${sourceHtml}
+            `;
+            modal.classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+        const modalOverlay = document.getElementById('detailModal');
+        modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
+
+        function showToast(title, msg, type = 'error') {
+            const toast = document.getElementById('alertToast');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<div class="toast-title">${title}</div><div>${msg}</div>`;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 6000);
+        }
+
+        renderMachines();
+        startSimulation();
+
+    </script>
+</body>
+</html>

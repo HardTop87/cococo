@@ -1,0 +1,262 @@
+<div class="toolkit-demo-wrapper">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+        
+        .toolkit-demo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Rahmen & Gehäuse */
+        .sp-phone-frame {
+            width: 280px;
+            height: 520px;
+            background: #0f172a; /* Dark Mode Hintergrund */
+            border: 2px solid rgba(255, 121, 201, 0.3); /* CoCoCo-Pink Rahmen */
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .sp-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            z-index: 10;
+        }
+        .sp-status { font-size: 9px; color: #FF79C9; font-weight: bold; letter-spacing: 0.5px; }
+        .sp-filename { font-size: 13px; color: #fff; margin-top: 2px; }
+        .sp-counter { font-size: 11px; color: #64748b; }
+
+        /* Viewer Bereich */
+        .sp-viewer {
+            flex-grow: 1;
+            position: relative;
+            background: #1e293b;
+            overflow: hidden;
+        }
+
+        /* Navigation Pfeile */
+        .sp-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(15, 23, 42, 0.6);
+            color: #FF79C9;
+            border: 1px solid rgba(255, 121, 201, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        .sp-nav-btn:hover { background: #FF79C9; color: #fff; }
+        .sp-prev { left: 10px; }
+        .sp-next { right: 10px; }
+
+        /* Die Seiten */
+        .sp-page {
+            position: absolute;
+            top: 20px; bottom: 20px; left: 20px; right: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateX(100%) scale(0.95);
+        }
+
+        /* Active State logic */
+        .sp-page.active { opacity: 1; transform: translateX(0) scale(1); z-index: 5; }
+        .sp-page.left { transform: translateX(-110%) scale(0.95); opacity: 0; }
+        .sp-page.right { transform: translateX(110%) scale(0.95); opacity: 0; }
+
+        /* Abstrakter Inhalt (Grafik) */
+        .sp-art-gradient { width: 100%; height: 45%; background: linear-gradient(135deg, #FF79C9 0%, #8b5cf6 100%); border-radius: 4px; margin-bottom: 12px; }
+        .sp-art-line { height: 6px; background: #e2e8f0; margin-bottom: 6px; border-radius: 2px; }
+        .sp-art-line.short { width: 60%; }
+        .sp-art-box { width: 100%; height: 100px; background: #cbd5e1; border-radius: 4px; margin-bottom: 10px; }
+
+        /* Footer Controls */
+        .sp-controls {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .sp-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .sp-btn:active { transform: scale(0.96); }
+        .sp-btn-reject { background: transparent; border: 1px solid #ef4444; color: #ef4444; }
+        .sp-btn-approve { background: #FF79C9; border: none; color: #0f172a; box-shadow: 0 0 15px rgba(255, 121, 201, 0.3); }
+
+        /* Success Overlay */
+        .sp-success {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .sp-success.visible { opacity: 1; pointer-events: all; }
+        .sp-check { font-size: 40px; color: #FF79C9; margin-bottom: 10px; transform: scale(0); transition: transform 0.4s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .sp-success.visible .sp-check { transform: scale(1); }
+    </style>
+
+    <div class="sp-phone-frame">
+        <div class="sp-header">
+            <div>
+                <div class="sp-status">WAITING APPROVAL</div>
+                <div class="sp-filename">Brochure_Summer_v3.pdf</div>
+            </div>
+            <div class="sp-counter" id="pageCounter">1 / 4</div>
+        </div>
+
+        <div class="sp-viewer">
+            <button class="sp-nav-btn sp-prev" onclick="changeSoftProofPage(-1)">‹</button>
+            <button class="sp-nav-btn sp-next" onclick="changeSoftProofPage(1)">›</button>
+
+            <div class="sp-page active" data-index="0">
+                <div class="sp-art-gradient"></div>
+                <div class="sp-art-line" style="height: 14px; width: 80%; background: #333; margin-top: 10px;"></div>
+                <div class="sp-art-line" style="height: 14px; width: 50%; background: #333; margin-bottom: 25px;"></div>
+                <div class="sp-art-line"></div>
+                <div class="sp-art-line"></div>
+                <div class="sp-art-line short"></div>
+            </div>
+
+            <div class="sp-page right" data-index="1">
+                <div style="display: flex; gap: 10px; height: 100%;">
+                    <div style="flex: 1;">
+                        <div class="sp-art-line" style="background: #FF79C9;"></div>
+                        <div class="sp-art-line"></div>
+                        <div class="sp-art-line"></div>
+                        <div style="width: 100%; aspect-ratio: 1; background: #cbd5e1; border-radius: 4px; margin-top: 10px;"></div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="width: 100%; aspect-ratio: 1; background: #e2e8f0; border-radius: 4px; margin-bottom: 10px;"></div>
+                        <div class="sp-art-line"></div>
+                        <div class="sp-art-line"></div>
+                        <div class="sp-art-line short"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-page right" data-index="2">
+                 <div style="height: 10px; width: 40%; background: #333; margin-bottom: 20px;"></div>
+                 
+                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="width: 20px; height: 20px; background: #FF79C9; opacity: 0.3; border-radius: 4px;"></div>
+                    <div style="flex: 1;">
+                        <div class="sp-art-line"></div>
+                        <div class="sp-art-line short"></div>
+                    </div>
+                 </div>
+                 
+                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="width: 20px; height: 20px; background: #FF79C9; opacity: 0.3; border-radius: 4px;"></div>
+                    <div style="flex: 1;">
+                        <div class="sp-art-line"></div>
+                        <div class="sp-art-line short"></div>
+                    </div>
+                 </div>
+
+                 <div style="width: 100%; height: 30%; background: #f1f5f9; border-radius: 4px; margin-top: auto;"></div>
+            </div>
+
+            <div class="sp-page right" data-index="3">
+                <div style="width: 100%; height: 70%; background: linear-gradient(to top, #FF79C9 0%, #1e293b 100%); border-radius: 4px;"></div>
+                <div class="sp-art-line" style="margin-top: 20px;"></div>
+                <div class="sp-art-line short"></div>
+                <div style="margin-top: auto; font-size: 8px; color: #999; text-align: center;">www.wearecococo.com</div>
+            </div>
+        </div>
+
+        <div class="sp-controls">
+            <button class="sp-btn sp-btn-reject">Reject</button>
+            <button class="sp-btn sp-btn-approve" onclick="approveSoftProof()">Approve ✓</button>
+        </div>
+
+        <div class="sp-success" id="spSuccessOverlay">
+            <div class="sp-check">✓</div>
+            <div style="color: white; font-weight: bold; font-size: 16px;">Approved!</div>
+            <div style="color: #94a3b8; font-size: 12px; margin-top: 4px;">Ticket #4092 Updated</div>
+        </div>
+    </div>
+
+    <script>
+        let spCurrentIndex = 0;
+        const spPages = document.querySelectorAll('.sp-page');
+        const spTotal = spPages.length;
+        const spCounter = document.getElementById('pageCounter');
+
+        function changeSoftProofPage(dir) {
+            let newIndex = spCurrentIndex + dir;
+            if (newIndex < 0) newIndex = 0;
+            if (newIndex >= spTotal) newIndex = spTotal - 1;
+
+            if (newIndex !== spCurrentIndex) {
+                // Update Classes
+                spPages.forEach((page, index) => {
+                    page.className = 'sp-page'; // Reset
+                    if (index === newIndex) {
+                        page.classList.add('active');
+                    } else if (index < newIndex) {
+                        page.classList.add('left');
+                    } else {
+                        page.classList.add('right');
+                    }
+                });
+                
+                spCurrentIndex = newIndex;
+                spCounter.innerText = (spCurrentIndex + 1) + " / " + spTotal;
+            }
+        }
+
+        function approveSoftProof() {
+            document.getElementById('spSuccessOverlay').classList.add('visible');
+        }
+    </script>
+    </div>

@@ -17,51 +17,19 @@
     <div id="site-header"></div>
 
     <!-- Section 1: Hero -->
-    <section class="workflow-hero section-dark">
+    <section class="ceo-hero">
         <div class="container">
-            <div class="workflow-hero-content">
-                <h1 class="workflow-hero-title">Stop Patching.<br>Start Engineering.</h1>
-                <p class="workflow-hero-subtitle">You spend too much time fixing broken hotfolders and chasing missing job data. CoCoCo replaces fragile scripts with a robust, data-driven backbone that connects your MIS to your machines.</p>
-                
-                <div class="hero-buttons">
-                    <a href="https://hid25.wearecococo.com/meetings/cococo/round-robin-salesteam" class="btn btn-primary btn-large">Book a Demo</a>
-                    <a href="data_model.html" class="btn btn-secondary btn-large">Explore Data Model</a>
+            <div class="ceo-hero-grid">
+                <div class="ceo-hero-text">
+                    <h1 class="ceo-hero-title">Stop Patching.<br>Start Engineering.</h1>
+                    <p class="ceo-hero-subtitle">You spend too much time fixing broken hotfolders and chasing missing job data. CoCoCo replaces fragile scripts with a robust, data-driven backbone that connects your MIS to your machines.</p>
+                    <div class="ceo-hero-buttons">
+                        <a href="https://meetings-eu1.hubspot.com/cococo/cococo-sales-round-robin" class="btn btn-primary btn-large">Book a Demo</a>
+                        <a href="data_model.html" class="btn btn-secondary btn-large">Explore Data Model</a>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Pipeline Transformation Visual -->
-            <div class="pipeline-visual">
-                <div class="pipeline-chaos">
-                    <svg class="chaos-lines" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50,100 Q150,20 250,100 T450,100 L550,100" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
-                        <path d="M50,80 Q200,140 350,80 T550,120" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
-                        <path d="M50,120 Q180,60 300,120 T550,80" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
-                        <path d="M50,90 Q220,150 400,90 T550,110" stroke="rgba(255,121,201,0.3)" stroke-width="2" fill="none"/>
-                        <circle cx="50" cy="100" r="8" fill="rgba(255,121,201,0.5)"/>
-                        <circle cx="550" cy="100" r="8" fill="rgba(255,121,201,0.5)"/>
-                    </svg>
-                    <div class="pipeline-label">Old: Fragile Scripts</div>
-                </div>
-                
-                <div class="pipeline-transform">→</div>
-                
-                <div class="pipeline-clean">
-                    <svg class="clean-lines" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:rgba(255,121,201,0.5);stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:rgba(255,121,201,1);stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:rgba(255,121,201,0.5);stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <line x1="50" y1="100" x2="550" y2="100" stroke="url(#glowGradient)" stroke-width="4"/>
-                        <circle cx="50" cy="100" r="10" fill="var(--pig)"/>
-                        <circle cx="300" cy="100" r="12" fill="var(--pig)">
-                            <animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="550" cy="100" r="10" fill="var(--pig)"/>
-                    </svg>
-                    <div class="pipeline-label">New: Data-Driven Pipeline</div>
+                <div class="ceo-hero-image">
+                    <img src="images/solutions/workflow_hero.png" alt="Workflow automation visualization" loading="lazy" />
                 </div>
             </div>
         </div>
@@ -77,19 +45,57 @@
 
             <div class="struggle-blocks">
                 <div class="struggle-block">
-                    <div class="struggle-icon">📁</div>
+                    <div class="struggle-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 48L18 44H8V10H24L28 16H56V44H46L42 48" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <g transform="translate(26, 50) rotate(12)">
+                                <path d="M0 0H8L12 4V16H0V0Z" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 0V4H12" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 8H9" stroke="var(--pig)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 11H7" stroke="var(--pig)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                            <path d="M32 38V44" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                            <path d="M40 36V41" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                        </svg>
+                    </div>
                     <h3 class="struggle-heading">The "Hotfolder" Trap</h3>
                     <p class="struggle-description">You rely on filenames to route jobs. One typo by a sales rep, and the file gets stuck. That's not automation; that's guessing.</p>
                 </div>
 
                 <div class="struggle-block">
-                    <div class="struggle-icon">🔌</div>
+                    <div class="struggle-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 32H14" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 22H24V42H14V22Z" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M24 28H28" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M24 36H28" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 22V42" stroke="var(--pig)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                            <path d="M60 32H50" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M50 22H40V42H50V22Z" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M43 22V42" stroke="var(--pig)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                            <g transform="translate(34, 32)">
+                                <path d="M-3 -3L3 3" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 -3L-3 3" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                            <path d="M34 14L32 18L36 18L34 22" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+                            <path d="M34 50L36 46L32 46L34 42" stroke="var(--pig)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+                        </svg>
+                    </div>
                     <h3 class="struggle-heading">The MIS Disconnect</h3>
                     <p class="struggle-description">Your MIS knows the customer details. Your RIP knows the color profile. Neither knows what the other is doing. You are the manual copy-paste bridge.</p>
                 </div>
 
                 <div class="struggle-block">
-                    <div class="struggle-icon">⚠️</div>
+                    <div class="struggle-icon">
+                        <svg width="64" height="64" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" style="transform: scale(2.0); position: relative; top: 6px;">
+                            <g transform="translate(0,600) scale(0.1,-0.1)" fill="var(--pig)">
+                                <path d="M3035 4188 c-37 -34 -38 -36 -37 -104 1 -38 18 -301 37 -584 40 -557 38 -550 96 -550 19 0 33 8 42 23 10 16 24 177 51 572 20 303 37 562 36 577 0 16 -12 42 -29 60 -25 28 -35 32 -94 36 -63 4 -66 3 -102 -30z"/>
+                                <path d="M2627 3870 c-92 -21 -174 -43 -182 -50 -19 -16 -19 -69 -1 -138 l14 -52 -56 -36 c-32 -20 -78 -54 -105 -76 l-47 -40 -65 41 c-62 39 -97 49 -122 33 -19 -12 -213 -324 -213 -343 0 -25 23 -46 93 -89 39 -23 56 -39 52 -49 -12 -30 -27 -108 -33 -171 l-7 -65 -75 -18 c-79 -19 -110 -38 -110 -68 0 -9 18 -97 40 -196 27 -117 47 -182 57 -190 21 -16 53 -16 128 2 32 8 60 13 61 12 0 -1 18 -29 39 -62 20 -33 53 -79 72 -103 l35 -42 -41 -65 c-45 -70 -51 -103 -23 -127 22 -21 292 -192 315 -201 30 -12 61 12 102 79 33 53 44 64 60 59 11 -3 36 -9 56 -12 59 -9 57 14 -16 148 -36 66 -65 122 -65 125 0 3 27 36 60 74 33 39 57 76 55 83 -3 6 -26 23 -52 37 -127 67 -228 206 -254 350 -53 301 207 593 506 568 l56 -5 -3 31 -3 31 -91 -1 c-158 -3 -287 -62 -394 -182 -83 -92 -139 -238 -140 -358 -1 -163 91 -343 223 -441 34 -24 64 -46 66 -48 2 -2 -21 -32 -50 -66 l-54 -61 53 -98 c28 -54 52 -101 52 -105 0 -3 -8 -5 -17 -4 -36 3 -42 -2 -84 -71 -24 -38 -48 -70 -53 -70 -6 0 -264 159 -285 176 -2 1 18 36 43 77 25 40 46 77 46 80 0 4 -27 42 -60 83 -34 42 -72 99 -86 126 -14 27 -32 52 -40 55 -8 3 -51 -2 -95 -12 -44 -9 -82 -15 -84 -13 -5 5 -76 330 -73 333 2 1 41 11 88 21 l85 19 8 65 c4 36 17 106 28 155 10 50 19 95 19 101 0 6 -34 32 -75 58 l-75 47 36 57 c20 31 59 93 87 137 28 44 54 84 58 89 4 5 42 -13 85 -39 51 -32 81 -45 89 -39 7 5 39 31 71 57 33 26 87 64 122 83 34 20 62 41 62 47 0 6 -8 47 -17 89 -9 43 -14 80 -12 82 9 9 322 76 328 71 3 -4 15 -43 26 -88 20 -80 21 -82 53 -85 27 -3 32 0 32 18 0 11 -6 31 -14 43 -7 12 -19 49 -26 82 -14 70 -33 95 -69 94 -14 0 -101 -18 -194 -39z"/>
+                                <path d="M3513 3848 c-11 -13 -35 -45 -52 -71 -27 -40 -36 -47 -54 -41 -35 11 -49 10 -59 -6 -7 -11 7 -51 56 -154 37 -77 62 -142 58 -145 -5 -3 -39 -26 -75 -50 -38 -24 -67 -51 -67 -60 0 -9 24 -30 54 -49 162 -97 259 -302 228 -484 -34 -202 -184 -363 -381 -408 -73 -17 -202 -8 -269 19 l-54 21 -70 -67 c-38 -38 -74 -76 -79 -85 -7 -13 8 -52 61 -158 78 -155 78 -156 182 -167 68 -7 71 -11 88 -107 12 -71 23 -86 64 -86 52 0 349 61 375 77 22 14 23 20 18 72 -3 31 -9 72 -13 92 -6 33 -4 37 26 49 18 8 67 38 108 67 l74 54 68 -47 c53 -36 74 -45 93 -40 33 8 237 308 237 348 0 23 -13 37 -69 78 l-68 50 18 66 c10 36 21 92 25 124 l6 58 67 13 c91 17 110 25 116 52 6 24 -48 330 -67 380 -13 35 -44 43 -115 28 -87 -17 -88 -17 -127 52 -20 34 -50 81 -67 104 l-32 42 42 64 c56 86 54 107 -11 155 -126 92 -269 182 -291 182 -13 0 -33 -10 -44 -22z m188 -130 c76 -51 138 -97 139 -101 0 -5 -20 -37 -45 -71 -25 -35 -45 -71 -45 -79 0 -9 13 -31 28 -49 40 -47 85 -114 116 -175 14 -29 32 -53 39 -53 6 1 41 7 77 15 36 8 72 14 81 15 12 0 22 -35 48 -166 17 -92 31 -168 29 -169 -2 -2 -39 -10 -82 -19 -44 -9 -85 -21 -91 -26 -7 -6 -15 -41 -17 -78 -3 -37 -15 -102 -28 -144 -12 -42 -20 -84 -17 -92 3 -8 35 -35 71 -58 36 -24 66 -47 66 -51 0 -4 -43 -70 -95 -147 l-95 -139 -72 50 c-39 27 -76 49 -80 49 -5 0 -34 -20 -65 -45 -30 -25 -85 -62 -122 -82 -36 -20 -71 -42 -77 -49 -8 -10 -7 -35 4 -94 9 -44 13 -82 10 -86 -7 -6 -290 -63 -319 -64 -12 0 -19 18 -29 73 -7 39 -16 79 -21 88 -6 11 -35 20 -97 28 l-88 12 -57 116 -58 115 47 51 c26 29 49 54 50 56 2 1 27 -5 56 -15 80 -28 242 -26 329 4 297 102 449 422 339 715 -34 90 -90 165 -179 238 l-44 36 61 37 c33 20 62 42 65 50 3 7 -19 65 -48 127 -49 103 -52 114 -37 125 10 6 37 41 62 78 25 36 47 66 49 66 2 0 66 -42 142 -92z"/>
+                                <path d="M3051 2786 c-35 -19 -50 -54 -51 -116 0 -98 57 -150 152 -137 60 8 84 29 98 86 15 64 5 127 -26 158 -19 19 -33 23 -86 23 -35 -1 -74 -7 -87 -14z"/>
+                            </g>
+                        </svg>
+                    </div>
                     <h3 class="struggle-heading">The "Exception" Hell</h3>
                     <p class="struggle-description">Your standard workflow works for 80% of jobs. The other 20% require manual intervention, destroying your efficiency.</p>
                 </div>
@@ -122,50 +128,75 @@
 
                 <div class="solution-feature">
                     <div class="feature-number">03</div>
-                    <h3 class="solution-feature-title">Bi-Directional Sync</h3>
-                    <p class="solution-feature-text">When the press changes a status or ink consumption is calculated, we write that data back to your MIS. Automatically.</p>
+                    <h3 class="solution-feature-title">The Feedback Loop</h3>
+                    <p class="solution-feature-text"></p>Automation isn't a one-way street. When the press hits "Done", CoCoCo Platform updates your MIS instantly. No manual typing required.</p>
                 </div>
             </div>
 
-            <!-- Data Flow Diagram -->
-            <div class="data-flow-diagram">
-                <div class="flow-node flow-node-mis">
-                    <div class="node-icon">💼</div>
-                    <div class="node-label">MIS</div>
-                    <div class="node-sublabel">Customer, Orders, Planning</div>
+            <!-- Data Flow Animation & Log -->
+            <div class="data-flow-container">
+                <div class="data-flow-left">
+                    <iframe 
+                        src="data_flow_animation.html" 
+                        style="width: 100%; height: 450px; border: none; border-radius: var(--border-radius); display: block;"
+                        loading="lazy"
+                        title="Data Flow Animation">
+                    </iframe>
                 </div>
+                
+                <div class="data-flow-right">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <span class="terminal-indicator">●</span> COCOCO_EVENT_LOG :: JOB #10424
+                        </div>
 
-                <div class="flow-connector flow-connector-left">
-                    <div class="connector-arrow">→</div>
-                    <div class="connector-label">JDF/XML</div>
-                </div>
+                        <div class="log-line">
+                            <span class="log-time">[14:02:10]</span>
+                            <span class="log-dir-out">&gt;&gt;</span>
+                            Sending JDF Ticket to <span class="log-sys">HP Indigo 12k</span>
+                        </div>
+                        
+                        <div class="log-line">
+                            <span class="log-time">[14:02:12]</span>
+                            <span class="log-dir-in">&lt;&lt;</span>
+                            Device Status: <span class="log-val">"Printing"</span> (Est. Time: 13m 30s)
+                        </div>
 
-                <div class="flow-node flow-node-cococo">
-                    <div class="node-icon">⚙️</div>
-                    <div class="node-label">CoCoCo</div>
-                    <div class="node-sublabel">Data Model<br>Translator</div>
-                </div>
+                        <div class="log-line">
+                            <span class="log-time">[14:15:42]</span>
+                            <span class="log-dir-in">&lt;&lt;</span>
+                            <span class="log-sys">HP Indigo</span> Report: Job Complete. Substrate: <span class="log-val">"Munken Polar 150g"</span> (Consumed: 635 sheets)
+                        </div>
 
-                <div class="flow-connector flow-connector-right">
-                    <div class="connector-arrow">→</div>
-                    <div class="connector-label">Unified API</div>
-                </div>
+                        <div class="log-line">
+                            <span class="log-time">[14:15:45]</span>
+                            <span class="log-sys">SYSTEM</span> Triggering PostPress Setup...
+                        </div>
 
-                <div class="flow-node flow-node-machines">
-                    <div class="node-icon">🖨️</div>
-                    <div class="node-label">Machines</div>
-                    <div class="node-sublabel">Presses, Cutters, Folders</div>
-                </div>
+                        <div class="log-line">
+                            <span class="log-time">[14:15:46]</span>
+                            <span class="log-dir-out">&gt;&gt;</span>
+                            Sending Geometry (A4 Booklet) to <span class="log-sys">Horizon StitchLiner</span>
+                        </div>
 
-                <!-- Bidirectional arrows -->
-                <div class="flow-bidirectional flow-bid-left">
-                    <div class="bid-arrow">←</div>
-                    <div class="bid-label">Status Updates</div>
-                </div>
+                        <div class="log-line">
+                            <span class="log-time">[14:15:48]</span>
+                            <span class="log-dir-in">&lt;&lt;</span>
+                            <span class="log-sys">StitchLiner</span> Ack: Motors Adjusting... <span class="log-val">Ready.</span>
+                        </div>
 
-                <div class="flow-bidirectional flow-bid-right">
-                    <div class="bid-arrow">←</div>
-                    <div class="bid-label">Machine Data</div>
+                        <div class="log-line">
+                            <span class="log-time">[14:45:20]</span>
+                            <span class="log-dir-in">&lt;&lt;</span>
+                            <span class="log-sys">StitchLiner</span> Finish: 50 ex. (Waste: 35 sheets)
+                        </div>
+                        
+                        <div class="log-line">
+                            <span class="log-time">[14:45:21]</span>
+                            <span class="log-dir-out">&gt;&gt;</span>
+                            Writing Costing Data to <span class="log-sys">MIS Database</span> <span class="cursor"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,25 +212,27 @@
             </div>
 
             <div class="toolkit-grid">
-                <div class="toolkit-card">
-                    <div class="toolkit-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="var(--pig)" stroke-width="2"/>
-                            <path d="M3 9H21" stroke="var(--pig)" stroke-width="2"/>
-                            <circle cx="12" cy="15" r="2" fill="var(--pig)"/>
-                            <path d="M8 15L12 13L16 15" stroke="var(--pig)" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                <div class="toolkit-card toolkit-card-left">
+                    <div class="toolkit-app-container">
+                        <iframe 
+                            src="approval_app.html" 
+                            class="toolkit-iframe toolkit-iframe-mobile"
+                            loading="lazy"
+                            title="Soft Proof Approval App">
+                        </iframe>
                     </div>
                     <h3 class="toolkit-title">The "Soft Proof" Approval</h3>
                     <p class="toolkit-text">Build a simple app where Sales can approve a proof without needing access to your complex prepress system.</p>
                 </div>
 
-                <div class="toolkit-card">
-                    <div class="toolkit-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="4" width="16" height="16" rx="1" stroke="var(--pig)" stroke-width="2"/>
-                            <path d="M4 8H20M4 12H20M4 16H20M8 4V20M12 4V20M16 4V20" stroke="var(--pig)" stroke-width="1.5"/>
-                        </svg>
+                <div class="toolkit-card toolkit-card-right">
+                    <div class="toolkit-app-container">
+                        <iframe 
+                            src="imposition_inspector.html" 
+                            class="toolkit-iframe toolkit-iframe-tablet"
+                            loading="lazy"
+                            title="Imposition Inspector App">
+                        </iframe>
                     </div>
                     <h3 class="toolkit-title">The "Imposition Check"</h3>
                     <p class="toolkit-text">Let operators verify the imposition layout on a tablet before they plate the job.</p>
@@ -207,7 +240,7 @@
             </div>
 
             <div class="toolkit-cta">
-                <a href="custom_apps.html" class="btn btn-primary">See Custom App Examples →</a>
+                <a href="custom_apps.html" class="btn btn-primary">Check out Custom Apps →</a>
             </div>
         </div>
     </section>
@@ -262,7 +295,7 @@
             <div class="cta-content-centered">
                 <h2 class="workflow-cta-title">Build a workflow that doesn't break.</h2>
                 <p class="workflow-cta-subtitle">Read our documentation or book a demo to see how we handle JDF tickets.</p>
-                <a href="https://hid25.wearecococo.com/meetings/cococo/round-robin-salesteam" class="btn btn-primary btn-large">Book a Workflow Audit</a>
+                <a href="https://meetings-eu1.hubspot.com/cococo/cococo-sales-round-robin" class="btn btn-primary btn-large">Book a Workflow Audit</a>
             </div>
         </div>
     </section>

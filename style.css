@@ -10874,6 +10874,12 @@ body:has(#oem-intro) #oem-intro {
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* Offset für sticky header */
+}
+
+/* Anchor-Links mit Header-Offset */
+section[id] {
+    scroll-margin-top: 100px;
 }
 
 /* ROI Calculator Styles */

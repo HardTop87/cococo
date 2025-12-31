@@ -1134,12 +1134,21 @@ document.addEventListener('click', (e) => {
     if (!href) return;
 
     // If href is a hash-only anchor and we are not on index, redirect to index.html#anchor
+    // UNLESS the target element exists on the current page
     if (href.startsWith('#')) {
         const path = window.location.pathname.split('/').pop();
         const onIndex = path === '' || path === 'index.html';
         if (!onIndex) {
-            e.preventDefault();
-            window.location.href = `index.html${href}`;
+            // Check if the target exists on the current page
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            // Only redirect to index if target doesn't exist on current page
+            if (!targetElement) {
+                e.preventDefault();
+                window.location.href = `index.html${href}`;
+            }
+            // If target exists, let the browser handle the anchor link normally
         }
     }
 });

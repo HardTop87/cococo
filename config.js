@@ -4,11 +4,17 @@
 window.SITE_CONFIG = {
   // site version: update this string (e.g. 1.0.0 or timestamp) on every deploy to bust cache
   version: "1.0.7",
+  
+  // NOTE: The following brand config was used for dynamic content replacement via data-config attributes.
+  // This feature is NOT currently implemented in script.js, so these values are not used.
+  // TODO: Remove this section if dynamic config replacement is never implemented.
+  /*
   brand: {
     name: "CoCoCo Platform",
     tagline: "The pioneering open platform for print",
     logoText: "CoCoCo Platform",
   },
+  */
   colors: {
     primary: "#FF79C9",      // Pig
     primaryHover: "#e86ab3",  // Slightly darker pig

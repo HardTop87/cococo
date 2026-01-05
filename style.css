@@ -2431,6 +2431,10 @@ body:has(#oem-intro) #oem-intro {
     margin-bottom: 1rem;
 }
 
+.privacy-section h3.subsection-heading {
+    margin-top: 2rem;
+}
+
 .privacy-section p {
     line-height: 1.8;
     margin-bottom: 1rem;
@@ -2628,6 +2632,20 @@ body:has(#oem-intro) #oem-intro {
     margin: 0;
 }
 
+.managing-directors {
+    font-family: 'Sofia Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    line-height: 1.8;
+    margin: 0;
+}
+
+.managing-directors strong {
+    color: var(--berry);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2654,6 +2672,14 @@ body:has(#oem-intro) #oem-intro {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--berry);
+}
+
+.info-value small {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-light);
+    display: block;
+    margin-top: 0.25rem;
 }
 
 .contact-box {
@@ -2693,6 +2719,27 @@ body:has(#oem-intro) #oem-intro {
     .info-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+    }
+
+    .info-box {
+        padding: 1.5rem;
+    }
+
+    .info-box h3 {
+        font-size: 1.3rem;
+    }
+
+    .address,
+    .managing-directors {
+        font-size: 1rem;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+    }
+
+    .contact-box {
+        padding: 1.25rem;
     }
 }
 
@@ -10987,6 +11034,7 @@ section[id] {
     border-radius: 5px;
     background: rgba(255, 121, 201, 0.2);
     outline: none;
+    appearance: none;
     -webkit-appearance: none;
 }
 
@@ -12930,6 +12978,7 @@ section[id] {
     object-fit: contain;
     /* High-res images (256x256) für perfekte Retina-Darstellung */
     image-rendering: auto;
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
 }

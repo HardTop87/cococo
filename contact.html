@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - CoCoCo Platform</title>
     <link rel="stylesheet" href="style.css?v=1.0.9">
+    <link rel="stylesheet" href="silktide-consent-manager.css">
     <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="images/icons/favicon.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#FF79C9">
+    
+    <!-- Cookie Consent Manager - Load early -->
+    <script src="silktide-consent-manager.js"></script>
+    <script src="cookie-init.js"></script>
 </head>
 <body>
     <!-- Header Placeholder -->
@@ -47,8 +52,11 @@
                     <h2>Option 2: Send a Request</h2>
                     <p>Prefer to write it down? Give us some details about your current setup and pain points so we can prepare a tailored answer for you.</p>
                     
-                    <div id="hubspot-form">
-                        <!-- HubSpot Form will load here -->
+                    <div id="hubspot-form" 
+                         data-hubspot-form="f35467d7-46f0-4cd1-8b4d-e76d13b93f08"
+                         data-hubspot-portal="144439007"
+                         data-hubspot-region="eu1">
+                        <!-- HubSpot Form will load here if marketing cookies are accepted -->
                     </div>
                 </div>
             </div>
@@ -64,17 +72,6 @@
     <script>
         loadPartial('partials/header.html', 'site-header');
         loadPartial('partials/footer.html', 'site-footer');
-    </script>
-    
-    <!-- HubSpot Form Script -->
-    <script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
-    <script>
-        hbspt.forms.create({
-            region: "eu1",
-            portalId: "144439007",
-            formId: "f35467d7-46f0-4cd1-8b4d-e76d13b93f08",
-            target: "#hubspot-form"
-        });
     </script>
 </body>
 </html>

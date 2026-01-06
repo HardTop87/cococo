@@ -72,6 +72,42 @@ window.loadHubSpotForms = function() {
     }
 };
 
+// Google Analytics Consent Mode v2 - Default state
+// Check localStorage for previous consent choices and use them as defaults
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+
+// Enable URL passthrough for cookieless measurement (Google recommendation)
+// This passes gclid/dclid parameters in URLs for better conversion tracking
+gtag('set', 'url_passthrough', true);
+
+// Set default consent based on localStorage (Silktide recommendation)
+// This prevents data collection before consent is given, but respects previous choices
+// Region-specific: Stricter defaults for EEA (European Economic Area)
+gtag('consent', 'default', {
+  'analytics_storage': localStorage.getItem('silktideCookieChoice_analytics') === 'true' ? 'granted' : 'denied',
+  'ad_storage': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'ad_user_data': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'ad_personalization': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'functionality_storage': 'granted',  // Necessary cookies always granted
+  'security_storage': 'granted',  // Necessary cookies always granted
+  'wait_for_update': 500,  // Wait 500ms for consent banner to load (async CMPs)
+  'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO']  // EEA countries
+});
+
+// Fallback for non-EEA regions (same settings but explicitly defined)
+gtag('consent', 'default', {
+  'analytics_storage': localStorage.getItem('silktideCookieChoice_analytics') === 'true' ? 'granted' : 'denied',
+  'ad_storage': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'ad_user_data': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'ad_personalization': localStorage.getItem('silktideCookieChoice_marketing') === 'true' ? 'granted' : 'denied',
+  'functionality_storage': 'granted',
+  'security_storage': 'granted',
+  'wait_for_update': 500
+});
+
+gtag('js', new Date());
+
 // Global function to open cookie preferences modal
 window.openCookiePreferences = function() {
     console.log('🍪 Opening cookie preferences modal...');
@@ -80,6 +116,31 @@ window.openCookiePreferences = function() {
     } else {
         console.error('❌ Cookie manager instance not found');
     }
+};
+
+// Load Google Analytics (gtag.js)
+window.loadGoogleAnalytics = function() {
+    console.log('📊 Loading Google Analytics...');
+    
+    // Check if already loaded
+    if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+        console.log('⏭️ Google Analytics already loaded');
+        return;
+    }
+    
+    // Load gtag.js script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-45K2K9Z2WZ';
+    document.head.appendChild(script);
+    
+    // Configure GA with IP anonymization (consent already updated in onAccept)
+    script.onload = function() {
+        gtag('config', 'G-45K2K9Z2WZ', {
+            'anonymize_ip': true  // IP anonymization for GDPR
+        });
+        console.log('✅ Google Analytics loaded and configured with consent');
+    };
 };
 
 // Show placeholder for blocked HubSpot forms
@@ -148,15 +209,33 @@ function initializeCookieBanner() {
                 },
                 {
                     id: 'marketing',
-                    name: 'Marketing & Analytics',
+                    name: 'Marketing Cookies',
                     description: 'We use <strong>HubSpot</strong> to manage contact forms and newsletter subscriptions. This tracks form submissions, email addresses, and basic usage to improve our service and respond to inquiries.<br><a href="privacy.html" target="_blank">Privacy Policy</a>',
                     defaultValue: false,
                     onAccept: function() {
                         console.log('✅ Marketing cookies accepted - Loading HubSpot forms');
+                        // Update consent for marketing/ads
+                        if (typeof gtag === 'function') {
+                            gtag('consent', 'update', {
+                                'ad_storage': 'granted',
+                                'ad_user_data': 'granted',
+                                'ad_personalization': 'granted'
+                            });
+                            // Fire event for tracking
+                            dataLayer.push({'event': 'consent_accepted_marketing'});
+                        }
                         loadHubSpotForms();
                     },
                     onReject: function() {
                         console.log('❌ Marketing cookies rejected - Removing forms and showing placeholders');
+                        // Update consent to denied
+                        if (typeof gtag === 'function') {
+                            gtag('consent', 'update', {
+                                'ad_storage': 'denied',
+                                'ad_user_data': 'denied',
+                                'ad_personalization': 'denied'
+                            });
+                        }
                         // Remove loaded forms and reset containers
                         const formContainers = document.querySelectorAll('[data-hubspot-form]');
                         formContainers.forEach(container => {
@@ -167,6 +246,33 @@ function initializeCookieBanner() {
                         });
                         // Show placeholders
                         showHubSpotPlaceholder();
+                    }
+                },
+                {
+                    id: 'analytics',
+                    name: 'Analytics Cookies',
+                    description: 'We use <strong>Google Analytics</strong> with <strong>Google Signals</strong> to understand how visitors use our website. This enables cross-device tracking and links your usage data with your Google account data (if you\'re signed in to Google and have personalized ads enabled).<br><strong>What is tracked:</strong> Page views, session duration, traffic sources, cross-device behavior, demographics (age, gender, interests from Google account).<br><strong>Data processing:</strong> IP anonymization enabled, data shared with Google LLC (USA), 14 months retention.<br><a href="privacy.html" target="_blank">Privacy Policy</a>',
+                    defaultValue: false,
+                    onAccept: function() {
+                        console.log('✅ Analytics cookies accepted - Loading Google Analytics');
+                        // Update consent for analytics
+                        if (typeof gtag === 'function') {
+                            gtag('consent', 'update', {
+                                'analytics_storage': 'granted'
+                            });
+                            // Fire event for tracking
+                            dataLayer.push({'event': 'consent_accepted_analytics'});
+                        }
+                        loadGoogleAnalytics();
+                    },
+                    onReject: function() {
+                        console.log('❌ Analytics cookies rejected - Google Analytics blocked');
+                        // Update consent to denied
+                        if (typeof gtag === 'function') {
+                            gtag('consent', 'update', {
+                                'analytics_storage': 'denied'
+                            });
+                        }
                     }
                 }
             ],
@@ -198,14 +304,17 @@ function initializeCookieBanner() {
             
             // Silktide stores cookie choices as separate localStorage items
             const marketingChoice = localStorage.getItem('silktideCookieChoice_marketing');
+            const analyticsChoice = localStorage.getItem('silktideCookieChoice_analytics');
             const initialChoice = localStorage.getItem('silktideCookieBanner_InitialChoice');
             
             console.log('📊 Marketing cookie choice:', marketingChoice);
+            console.log('📊 Analytics cookie choice:', analyticsChoice);
             console.log('📊 Initial choice made:', initialChoice);
             
             // Only act if user has made a choice (initialChoice exists and is truthy)
             // Silktide uses '1' for true, not 'true'
             if (initialChoice === '1' || initialChoice === 'true') {
+                // Check Marketing cookies (HubSpot)
                 if (marketingChoice === 'false' || marketingChoice === '0') {
                     console.log('❌ Marketing cookies rejected - calling showHubSpotPlaceholder');
                     showHubSpotPlaceholder();
@@ -214,6 +323,14 @@ function initializeCookieBanner() {
                     loadHubSpotForms();
                 } else {
                     console.log('⚠️ Marketing cookie state unclear:', marketingChoice);
+                }
+                
+                // Check Analytics cookies (Google Analytics)
+                if (analyticsChoice === 'true' || analyticsChoice === '1') {
+                    console.log('✅ Analytics cookies accepted - calling loadGoogleAnalytics');
+                    loadGoogleAnalytics();
+                } else {
+                    console.log('❌ Analytics cookies not accepted - Google Analytics blocked');
                 }
             } else {
                 console.log('ℹ️ No cookie consent choice found yet (banner not interacted with)');

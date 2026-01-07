@@ -399,6 +399,14 @@ class SilktideCookieBanner {
         : ''
     }>${rejectNonEssentialButtonText}</button>`;
     
+    // Confirm Selection button (for custom choices)
+    const confirmSelectionButtonText = this.config.text?.banner?.confirmSelectionButtonText || 'Confirm Selection';
+    const confirmSelectionButtonLabel = this.config.text?.banner?.confirmSelectionButtonAccessibleLabel;
+    const confirmSelectionButton = `<button class="preferences-confirm-selection st-button st-button--secondary"${
+      confirmSelectionButtonLabel && confirmSelectionButtonLabel !== confirmSelectionButtonText 
+        ? ` aria-label="${confirmSelectionButtonLabel}"` 
+        : ''
+    }>${confirmSelectionButtonText}</button>`;
     
 
     const modalContent = `
@@ -445,6 +453,7 @@ class SilktideCookieBanner {
       </section>
       <footer>
         ${acceptAllButton}
+        ${confirmSelectionButton}
         ${rejectNonEssentialButton}
       </footer>
     `;
@@ -657,6 +666,42 @@ class SilktideCookieBanner {
       });
       acceptAllButton?.addEventListener('click', () => this.handleCookieChoice(true));
       rejectAllButton?.addEventListener('click', () => this.handleCookieChoice(false));
+      
+      // Confirm Selection button - save current checkbox states
+      const confirmSelectionButton = this.modal.querySelector('.preferences-confirm-selection');
+      confirmSelectionButton?.addEventListener('click', () => {
+        // Get all checkboxes in preferences
+        const preferencesSection = this.modal.querySelector('#cookie-preferences');
+        const checkboxes = preferencesSection.querySelectorAll('input[type="checkbox"]');
+        
+        // Save each checkbox state to localStorage
+        checkboxes.forEach(checkbox => {
+          const [, cookieId] = checkbox.id.split('cookies-');
+          const isAccepted = checkbox.checked;
+          const cookieType = this.config.cookieTypes.find(type => type.id === cookieId);
+          
+          if (cookieType && !cookieType.required) {
+            // Update localStorage
+            localStorage.setItem(
+              `silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`,
+              isAccepted.toString()
+            );
+            
+            // Run the appropriate callback
+            if (isAccepted && typeof cookieType.onAccept === 'function') {
+              cookieType.onAccept();
+            } else if (!isAccepted && typeof cookieType.onReject === 'function') {
+              cookieType.onReject();
+            }
+          }
+        });
+        
+        // Mark that initial choice was made
+        this.setInitialCookieChoiceMade();
+        
+        // Close modal
+        this.toggleModal(false);
+      });
 
       // Banner Focus Trap
       const focusableElements = this.getFocusableElements(this.modal);

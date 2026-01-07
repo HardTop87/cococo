@@ -1,0 +1,26 @@
+# CoCoCo Platform - Robots.txt
+# https://wearecococo.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow pricing during beta/development phase
+Disallow: /pricing.html
+
+# Disallow old/backup/test files
+Disallow: /*copy*.html
+Disallow: /*BACKUP*.html
+Disallow: /openinfra_demo*.html
+Disallow: /hero-bg.html
+
+# Disallow demo pages (optional - remove if you want them indexed)
+Disallow: /platform_whitelabel_demo.html
+Disallow: /custom_apps_simulation.html
+
+# Allow crawling of assets
+Allow: /style.css
+Allow: /script.js
+Allow: /images/
+
+# Sitemap
+Sitemap: https://wearecococo.com/sitemap.xml

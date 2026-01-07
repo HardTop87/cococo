@@ -200,8 +200,8 @@ function initializeCookieBanner() {
             cookieTypes: [
                 {
                     id: 'necessary',
-                    name: 'Necessary Cookies',
-                    description: 'These cookies are essential for the website to function properly. They enable basic features like page navigation, storing your language preferences, and remembering your selected currency and billing interval on the pricing page.<br><strong>Examples:</strong> Session cookies, preference storage (localStorage)',
+                    name: 'Necessary',
+                    description: '<p>These cookies are essential for the website to function properly. They enable basic features like page navigation, storing your language preferences, and remembering your selected currency and billing interval on the pricing page.</p><p><em>Examples: Session cookies, preference storage (localStorage).</em></p>',
                     required: true,
                     onAccept: function() {
                         console.log('✅ Necessary cookies accepted (always active)');
@@ -209,8 +209,8 @@ function initializeCookieBanner() {
                 },
                 {
                     id: 'marketing',
-                    name: 'Marketing Cookies',
-                    description: 'We use <strong>HubSpot</strong> to manage contact forms and newsletter subscriptions. This tracks form submissions, email addresses, and basic usage to improve our service and respond to inquiries.<br><a href="privacy.html" target="_blank">Privacy Policy</a>',
+                    name: 'Marketing',
+                    description: '<p>We use HubSpot to facilitate our contact forms and newsletter subscriptions. This helps us track inquiries, manage subscriptions, and optimize our communication with you.</p>',
                     defaultValue: false,
                     onAccept: function() {
                         console.log('✅ Marketing cookies accepted - Loading HubSpot forms');
@@ -250,8 +250,8 @@ function initializeCookieBanner() {
                 },
                 {
                     id: 'analytics',
-                    name: 'Analytics Cookies',
-                    description: 'We use <strong>Google Analytics</strong> with <strong>Google Signals</strong> to understand how visitors use our website. This enables cross-device tracking and links your usage data with your Google account data (if you\'re signed in to Google and have personalized ads enabled).<br><strong>What is tracked:</strong> Page views, session duration, traffic sources, cross-device behavior, demographics (age, gender, interests from Google account).<br><strong>Data processing:</strong> IP anonymization enabled, data shared with Google LLC (USA), 14 months retention.<br><a href="privacy.html" target="_blank">Privacy Policy</a>',
+                    name: 'Analytics',
+                    description: '<p>We use Google Analytics 4 extended by Google Signals. This allows us to analyze visitor behavior across devices (Cross-Device Tracking).</p><p><strong>Note:</strong> If you are logged into your Google account and have personalized ads enabled, Google provides us with aggregated demographic data (e.g., age, interests). Your IP address is anonymized.</p>',
                     defaultValue: false,
                     onAccept: function() {
                         console.log('✅ Analytics cookies accepted - Loading Google Analytics');

@@ -1,9 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - Triple C Labs</title>
+    <title>Allgemeine Geschäftsbedingungen / Terms of Service - Triple C Labs</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Allgemeine Geschäftsbedingungen (AGB) / Terms of Service für CoCoCo Platform. B2B-Bedingungen für Abonnements, Service Level, Haftung und Datenschutz gemäß deutschem Recht.">
+    <meta name="keywords" content="AGB, Terms of Service, Geschäftsbedingungen, CoCoCo, Triple C Labs, B2B terms, SaaS terms">
+    <meta name="author" content="Triple C Labs GmbH i.G.">
+    <link rel="canonical" href="https://wearecococo.com/Terms.html">
+    <meta name="robots" content="noindex, follow">
+    
+    <!-- Hreflang for bilingual content -->
+    <link rel="alternate" hreflang="de" href="https://wearecococo.com/Terms.html">
+    <link rel="alternate" hreflang="en" href="https://wearecococo.com/Terms.html">
+    <link rel="alternate" hreflang="x-default" href="https://wearecococo.com/Terms.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wearecococo.com/Terms.html">
+    <meta property="og:title" content="Terms of Service - Triple C Labs">
+    <meta property="og:description" content="Terms of Service for CoCoCo Platform (German/English available).">
+    <meta property="og:site_name" content="CoCoCo Platform">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:locale:alternate" content="en_US">
+    
     <link rel="stylesheet" href="style.css?v=1.0.9">
     <link rel="stylesheet" href="silktide-consent-manager.css">
     <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
@@ -15,139 +37,460 @@
     <!-- Cookie Consent Manager - Load early -->
     <script src="silktide-consent-manager.js"></script>
     <script src="cookie-init.js"></script>
+    
+    <style>
+        /* Language Toggle Styles */
+        .language-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 32px 0;
+            padding: 12px;
+            background: var(--light-bg);
+            border-radius: 12px;
+        }
+        
+        .language-toggle button {
+            padding: 12px 32px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .language-toggle button:hover {
+            background: var(--peach);
+            transform: translateY(-2px);
+        }
+        
+        .language-toggle button.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .terms-content[data-lang="de"] .terms-en,
+        .terms-content[data-lang="en"] .terms-de {
+            display: none;
+        }
+        
+        .legal-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 16px 20px;
+            margin: 24px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .legal-notice strong {
+            color: #856404;
+        }
+        
+        @media (max-width: 480px) {
+            .language-toggle {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .language-toggle button {
+                width: 100%;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Print Styles for Legal Documentation */
+        @media print {
+            /* Hide interactive/navigation elements */
+            .language-toggle, 
+            #site-header, 
+            #site-footer, 
+            .cookie-banner,
+            .back-to-top {
+                display: none !important;
+            }
+            
+            /* Force black text on white background for readability */
+            body, p, h1, h2, h3, li, td, th {
+                color: #000 !important;
+                background: #fff !important;
+            }
+            
+            /* Print full URLs for links (important for legal documents) */
+            a[href]:after {
+                content: " (" attr(href) ")";
+                font-size: 0.85em;
+                color: #666 !important;
+            }
+            
+            /* Don't print URLs for internal anchors */
+            a[href^="#"]:after {
+                content: "";
+            }
+            
+            /* Ensure only active language is printed */
+            .terms-content[data-lang="de"] .terms-en { 
+                display: none !important; 
+            }
+            .terms-content[data-lang="en"] .terms-de { 
+                display: none !important; 
+            }
+            
+            /* Better page breaks */
+            .terms-section {
+                page-break-inside: avoid;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            /* Remove shadows and decorative elements */
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="site-header"></div>
 
     <section class="page-header">
         <div class="container">
-            <h1>Terms of Service</h1>
-            <p>General Terms and Conditions (AGB) for Business Customers</p>
+            <h1 id="page-title">Allgemeine Geschäftsbedingungen</h1>
+            <p id="page-subtitle">Allgemeine Geschäftsbedingungen (AGB) für Geschäftskunden</p>
         </div>
     </section>
 
     <section class="terms" id="terms">
         <div class="container">
-            <div class="terms-content">
-                <div class="terms-intro">
-                    <p class="lead-text">These Terms of Service govern your use of the CoCoCo Platform and related services provided by Triple C Labs GmbH i.G. By creating an account, you agree to these terms.</p>
-                    <p class="company-info"><strong>Triple C Labs GmbH i.G.</strong><br>Campus Starterzentrum, Geb. A1 2, 66123 Saarbrücken, Germany<br>District Court: Saarbrücken (Registration pending)</p>
+            <!-- Language Toggle -->
+            <div class="language-toggle">
+                <button onclick="switchLanguage('de')" class="lang-btn active" data-lang="de">
+                    🇩🇪 Deutsch
+                </button>
+                <button onclick="switchLanguage('en')" class="lang-btn" data-lang="en">
+                    🇬🇧 English
+                </button>
+            </div>
+            
+            <div class="terms-content" data-lang="de">
+                <!-- GERMAN VERSION (LEGALLY BINDING) -->
+                <div class="terms-de">
+                    <div class="terms-intro">
+                        <p class="lead-text">Diese Allgemeinen Geschäftsbedingungen regeln die Nutzung von CoCoCo Platform und der damit verbundenen Dienste, die von Triple C Labs GmbH i.G. bereitgestellt werden. Mit der Erstellung eines Kontos stimmen Sie diesen Bedingungen zu.</p>
+                        <p class="company-info"><strong>Triple C Labs GmbH i.G.</strong><br>Campus Starterzentrum, Geb. A1 2, 66123 Saarbrücken, Deutschland<br>Registergericht: Amtsgericht Saarbrücken (Eintragung ausstehend)</p>
+                    </div>
+
+                    <article class="terms-section">
+                        <h2>1. Geltungsbereich und Definitionen</h2>
+                        <p>Dies sind die Grundregeln („AGB") für die Nutzung unserer webbasierten Dienste und des CoCoCo Platform Accounts.</p>
+                        <p><strong>Nur B2B:</strong> Unsere Angebote und Dienstleistungen richten sich ausschließlich an <strong>Unternehmer</strong> im Sinne des § 14 BGB, juristische Personen des öffentlichen Rechts oder öffentlich-rechtliche Sondervermögen. Mit der Annahme dieser Bedingungen bestätigen Sie, dass Sie in gewerblicher oder selbständiger beruflicher Eigenschaft handeln. Wir schließen keine Verträge mit Verbrauchern.</p>
+                        
+                        <p><strong>Definition „Site" (Standort):</strong> Ein „Standort" ist grundsätzlich eine einzelne physische Produktionsanlage an einer eindeutigen Postadresse. Jedoch gelten benachbarte Gebäude oder Einrichtungen innerhalb desselben unmittelbaren Campus, die eine einheitliche Netzwerkinfrastruktur und eine zentrale MIS-Instanz (Management Information System) gemeinsam nutzen, als ein Standort. Geografisch getrennte Orte (z.B. in verschiedenen Städten oder Regionen) mit unabhängigen Produktionskapazitäten erfordern stets separate Abonnements, sofern nicht ausdrücklich in einem Enterprise-Vertrag gebündelt.</p>
+                        
+                        <p>Wir sind die <strong>Triple C Labs GmbH i.G.</strong> mit Sitz im Campus Starterzentrum, 66123 Saarbrücken, Deutschland.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>2. Worum es geht</h2>
+                        <p>Wir haben eine Integration Platform as a Service (iPaaS) entwickelt, die Software und Maschinen nahtlos miteinander kommunizieren lässt.</p>
+                        <p>Um unsere Plattform zu nutzen, müssen Sie ein Konto erstellen und eine Abonnementgebühr bezahlen. Diese AGB regeln alles Wissenswerte über die Erstellung und Nutzung Ihres Kontos. Entgegenstehende AGB des Kunden gelten nicht, es sei denn, wir haben diesen ausdrücklich schriftlich zugestimmt.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>3. Dienstverfügbarkeit, Drittsysteme & Höhere Gewalt</h2>
+                        <p>Wir handeln im eigenen Namen und bieten über die Plattform Integrationen zu Drittsystemen an. Obwohl wir uns um Perfektion bemühen, können technische Störungen auftreten.</p>
+                        
+                        <div class="highlight-box">
+                            <h3>Drittsysteme (Haftungsausschluss)</h3>
+                            <p>CoCoCo agiert als neutrale Middleware. Wir übernehmen keine Gewähr für die Verfügbarkeit, Richtigkeit, Sicherheit oder Datenqualität von Drittsystemen (z.B. Maschinen, MIS/ERP-Software), die über die Plattform verbunden sind. Sie sind selbst dafür verantwortlich sicherzustellen, dass Ihre verbundenen Drittsysteme funktionsfähig sind und Sie die erforderlichen Rechte für den Zugriff auf deren Daten besitzen.</p>
+                        </div>
+
+                        <p><strong>Höhere Gewalt:</strong> Wir haften nicht für das Versäumnis oder die Verzögerung bei der Erfüllung unserer Verpflichtungen, wenn diese durch Ereignisse außerhalb unserer angemessenen Kontrolle verursacht werden (höhere Gewalt), einschließlich Naturkatastrophen, Kriege, Cyberangriffe (DDoS), Streiks, Pandemien oder behördliche Maßnahmen.</p>
+                        <p>Wir behalten uns das Recht vor, diese AGB zu aktualisieren. Wir werden Sie über Änderungen per E-Mail oder innerhalb der Plattform informieren. Wenn Sie nicht innerhalb von 4 Wochen widersprechen, gelten die neuen AGB als akzeptiert.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>4. Über Sie und Ihr Unternehmen</h2>
+                        <ul class="terms-list">
+                            <li>Sie erstellen ein Konto für Ihre juristische Person (Ihr Unternehmen).</li>
+                            <li>Ein Unternehmen muss ein legitimes Geschäft sein. Wir behalten uns das Recht vor, einen Nachweis Ihres Geschäftsstatus anzufordern (z.B. Gewerbeschein, USt-IdNr.).</li>
+                            <li>Sie sichern zu, dass Sie berechtigt sind, Ihr Unternehmen zu vertreten und im Namen des Unternehmens verbindliche Entscheidungen zu treffen.</li>
+                            <li><strong>Rechtsnachfolge:</strong> Triple C Labs ist derzeit „in Gründung" (i.G.). Mit Eintragung ins Handelsregister wird dieser Vertrag automatisch mit der eingetragenen GmbH als Rechtsnachfolgerin fortgesetzt, ohne dass der Kunde weitere Maßnahmen ergreifen muss.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>5. Ihre Pflichten</h2>
+                        <ul class="terms-list">
+                            <li><strong>Richtigkeit:</strong> Alle bereitgestellten Informationen müssen wahrheitsgemäß und korrekt sein.</li>
+                            <li><strong>Sicherheit:</strong> Sie sind für die Wahrung der Vertraulichkeit Ihrer Zugangsdaten verantwortlich. Sie haften für alle Aktivitäten, die unter Ihrem Konto stattfinden.</li>
+                            <li><strong>Compliance:</strong> Sie müssen bei der Nutzung der Plattform alle anwendbaren Gesetze und Vorschriften einhalten.</li>
+                            <li><strong>Fair Use:</strong> Sie verpflichten sich, die Plattform nicht missbräuchlich zu nutzen, einschließlich übermäßiger API-Abfragen, die die Performance für andere beeinträchtigen könnten. Wir behalten uns vor, Konten zu drosseln oder zu sperren, die gegen Fair Use verstoßen.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>6. Vertragslaufzeit & Kündigung</h2>
+                        <p><strong>Abonnementbedingungen:</strong> Der Vertrag läuft auf unbestimmte Zeit und verlängert sich automatisch basierend auf Ihrem gewählten Abrechnungsintervall (z.B. monatlich oder jährlich). Sie können jederzeit kündigen, wobei die Kündigung zum Ende Ihres aktuellen vorausbezahlten Abrechnungszeitraums wirksam wird.</p>
+                        <p><strong>Rückerstattung:</strong> Zahlungen sind nicht erstattungsfähig. Nach Kündigung behalten Sie für den Rest Ihres bezahlten Zeitraums den Zugang.</p>
+                        <p><strong>Kündigung aus wichtigem Grund:</strong> Beide Parteien haben das Recht, den Vertrag aus wichtigem Grund fristlos zu kündigen.</p>
+                        
+                        <p><strong>Datenexport & Aufbewahrung:</strong> Nach Vertragsende bewahren wir Ihre Daten für eine Kulanzfrist von <strong>3 Monaten</strong> auf. Während dieser Frist können Sie einen Export Ihrer Kundendaten und Konfigurationsartefakte anfordern. Nach Ablauf dieser Frist löschen wir Ihre Daten, sofern keine gesetzlichen Aufbewahrungsfristen gelten.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>7. Zahlung, Steuern & Sperrung</h2>
+                        <p>Alle Preise sind Nettopreise zzgl. gesetzlicher Umsatzsteuer (USt).</p>
+                        <ul class="terms-list">
+                            <li><strong>Deutschland:</strong> Gesetzliche USt (19%) wird hinzugefügt.</li>
+                            <li><strong>EU (nicht-deutsch):</strong> Reverse-Charge-Verfahren gilt bei gültiger USt-IdNr.</li>
+                            <li><strong>International / Quellensteuer:</strong> Sie sind für alle Steuern und Abgaben verantwortlich. Falls Sie gesetzlich verpflichtet sind, Steuern von Ihren Zahlungen an uns einzubehalten, müssen Sie Ihre Zahlung so aufstocken (gross-up), dass wir den vollen berechneten Betrag erhalten.</li>
+                        </ul>
+                        
+                        <p><strong>Zahlungsverzug & Sperrung:</strong> Zahlungen sind im Voraus via Stripe fällig. Bei Zahlungsausfall senden wir mindestens eine schriftliche Mahnung (E-Mail genügt). Bleibt die Zahlung <strong>14 Tage</strong> nach der Mahnung weiterhin ausstehend, behalten wir uns vor, den Zugang zur Plattform bis zum Zahlungseingang zu sperren. Bei Betrug oder schwerwiegenden Sicherheitsrisiken können wir den Zugang sofort und ohne Vorankündigung sperren.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>8. Geistiges Eigentum & Kundendaten</h2>
+                        <p><strong>Unser geistiges Eigentum:</strong> Wir behalten alle Eigentums- und Urheberrechte an der Plattform, der zugrunde liegenden Software, generischen Konnektoren und unserem Code.</p>
+                        <p><strong>Ihr geistiges Eigentum:</strong> Sie behalten alle Rechte an Ihren Daten („Kundendaten") und allen spezifischen Konfigurationsartefakten (z.B. spezifische Workflows, Mappings, JSON-Konfigurationen), die Sie mit der Plattform erstellen. Vorbehaltlich der Zahlung geltender Gebühren können Sie diese Artefakte nach Vertragsende exportieren und weiternutzen.</p>
+                        <p><strong>Lizenz an uns:</strong> Durch die Nutzung unserer Dienste gewähren Sie uns das Recht, Ihre Daten zu verarbeiten, um den Service bereitzustellen und diese an die von Ihnen verbundenen Maschinen/Apps zu übertragen.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>9. Service Level Agreement (SLA) & Verfügbarkeit</h2>
+                        
+                        <p><strong>A. Managed Cloud Hosting</strong></p>
+                        <div class="highlight-box">
+                            <p>Wenn Sie unseren <strong>Managed Cloud</strong> Service abonnieren, garantieren wir eine <strong>Verfügbarkeit von 99,5%</strong> im monatlichen Durchschnitt. Ausgenommen sind geplante Wartungsfenster (im Voraus angekündigt) und höhere Gewalt.</p>
+                        </div>
+                        <p>Falls die Verfügbarkeit in einem Abrechnungsmonat bei Managed Cloud Instanzen unter 99,5% fällt, können Sie eine Service-Gutschrift von 5% Ihrer monatlichen Hosting-Gebühr für jedes zusätzliche 1% Ausfallzeit beantragen, begrenzt auf 50% der monatlichen Gebühr. Gutschriften werden im nächsten Abrechnungszyklus angerechnet und stellen Ihr einziges Rechtsmittel für Verfügbarkeitsprobleme dar.</p>
+
+                        <p><strong>B. Self-Hosted / On-Premise</strong></p>
+                        <p>Wenn Sie die Plattform selbst hosten („Self-Hosted"), <strong>sind Sie allein verantwortlich für die Verfügbarkeit, Sicherheit und Wartung Ihrer zugrunde liegenden Infrastruktur</strong> (Server, Netzwerk, Betriebssystem). Folglich gelten die oben beschriebene Verfügbarkeitsgarantie und Service-Gutschriften nicht für selbst gehostete Instanzen. Wir bieten Support für Softwarefehler, aber die Sicherstellung des Serverbetriebs liegt in Ihrer Verantwortung.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>10. Haftung</h2>
+                        <p>Unsere Haftung für Schäden ist unabhängig vom Rechtsgrund wie folgt geregelt:</p>
+                        <ul class="terms-list">
+                            <li><strong>Unbeschränkte Haftung:</strong> Wir haften unbeschränkt für Schäden aus Vorsatz oder grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit.</li>
+                            <li><strong>Kardinalpflichten & Obergrenze:</strong> Bei leichter Fahrlässigkeit haften wir nur für die Verletzung wesentlicher Vertragspflichten (Kardinalpflichten). In solchen Fällen ist unsere Haftung auf den typischen, vorhersehbaren Schaden begrenzt. <strong>Soweit gesetzlich zulässig, ist unsere gesamte Haftung für solche Schäden auf die Summe der Gebühren begrenzt, die Sie in den zwölf (12) Monaten vor dem schadensauslösenden Ereignis gezahlt haben.</strong></li>
+                            <li><strong>Indirekte Schäden:</strong> Die Haftung für indirekte Schäden, Folgeschäden durch einen Mangel oder entgangenen Gewinn ist bei leichter Fahrlässigkeit ausgeschlossen.</li>
+                            <li><strong>Datenverlust:</strong> Die Haftung für Datenverlust ist auf den typischen Wiederherstellungsaufwand beschränkt, der bei regelmäßiger und ordnungsgemäßer Datensicherung durch Sie erforderlich gewesen wäre.</li>
+                            <li>Die vorstehenden Haftungsbeschränkungen gelten auch für unsere gesetzlichen Vertreter und Erfüllungsgehilfen.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>11. Datenschutz & KI</h2>
+                        <p>Wir verarbeiten personenbezogene Daten gemäß der <strong>DSGVO</strong>. Detaillierte Informationen finden Sie in unserer <a href="privacy.html">Datenschutzerklärung</a>.</p>
+                        
+                        <p><strong>Subunternehmer:</strong> Wir nutzen Drittanbieter (z.B. für Hosting, Zahlungsabwicklung) zur Erbringung der Dienste. Durch die Nutzung der Dienste stimmen Sie der Einbindung dieser Subunternehmer zu.</p>
+                        
+                        <p><strong>KI & Datennutzung:</strong> Wir verwenden Ihre Kundendaten <strong>nicht</strong>, um allgemeine Machine-Learning-Modelle für andere Kunden zu trainieren. Alle KI-Funktionen innerhalb der Plattform nutzen Ihre Daten ausschließlich, um Vorhersagen oder Automatisierungen für Ihr spezifisches Konto bereitzustellen.</p>
+
+                        <p>Für die Verarbeitung personenbezogener Daten in Ihrem Auftrag bieten wir einen <strong>Auftragsverarbeitungsvertrag (AVV)</strong> gemäß Art. 28 DSGVO an, der durch Verweis in diese AGB einbezogen ist.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>12. Geografische Beschränkungen</h2>
+                        <p>Unsere Dienste unterliegen Exportkontrollgesetzen und internationalen Sanktionen. Kunden aus Ländern, die EU- oder US-Sanktionen oder Embargos unterliegen, dürfen die Plattform nicht nutzen. Dies umfasst derzeit unter anderem Russland, Nordkorea, Iran, Syrien und andere von zuständigen Behörden benannte Rechtsgebiete.</p>
+                        <p>Wir behalten uns das Recht vor, diese Liste gemäß geltendem Recht zu aktualisieren.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>13. Professionelle Dienstleistungen</h2>
+                        <p>Sofern nicht ausdrücklich anders in einem Bestellformular angegeben, deckt die Abonnementgebühr nur den Zugang zur Plattform ab. Professionelle Dienstleistungen wie maßgeschneiderte Integrationsarbeiten, dedizierte Onboarding-Workshops oder Beratung werden unter einem separaten <strong>Statement of Work (SOW)</strong> erbracht.</p>
+                        <p>Im Falle eines Widerspruchs zwischen diesen AGB und einem spezifischen SOW bezüglich professioneller Dienstleistungen hat das SOW Vorrang.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>14. Vertraulichkeit</h2>
+                        <p>Jede Partei verpflichtet sich, die vertraulichen Informationen der anderen Partei mit der gleichen Sorgfalt zu schützen, die sie für ihre eigenen vertraulichen Informationen ähnlicher Art aufwendet, jedoch in keinem Fall mit weniger als angemessener Sorgfalt. Vertrauliche Informationen umfassen Geschäftsgeheimnisse, technische Daten und die Bedingungen jedes Bestellformulars. Nicht eingeschlossen sind Informationen, die ohne Verstoß gegen diese Vereinbarung öffentlich bekannt sind.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>15. Schlussbestimmungen</h2>
+                        <p><strong>Abtretung:</strong> Sie dürfen diesen Vertrag nicht ohne unsere vorherige schriftliche Zustimmung (die nicht unangemessen verweigert wird) abtreten oder übertragen. Wir können diesen Vertrag an ein verbundenes Unternehmen oder im Zusammenhang mit einer Fusion, Übernahme oder einem Verkauf von Vermögenswerten abtreten.</p>
+                        
+                        <p><strong>Gesamtvereinbarung:</strong> Diese AGB bilden zusammen mit allen anwendbaren Bestellformularen und dem AVV die gesamte Vereinbarung zwischen den Parteien.</p>
+                        
+                        <p><strong>Salvatorische Klausel:</strong> Sollte eine Bestimmung dieser AGB ungültig oder nicht durchsetzbar sein, bleiben die übrigen Bestimmungen in vollem Umfang wirksam.</p>
+
+                        <p><strong>Anwendbares Recht:</strong> Diese AGB unterliegen dem Recht der <strong>Bundesrepublik Deutschland</strong> unter Ausschluss des CISG (UN-Kaufrecht).</p>
+                        
+                        <p><strong>Gerichtsstand:</strong> Ausschließlicher Gerichtsstand ist <strong>Saarbrücken, Deutschland</strong>.</p>
+                        
+                        <p class="revision-date"><em>Letzte Revision: 5. Januar 2026</em></p>
+                    </article>
                 </div>
 
-                <article class="terms-section">
-                    <h2>1. Scope and B2B Restriction</h2>
-                    <p>These are the ground rules ("Terms") for using our web-based services and the CoCoCo Platform Account.</p>
-                    <p><strong>B2B Only:</strong> Our offers and services are directed exclusively at <strong>entrepreneurs (Unternehmer)</strong> within the meaning of § 14 of the German Civil Code (BGB), legal entities under public law, or special funds under public law. By accepting these terms, you confirm that you are acting in a commercial or self-employed professional capacity. We do not contract with consumers.</p>
-                    <p>We are <strong>Triple C Labs GmbH i.G.</strong>, located at Campus Starterzentrum, 66123 Saarbrücken, Germany.</p>
-                </article>
-
-                <article class="terms-section">
-                    <h2>2. What We're All About</h2>
-                    <p>We've created an Integration Platform as a Service (iPaaS) that helps software and machines communicate seamlessly.</p>
-                    <p>To use our platform, you'll need to create an account and pay a subscription fee. These Terms cover everything you need to know about creating and using your account. Any conflicting terms and conditions of the Customer shall not apply unless we have explicitly agreed to them in writing.</p>
-                </article>
-
-                <article class="terms-section">
-                    <h2>3. Service Availability & Force Majeure</h2>
-                    <p>We operate on our own behalf and offer third-party integrations through the Platform. While we strive for perfection, technical glitches can happen.</p>
-                    <div class="highlight-box">
-                        <h3>Force Majeure</h3>
-                        <p>We are not responsible for any failure or delay in meeting our obligations if such failure is caused by events beyond our reasonable control (Force Majeure). This includes natural disasters, wars, cyber-attacks (DDoS), strikes, pandemics, or government actions. If a Force Majeure Event occurs, we'll make reasonable efforts to minimize the impact.</p>
+                <!-- ENGLISH VERSION (FOR CONVENIENCE ONLY) -->
+                <div class="terms-en">
+                    <div class="legal-notice">
+                        <strong>Note:</strong> This English version is provided for your convenience. In case of any discrepancy between the German and English versions, the German version shall prevail and is legally binding.
                     </div>
-                    <p>We reserve the right to update these Terms. We will notify you of changes via email or within the platform. If you do not object within 4 weeks, the new Terms are deemed accepted.</p>
-                </article>
 
-                <article class="terms-section">
-                    <h2>4. About You and Your Company</h2>
-                    <ul class="terms-list">
-                        <li>You create an account for your legal entity (your Company).</li>
-                        <li>A Company must be a legitimate business. We reserve the right to request proof of your business status (e.g., trade license, VAT ID).</li>
-                        <li>You warrant that you are authorized to represent your Company and make binding decisions on its behalf.</li>
-                        <li><strong>In Formation (i.G.) Status:</strong> Please note that Triple C Labs is currently "in formation" (i.G.). Contracts concluded during this phase remain valid and automatically transfer to the GmbH upon its registration in the commercial register.</li>
-                    </ul>
-                </article>
-
-                <article class="terms-section">
-                    <h2>5. Your Obligations</h2>
-                    <ul class="terms-list">
-                        <li><strong>Accuracy:</strong> All information provided must be true and accurate.</li>
-                        <li><strong>Security:</strong> You are responsible for maintaining the confidentiality of your login credentials. You are liable for all activities that occur under your account.</li>
-                        <li><strong>Compliance:</strong> You must comply with all applicable laws and regulations when using the Platform.</li>
-                        <li><strong>Fair Use:</strong> You agree not to misuse the Platform, including excessive polling of APIs that could degrade performance for others. We reserve the right to throttle or suspend accounts violating fair use.</li>
-                    </ul>
-                </article>
-
-                <article class="terms-section">
-                    <h2>6. Contract Duration & Termination</h2>
-                    <p><strong>Subscription Terms:</strong> The agreement runs for an indefinite period and automatically renews based on your selected billing interval (e.g., monthly or annually). You can cancel at any time, with cancellation taking effect at the end of your current pre-paid billing period.</p>
-                    <p><strong>Example:</strong> If you have a monthly subscription that renews on the 19th and you cancel on January 18th, your access continues until January 19th. For annual subscriptions, cancellation takes effect at the end of the 12-month period you have paid for.</p>
-                    <p><strong>Payment Processing:</strong> We use Stripe for payment processing. Your subscription renews automatically unless you cancel before the next billing date.</p>
-                    <p><strong>Refund Policy:</strong> Payments are non-refundable. Upon cancellation, you retain access for the remainder of your paid period.</p>
-                    <p><strong>Termination for Cause:</strong> Both parties have the right to terminate the contract immediately for good cause (wichtiger Grund). For us, good cause includes, in particular, a serious breach of these Terms or default in payment.</p>
-                    <p><strong>Data after Termination:</strong> We retain your data for <strong>3 months</strong> after termination to allow for potential reactivation. After this period, data is deleted unless statutory retention periods apply.</p>
-                </article>
-
-                <article class="terms-section">
-                    <h2>7. Payment and VAT</h2>
-                    <p>All prices are net prices exclusive of the statutory Value Added Tax (VAT) applicable at the time.</p>
-                    <p><strong>VAT Handling:</strong></p>
-                    <ul class="terms-list">
-                        <li><strong>Customers in Germany:</strong> Statutory German VAT (19%) will be added to the invoice.</li>
-                        <li><strong>EU Customers (non-German):</strong> If you provide a valid VAT ID, the reverse-charge mechanism applies (VAT-exempt invoice; you are responsible for self-assessing VAT in your country).</li>
-                        <li><strong>Non-EU Customers:</strong> Taxes are applied according to international tax regulations.</li>
-                    </ul>
-                    <p>Payments are due in advance according to your billing interval (monthly or annually) via Stripe. If you default on payment, we reserve the right to suspend access to the platform.</p>
-                </article>
-
-                <article class="terms-section">
-                    <h2>8. Intellectual Property</h2>
-                    <p>We grant you a non-exclusive, non-transferable, time-limited right to use the CoCoCo Platform for your own internal business purposes. We retain all ownership and intellectual property rights to the Platform and our code.</p>
-                    <p>By using our services, you grant us the right to process your data to provide the service and to transfer it to the machines/apps you have connected.</p>
-                </article>
-
-                <article class="terms-section">
-                    <h2>9. Service Level Agreement (SLA)</h2>
-                    <div class="highlight-box">
-                        <p>We aim for <strong>99.5% uptime</strong> on a monthly average. This excludes scheduled maintenance windows and force majeure events.</p>
+                    <div class="terms-intro">
+                        <p class="lead-text">These Terms of Service govern the use of CoCoCo Platform and related services provided by Triple C Labs GmbH i.G. By creating an account, you agree to these Terms.</p>
+                        <p class="company-info"><strong>Triple C Labs GmbH i.G.</strong><br>Campus Starterzentrum, Bldg. A1 2, 66123 Saarbrücken, Germany<br>Commercial Register: Amtsgericht Saarbrücken (registration pending)</p>
                     </div>
-                    <p>In the event of service interruptions materially affecting your ability to use the Platform, we will work diligently to restore service. Any compensation for downtime will be evaluated on a case-by-case basis and is at our sole discretion.</p>
-                </article>
 
-                <article class="terms-section">
-                    <h2>10. Liability (Important for Germany)</h2>
-                    <p>Our liability for damages, regardless of the legal ground, is regulated as follows:</p>
-                    <ul class="terms-list">
-                        <li><strong>Unlimited Liability:</strong> We are liable without limitation for damages caused by intent (Vorsatz) or gross negligence (grobe Fahrlässigkeit), as well as for injury to life, body, or health.</li>
-                        <li><strong>Cardinal Obligations:</strong> In cases of slight negligence, we are only liable for the breach of material contractual obligations (cardinal obligations)—i.e., obligations whose fulfillment is essential for the proper execution of the contract and on which you regularly rely. In such cases, our liability is limited to the typical, foreseeable damage.</li>
-                        <li><strong>Indirect Damages:</strong> Liability for indirect damages, consequential harm caused by a defect, or lost profits is excluded in cases of slight negligence.</li>
-                        <li><strong>Data Loss:</strong> Liability for data loss is limited to the typical recovery effort that would have been required if regular and proper backups had been made by you.</li>
-                        <li>The above limitations also apply to our legal representatives and vicarious agents.</li>
-                    </ul>
-                </article>
+                    <article class="terms-section">
+                        <h2>1. Scope and Definitions</h2>
+                        <p>These are the ground rules ("Terms") for using our web-based services and the CoCoCo Platform Account.</p>
+                        <p><strong>B2B Only:</strong> Our offers and services are directed exclusively at <strong>entrepreneurs (Unternehmer)</strong> within the meaning of § 14 of the German Civil Code (BGB), legal entities under public law, or special funds under public law. By accepting these terms, you confirm that you are acting in a commercial or self-employed professional capacity. We do not contract with consumers.</p>
+                        
+                        <p><strong>Definition of "Site":</strong> A "Site" is generally defined as a single physical production facility at a distinct postal address. However, adjacent buildings or facilities within the same immediate campus that share a unified network infrastructure and a single central Management Information System (MIS) instance are considered one Site. Geographically separate locations (e.g., in different cities or regions) with independent production capabilities always require separate subscriptions, unless explicitly bundled in an Enterprise agreement.</p>
+                        
+                        <p>We are <strong>Triple C Labs GmbH i.G.</strong>, located at Campus Starterzentrum, 66123 Saarbrücken, Germany.</p>
+                    </article>
 
-                <article class="terms-section">
-                    <h2>11. Data Protection</h2>
-                    <p>We process personal data in accordance with the <strong>General Data Protection Regulation (GDPR)</strong>. Detailed information can be found in our <a href="privacy.html">Privacy Policy</a>.</p>
-                    <p>For the processing of personal data on your behalf (e.g., your customer data passing through the platform), we offer a <strong>Data Processing Agreement (DPA / AVV)</strong> pursuant to Art. 28 GDPR, which is incorporated into these Terms by reference.</p>
-                </article>
+                    <article class="terms-section">
+                        <h2>2. What We're All About</h2>
+                        <p>We've created an Integration Platform as a Service (iPaaS) that helps software and machines communicate seamlessly.</p>
+                        <p>To use our platform, you'll need to create an account and pay a subscription fee. These Terms cover everything you need to know about creating and using your account. Any conflicting terms and conditions of the Customer shall not apply unless we have explicitly agreed to them in writing.</p>
+                    </article>
 
-                <article class="terms-section">
-                    <h2>12. Geographic Restrictions</h2>
-                    <p>Our services are subject to export control laws and international sanctions. Customers from countries subject to EU or US sanctions or embargoes are not permitted to use the Platform. This currently includes, but is not limited to, Russia, North Korea, Iran, Syria, and other jurisdictions as designated by relevant authorities.</p>
-                    <p>We reserve the right to update this list in accordance with applicable law.</p>
-                </article>
+                    <article class="terms-section">
+                        <h2>3. Service Availability, Third-Party Systems & Force Majeure</h2>
+                        <p>We operate on our own behalf and offer third-party integrations through the Platform. While we strive for perfection, technical glitches can happen.</p>
+                        
+                        <div class="highlight-box">
+                            <h3>Third-Party Systems (Disclaimer)</h3>
+                            <p>CoCoCo acts as a neutral intermediary ("Middleware"). We do not warrant the availability, accuracy, security, or data quality of third-party systems (e.g., machines, MIS/ERP software) connected via the Platform. You are responsible for ensuring that your connected third-party systems are functional and that you have the necessary rights to access their data.</p>
+                        </div>
 
-                <article class="terms-section">
-                    <h2>13. Dispute Resolution</h2>
-                    <p>We will attempt to resolve any disputes amicably. As a purely B2B service, we are not obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
-                </article>
+                        <p><strong>Force Majeure:</strong> We are not responsible for any failure or delay in meeting our obligations if such failure is caused by events beyond our reasonable control (Force Majeure), including natural disasters, wars, cyber-attacks (DDoS), strikes, pandemics, or government actions.</p>
+                        <p>We reserve the right to update these Terms. We will notify you of changes via email or within the platform. If you do not object within 4 weeks, the new Terms are deemed accepted.</p>
+                    </article>
 
-                <article class="terms-section">
-                    <h2>14. Applicable Law & Jurisdiction</h2>
-                    <p><strong>Governing Law:</strong> These Terms are governed by the laws of the <strong>Federal Republic of Germany</strong>, excluding the UN Convention on Contracts for the International Sale of Goods (CISG).</p>
-                    <p><strong>Jurisdiction:</strong> The exclusive place of jurisdiction for all disputes arising from or in connection with this contract is <strong>Saarbrücken, Germany</strong>, provided the customer is a merchant, a legal entity under public law, or a special fund under public law.</p>
-                    <p class="revision-date"><em>Last Revision: January 5, 2026</em></p>
-                </article>
+                    <article class="terms-section">
+                        <h2>4. About You and Your Company</h2>
+                        <ul class="terms-list">
+                            <li>You create an account for your legal entity (your Company).</li>
+                            <li>A Company must be a legitimate business. We reserve the right to request proof of your business status (e.g., trade license, VAT ID).</li>
+                            <li>You warrant that you are authorized to represent your Company and make binding decisions on its behalf.</li>
+                            <li><strong>Legal Succession:</strong> Triple C Labs is currently "in formation" (i.G.). Upon registration in the commercial register, this Agreement will automatically continue with the registered GmbH as the legal successor without requiring any further action by the Customer.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>5. Your Obligations</h2>
+                        <ul class="terms-list">
+                            <li><strong>Accuracy:</strong> All information provided must be true and accurate.</li>
+                            <li><strong>Security:</strong> You are responsible for maintaining the confidentiality of your login credentials. You are liable for all activities that occur under your account.</li>
+                            <li><strong>Compliance:</strong> You must comply with all applicable laws and regulations when using the Platform.</li>
+                            <li><strong>Fair Use:</strong> You agree not to misuse the Platform, including excessive polling of APIs that could degrade performance for others. We reserve the right to throttle or suspend accounts violating fair use.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>6. Contract Duration & Termination</h2>
+                        <p><strong>Subscription Terms:</strong> The agreement runs for an indefinite period and automatically renews based on your selected billing interval (e.g., monthly or annually). You can cancel at any time, with cancellation taking effect at the end of your current pre-paid billing period.</p>
+                        <p><strong>Refund Policy:</strong> Payments are non-refundable. Upon cancellation, you retain access for the remainder of your paid period.</p>
+                        <p><strong>Termination for Cause:</strong> Both parties have the right to terminate the contract immediately for good cause (wichtiger Grund).</p>
+                        
+                        <p><strong>Data Export & Retention:</strong> Following termination, we retain your data for a grace period of <strong>3 months</strong>. During this period, you may request an export of your Customer Data and configuration artifacts. After this retention period, we delete your data unless statutory retention periods apply.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>7. Payment, Taxes & Suspension</h2>
+                        <p>All prices are net prices exclusive of statutory Value Added Tax (VAT).</p>
+                        <ul class="terms-list">
+                            <li><strong>Germany:</strong> Statutory VAT (19%) is added.</li>
+                            <li><strong>EU (non-German):</strong> Reverse-charge applies if valid VAT ID provided.</li>
+                            <li><strong>International / Withholding Tax:</strong> You are responsible for all taxes and duties. If you are required by law to withhold any taxes from your payments to us, you must gross up your payment so that we receive the full amount invoiced.</li>
+                        </ul>
+                        
+                        <p><strong>Late Payment & Suspension:</strong> Payments are due in advance via Stripe. If a payment fails, we will provide at least one written reminder (email sufficient). If payment remains outstanding for <strong>14 days</strong> after the reminder, we reserve the right to suspend access to the Platform until payment is received. We may suspend access immediately without notice in cases of fraud or severe security risks.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>8. Intellectual Property & Customer Data</h2>
+                        <p><strong>Our IP:</strong> We retain all ownership and intellectual property rights to the Platform, the underlying software, generic connectors, and our code.</p>
+                        <p><strong>Your IP:</strong> You retain all rights to your data ("Customer Data") and any specific configuration artifacts (e.g., specific workflows, mappings, JSON configurations) you create using the Platform. Subject to payment of applicable fees, you may export and continue to use these artifacts after termination.</p>
+                        <p><strong>License to Us:</strong> By using our services, you grant us the right to process your data to provide the service and to transfer it to the machines/apps you have connected.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>9. Service Level Agreement (SLA) & Availability</h2>
+                        
+                        <p><strong>A. Managed Cloud Hosting</strong></p>
+                        <div class="highlight-box">
+                            <p>If you subscribe to our <strong>Managed Cloud</strong> service, we guarantee <strong>99.5% uptime</strong> on a monthly average. This excludes scheduled maintenance windows (announced in advance) and force majeure events.</p>
+                        </div>
+                        <p>If availability falls below 99.5% in a given billing month for Managed Cloud instances, you may request a service credit of 5% of your monthly hosting fee for every additional 1% of downtime, capped at 50% of the monthly fee. Credits are applied to the next billing cycle and are your sole remedy for availability issues.</p>
+
+                        <p><strong>B. Self-Hosted / On-Premise</strong></p>
+                        <p>If you choose to host the Platform yourself ("Self-Hosted"), <strong>you are solely responsible for the availability, security, and maintenance of your underlying infrastructure</strong> (server, network, operating system). Consequently, the uptime guarantee and service credits described above do not apply to self-hosted instances. We provide support for software defects, but ensuring the server keeps running is your responsibility.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>10. Liability</h2>
+                        <p>Our liability for damages, regardless of the legal ground, is regulated as follows:</p>
+                        <ul class="terms-list">
+                            <li><strong>Unlimited Liability:</strong> We are liable without limitation for damages caused by intent (Vorsatz) or gross negligence (grobe Fahrlässigkeit), as well as for injury to life, body, or health.</li>
+                            <li><strong>Cardinal Obligations & Cap:</strong> In cases of slight negligence, we are only liable for the breach of material contractual obligations (cardinal obligations). In such cases, our liability is limited to the typical, foreseeable damage. <strong>To the extent permitted by law, our total aggregate liability for such damages shall not exceed the total fees paid by you in the twelve (12) months preceding the event giving rise to the claim.</strong></li>
+                            <li><strong>Indirect Damages:</strong> Liability for indirect damages, consequential harm caused by a defect, or lost profits is excluded in cases of slight negligence.</li>
+                            <li><strong>Data Loss:</strong> Liability for data loss is limited to the typical recovery effort that would have been required if regular and proper backups had been made by you.</li>
+                            <li>The above limitations also apply to our legal representatives and vicarious agents.</li>
+                        </ul>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>11. Data Protection & AI</h2>
+                        <p>We process personal data in accordance with the <strong>GDPR</strong>. Detailed information can be found in our <a href="privacy.html">Privacy Policy</a>.</p>
+                        
+                        <p><strong>Subprocessors:</strong> We use third-party service providers (e.g., for hosting, payment) to provide the Services. By using the Services, you agree to the engagement of these subprocessors.</p>
+                        
+                        <p><strong>AI & Data Usage:</strong> We do <strong>not</strong> use your Customer Data to train general-purpose machine learning models for other customers. Any AI features within the platform use your data solely to provide predictions or automations for your specific account.</p>
+
+                        <p>For the processing of personal data on your behalf, we offer a <strong>Data Processing Agreement (DPA / AVV)</strong> pursuant to Art. 28 GDPR, which is incorporated into these Terms by reference.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>12. Geographic Restrictions</h2>
+                        <p>Our services are subject to export control laws and international sanctions. Customers from countries subject to EU or US sanctions or embargoes are not permitted to use the Platform. This currently includes, but is not limited to, Russia, North Korea, Iran, Syria, and other jurisdictions as designated by relevant authorities.</p>
+                        <p>We reserve the right to update this list in accordance with applicable law.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>13. Professional Services</h2>
+                        <p>Unless explicitly stated otherwise in an Order Form, the subscription fee covers access to the Platform only. Professional Services, such as custom integration work, dedicated onboarding workshops, or consulting, are provided under a separate <strong>Statement of Work (SOW)</strong>.</p>
+                        <p>In the event of a conflict between these Terms and a specific SOW regarding professional services, the SOW shall prevail.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>14. Confidentiality</h2>
+                        <p>Each party agrees to protect the other party's Confidential Information with the same degree of care it uses to protect its own confidential information of a similar nature, but in no event less than reasonable care. Confidential Information includes business secrets, technical data, and the terms of any Order Form. It does not include information that is publicly known without breach of this agreement.</p>
+                    </article>
+
+                    <article class="terms-section">
+                        <h2>15. Final Provisions</h2>
+                        <p><strong>Assignment:</strong> You may not assign or transfer this Agreement without our prior written consent (not to be unreasonably withheld). We may assign this Agreement to an affiliate or in connection with a merger, acquisition, or sale of assets.</p>
+                        
+                        <p><strong>Entire Agreement:</strong> These Terms, together with any applicable Order Forms and the DPA, constitute the entire agreement between the parties.</p>
+                        
+                        <p><strong>Severability (Salvatorische Klausel):</strong> If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will remain in full force and effect.</p>
+
+                        <p><strong>Governing Law:</strong> These Terms are governed by the laws of the <strong>Federal Republic of Germany</strong>, excluding the CISG.</p>
+                        
+                        <p><strong>Jurisdiction:</strong> The exclusive place of jurisdiction is <strong>Saarbrücken, Germany</strong>.</p>
+                        
+                        <p class="revision-date"><em>Last Revision: January 5, 2026</em></p>
+                    </article>
+                </div>
             </div>
         </div>
     </section>
@@ -159,6 +502,50 @@
     <script>
         loadPartial('partials/header.html', 'site-header');
         loadPartial('partials/footer.html', 'site-footer');
+        
+        // Language Switcher Function
+        function switchLanguage(lang) {
+            // Update data-lang attribute on content container
+            document.querySelector('.terms-content').setAttribute('data-lang', lang);
+            
+            // Update active button state
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+            
+            // Update page title and subtitle dynamically
+            const titles = {
+                de: {
+                    title: 'Allgemeine Geschäftsbedingungen',
+                    subtitle: 'Allgemeine Geschäftsbedingungen (AGB) für Geschäftskunden'
+                },
+                en: {
+                    title: 'Terms of Service',
+                    subtitle: 'General Terms and Conditions (AGB) for Business Customers'
+                }
+            };
+            
+            document.getElementById('page-title').textContent = titles[lang].title;
+            document.getElementById('page-subtitle').textContent = titles[lang].subtitle;
+            
+            // Update HTML lang attribute for accessibility
+            document.documentElement.setAttribute('lang', lang);
+            
+            // Save preference to localStorage for persistence
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Scroll to top for better UX
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // On page load, check for saved language preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && savedLang !== 'de') {
+                // If user previously selected English, switch to it
+                switchLanguage(savedLang);
+            }
+        });
     </script>
 </body>
 </html>

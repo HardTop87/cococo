@@ -570,8 +570,13 @@
   #silktide-modal footer {
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 16px;
+  }
+  
+  #silktide-modal footer button {
+    flex: 1;
+    min-width: 0; /* Allow buttons to shrink equally */
   }
 }
 

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    
+    <!-- Homepage -->
+    <url>
+        <loc>https://wearecococo.com/</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Main Pages -->
+    <url>
+        <loc>https://wearecococo.com/platform.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/features.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/about_us.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/contact.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Solutions Pages -->
+    <url>
+        <loc>https://wearecococo.com/solutions.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_production.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_workflow.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_leadership.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_developers.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_partners.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/solutions_oem.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Technical Deep-Dives -->
+    <url>
+        <loc>https://wearecococo.com/data_model.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/integration.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/dashboard.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/automation.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/custom_apps.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/oem_solutions.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/upcoming_features.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Support Pages -->
+    <url>
+        <loc>https://wearecococo.com/faq.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/newsletter.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+    
+    <!-- Company -->
+    <url>
+        <loc>https://wearecococo.com/careers.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/jobs.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Legal Pages (noindex but in sitemap for transparency) -->
+    <url>
+        <loc>https://wearecococo.com/privacy.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/Terms.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+        <xhtml:link rel="alternate" hreflang="de" href="https://wearecococo.com/Terms.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://wearecococo.com/Terms.html"/>
+    </url>
+    
+    <url>
+        <loc>https://wearecococo.com/imprint.html</loc>
+        <lastmod>2026-01-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <!-- Note: pricing.html excluded (noindex in robots.txt) -->
+    <!-- Note: Demo pages excluded (internal use only) -->
+    <!-- Note: Backup/copy files excluded -->
+
+</urlset>

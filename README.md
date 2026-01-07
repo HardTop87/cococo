@@ -190,32 +190,24 @@ This is a static marketing website for Triple C Labs, an Integration Platform as
 - `index.html` - Homepage with hero, features, platform overview
 - `about_us.html` - Company information and team
 - `platform.html` - Main platform overview
-- `features.html` - Detailed feature list
 - `pricing.html` - Pricing plans with VAT disclosure modal
 - `contact.html` - Contact form with HubSpot integration
 - `newsletter.html` - Newsletter signup
-- `careers.html` / `jobs.html` - Career opportunities
+- `careers.html` - Career opportunities
 - `faq.html` - Frequently asked questions
 
 **Solutions Pages:**
 - `solutions_developers.html` - Solutions for developers
 - `solutions_production.html` - Production solutions overview
-- `solutions_production-livedashboard.html` - Live dashboard features
 - `solutions_workflow.html` - Workflow automation
 - `solutions_leadership.html` - Leadership solutions overview
-- `solutions_leadership-oee.html` - OEE tracking for leadership
-- `solutions_leadership-pl.html` - Production line management
-- `solutions_leadership-scalability.html` - Scalability solutions
 - `solutions_oem.html` - OEM solutions
-- `solutions_partners.html` - Partner solutions
 
 **Technical/Feature Pages:**
 - `integration.html` - Integration capabilities
 - `automation.html` - Automation features
 - `data_model.html` - Data model explanation
 - `custom_apps.html` - Custom applications
-- `custom_apps_simulation.html` - App simulation demo
-- `dashboard.html` - Dashboard overview
 - `upcoming_features.html` - Roadmap and upcoming features
 
 **Demo/Interactive Pages:**
@@ -233,11 +225,6 @@ This is a static marketing website for Triple C Labs, an Integration Platform as
 - `terms.html` - Terms of Service
 - `imprint.html` - Legal imprint
 
-**Test/Backup Files:**
-- `test.html` - Testing page
-- `index copy.html` - Homepage backup
-- `hero-bg.html` - Hero background test
-- Various `_OLD_UK.html` files - Legacy UK versions
 
 **Total:** 50+ HTML pages covering all aspects of the platform
 

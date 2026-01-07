@@ -106,26 +106,167 @@
         }
         
         /* Print Styles for Legal Documentation */
+        .print-header {
+            display: none;
+        }
+        
+        .print-title {
+            display: none;
+        }
+        
         @media print {
-            /* Hide interactive/navigation elements */
+            /* 1. Hide all interactive/navigation elements */
             .language-toggle, 
             #site-header, 
             #site-footer, 
+            .page-header,
             .cookie-banner,
-            .back-to-top {
+            #silktide-banner,
+            .silktide-banner,
+            .st-preferences-button,
+            #st-preferences-button,
+            button[id*="cookie"],
+            button[class*="cookie"],
+            div[id*="cookie"],
+            div[class*="cookie"],
+            .back-to-top,
+            .scroll-to-top,
+            button[onclick*="scrollTo"],
+            [role="dialog"],
+            [aria-label*="cookie"],
+            [aria-label*="Cookie"],
+            script {
                 display: none !important;
+                visibility: hidden !important;
             }
             
-            /* Force black text on white background for readability */
-            body, p, h1, h2, h3, li, td, th {
+            /* 2. Page setup */
+            @page {
+                size: A4;
+                margin: 2cm;
+            }
+            
+            body {
+                font-family: "Sofia Sans", Arial, sans-serif;
+                font-size: 11pt;
+                line-height: 1.5;
                 color: #000 !important;
                 background: #fff !important;
+                padding: 0;
+                margin: 0;
             }
             
-            /* Print full URLs for links (important for legal documents) */
-            a[href]:after {
+            /* 3. Print header visible with proper logo path */
+            .print-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #4D2B41;
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .print-logo {
+                flex: 0 0 auto;
+            }
+            
+            .print-logo img {
+                height: 50px !important;
+                width: auto !important;
+                max-width: 200px !important;
+                display: block !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                filter: none !important;
+                opacity: 1 !important;
+            }
+            
+            .print-meta {
+                text-align: right;
+                font-size: 9pt;
+                color: #666 !important;
+                flex: 0 0 auto;
+            }
+            
+            /* 3b. Print title visible */
+            .print-title {
+                display: block !important;
+                text-align: center;
+                margin: 30px 0 40px 0;
+            }
+            
+            .print-title h1 {
+                font-size: 20pt !important;
+                color: #4D2B41 !important;
+                margin: 0 0 10px 0 !important;
+                font-weight: bold !important;
+            }
+            
+            .print-title p {
+                font-size: 11pt !important;
+                color: #666 !important;
+                margin: 0 !important;
+            }
+            
+            /* 4. Ensure only active language is printed */
+            .terms-content {
+                display: block !important;
+            }
+            
+            .terms-content[data-lang="de"] .terms-en { 
+                display: none !important; 
+            }
+            .terms-content[data-lang="en"] .terms-de { 
+                display: none !important; 
+            }
+            
+            /* 5. Headings */
+            h2 {
+                font-size: 16pt !important;
+                color: #4D2B41 !important;
+                border-bottom: 1px solid #ddd !important;
+                padding-bottom: 5px !important;
+                margin-top: 25px !important;
+                page-break-after: avoid;
+            }
+            
+            h3 {
+                font-size: 13pt !important;
+                color: #000 !important;
+                margin-top: 15px !important;
+                page-break-after: avoid;
+            }
+            
+            /* 6. Highlight boxes */
+            .highlight-box {
+                border: 1px solid #ccc !important;
+                background-color: #f9f9f9 !important;
+                padding: 15px !important;
+                border-radius: 4px !important;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+            }
+            
+            /* 7. Page breaks control */
+            article, .terms-section {
+                page-break-inside: auto;
+            }
+            
+            p, li {
+                orphans: 3;
+                widows: 3;
+            }
+            
+            /* 8. Links */
+            a {
+                text-decoration: none;
+                color: #000 !important;
+            }
+            
+            /* Print URLs for external links (legal requirement) */
+            a[href^="http"]:after {
                 content: " (" attr(href) ")";
-                font-size: 0.85em;
+                font-size: 0.8em;
                 color: #666 !important;
             }
             
@@ -134,24 +275,7 @@
                 content: "";
             }
             
-            /* Ensure only active language is printed */
-            .terms-content[data-lang="de"] .terms-en { 
-                display: none !important; 
-            }
-            .terms-content[data-lang="en"] .terms-de { 
-                display: none !important; 
-            }
-            
-            /* Better page breaks */
-            .terms-section {
-                page-break-inside: avoid;
-            }
-            
-            h2 {
-                page-break-after: avoid;
-            }
-            
-            /* Remove shadows and decorative elements */
+            /* 9. Remove decorative elements */
             * {
                 box-shadow: none !important;
                 text-shadow: none !important;
@@ -160,6 +284,28 @@
     </style>
 </head>
 <body>
+    <!-- Print-Only Header (Invisible on website, visible in PDF) -->
+    <div class="print-header">
+        <div class="print-logo">
+            <!-- Try SVG first, fallback to PNG outline if SVG fails -->
+            <img src="images/icons/cococo_logo_flexible.svg" 
+                 alt="CoCoCo Logo" 
+                 onerror="this.onerror=null; this.src='images/icons/cococo_outline.png';">
+        </div>
+        <div class="print-meta">
+            <strong>Triple C Labs GmbH i.G.</strong><br>
+            Campus Starterzentrum, Geb. A1 2<br>
+            66123 Saarbrücken, Germany<br>
+            <em style="font-size: 8pt;">Stand: 7. Januar 2026</em>
+        </div>
+    </div>
+    
+    <!-- Print-Only Title (Invisible on website, visible in PDF) -->
+    <div class="print-title">
+        <h1 id="print-h1">Allgemeine Geschäftsbedingungen</h1>
+        <p id="print-subtitle">Terms of Service für CoCoCo Platform</p>
+    </div>
+
     <div id="site-header"></div>
 
     <section class="page-header">
@@ -229,7 +375,7 @@
                             <li>Ein Unternehmen muss ein legitimes Geschäft sein. Wir behalten uns das Recht vor, einen Nachweis Ihres Geschäftsstatus anzufordern (z.B. Gewerbeschein, USt-IdNr.).</li>
                             <li>Sie sichern zu, dass Sie berechtigt sind, Ihr Unternehmen zu vertreten und im Namen des Unternehmens verbindliche Entscheidungen zu treffen.</li>
                             <li><strong>Rechtsnachfolge:</strong> Triple C Labs ist derzeit „in Gründung" (i.G.). Mit Eintragung ins Handelsregister wird dieser Vertrag automatisch mit der eingetragenen GmbH als Rechtsnachfolgerin fortgesetzt, ohne dass der Kunde weitere Maßnahmen ergreifen muss.</li>
-                            <li><strong>Referenznennung:</strong> Mit Vertragsabschluss stimmen Sie zu, dass wir den Namen und das Logo Ihres Unternehmens auf unserer Website, in Präsentationen und Marketing-Materialien als Referenzkunden nennen dürfen. Diese Einwilligung können Sie jederzeit schriftlich (E-Mail genügt) widerrufen.</li>
+                            <li><strong>Referenznennung:</strong> Mit Vertragsabschluss stimmen Sie zu, dass wir den Namen und das Logo Ihres Unternehmens auf unserer Website, in Präsentationen und Marketing-Materialien als Referenzkunden nennen dürfen, sofern dem keine berechtigten Interessen des Kunden entgegenstehen. Diese Einwilligung können Sie jederzeit schriftlich (E-Mail genügt) widerrufen.</li>
                         </ul>
                     </article>
 
@@ -291,7 +437,7 @@
                         <div class="highlight-box">
                             <p>Wenn Sie unseren <strong>Managed Cloud</strong> Service abonnieren, garantieren wir eine <strong>Verfügbarkeit von 99,5%</strong> im monatlichen Durchschnitt. Ausgenommen sind geplante Wartungsfenster und höhere Gewalt.</p>
                         </div>
-                        <p>Falls die Verfügbarkeit unter 99,5% fällt, können Sie eine Service-Gutschrift von 5% Ihrer monatlichen Gebühr für jedes zusätzliche 1% Ausfallzeit beantragen (max. 50%). Dies ist Ihr einziges Rechtsmittel bei Ausfällen.</p>
+                        <p>Falls die Verfügbarkeit unter 99,5% fällt, können Sie eine Service-Gutschrift von 5% Ihrer monatlichen Gebühr für jedes zusätzliche 1% Ausfallzeit beantragen (max. 50%). Dies ist Ihr einziges Rechtsmittel bei Ausfällen, außer bei Vorsatz oder grober Fahrlässigkeit.</p>
 
                         <p><strong>B. Self-Hosted / On-Premise</strong></p>
                         <p>Wenn Sie CoCoCo Platform selbst hosten („Self-Hosted"), <strong>sind Sie allein verantwortlich für die Verfügbarkeit, Sicherheit und Wartung Ihrer zugrunde liegenden Infrastruktur</strong> (Server, Netzwerk, Betriebssystem). Folglich gelten die oben beschriebene Verfügbarkeitsgarantie und Service-Gutschriften nicht für selbst gehostete Instanzen.</p>
@@ -357,7 +503,7 @@
 
                     <article class="terms-section">
                         <h2>16. Schlussbestimmungen</h2>
-                        <p><strong>Abtretung:</strong> Sie dürfen diesen Vertrag nicht ohne unsere vorherige schriftliche Zustimmung (die nicht unangemessen verweigert wird) abtreten oder übertragen. Wir können diesen Vertrag an ein verbundenes Unternehmen oder im Zusammenhang mit einer Fusion, Übernahme oder einem Verkauf von Vermögenswerten abtreten.</p>
+                        <p><strong>Abtretung:</strong> Sie dürfen diesen Vertrag nicht ohne unsere vorherige schriftliche Zustimmung (die nicht unangemessen verweigert wird) abtreten oder übertragen. Wir können diesen Vertrag an ein verbundenes Unternehmen oder im Zusammenhang mit einer Fusion, Übernahme oder einem Verkauf von Vermögenswerten abtreten. Ein Kontrollwechsel bei Triple C Labs berechtigt den Kunden nicht zur außerordentlichen Kündigung.</p>
                         
                         <p><strong>Gesamtvereinbarung:</strong> Diese AGB bilden zusammen mit allen anwendbaren Bestellformularen und dem AVV die gesamte Vereinbarung zwischen den Parteien.</p>
                         
@@ -422,7 +568,7 @@
                             <li>A Company must be a legitimate business. We reserve the right to request proof of your business status (e.g., trade license, VAT ID).</li>
                             <li>You warrant that you are authorized to represent your Company and make binding decisions on its behalf.</li>
                             <li><strong>Legal Succession:</strong> Triple C Labs is currently "in formation" (i.G.). Upon registration in the commercial register, this Agreement will automatically continue with the registered GmbH as the legal successor without requiring any further action by the Customer.</li>
-                            <li><strong>Publicity:</strong> By entering into this Agreement, you consent to our use of your company name and logo on our website, in presentations, and in marketing materials as a reference customer. You may revoke this consent in writing (email suffices) at any time.</li>
+                            <li><strong>Publicity:</strong> By entering into this Agreement, you consent to our use of your company name and logo on our website, in presentations, and in marketing materials as a reference customer, provided this does not conflict with your legitimate interests. You may revoke this consent in writing (email suffices) at any time.</li>
                         </ul>
                     </article>
 
@@ -484,7 +630,7 @@
                         <div class="highlight-box">
                             <p>If you subscribe to our <strong>Managed Cloud</strong> service, we guarantee <strong>99.5% uptime</strong> on a monthly average. This excludes scheduled maintenance windows and force majeure events.</p>
                         </div>
-                        <p>If availability falls below 99.5%, you may request a service credit of 5% of your monthly fee for every additional 1% of downtime (capped at 50%). This is your sole remedy for availability issues.</p>
+                        <p>If availability falls below 99.5%, you may request a service credit of 5% of your monthly fee for every additional 1% of downtime (capped at 50%). This is your sole remedy for availability issues, except in cases of intent or gross negligence.</p>
 
                         <p><strong>B. Self-Hosted / On-Premise</strong></p>
                         <p>If you choose to host CoCoCo Platform yourself ("Self-Hosted"), <strong>you are solely responsible for the availability, security, and maintenance of your underlying infrastructure</strong> (server, network, operating system). Consequently, the uptime guarantee and service credits described above do not apply to self-hosted instances.</p>
@@ -550,7 +696,7 @@
 
                     <article class="terms-section">
                         <h2>16. Final Provisions</h2>
-                        <p><strong>Assignment:</strong> You may not assign or transfer this Agreement without our prior written consent (not to be unreasonably withheld). We may assign this Agreement to an affiliate or in connection with a merger, acquisition, or sale of assets.</p>
+                        <p><strong>Assignment:</strong> You may not assign or transfer this Agreement without our prior written consent (not to be unreasonably withheld). We may assign this Agreement to an affiliate or in connection with a merger, acquisition, or sale of assets. A change of control at Triple C Labs does not entitle the Customer to extraordinary termination.</p>
                         
                         <p><strong>Entire Agreement:</strong> These Terms, together with any applicable Order Forms and the DPA, constitute the entire agreement between the parties.</p>
                         
@@ -585,6 +731,18 @@
                 btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
             });
             
+            // Update print title based on language
+            const printTitle = document.getElementById('print-h1');
+            const printSubtitle = document.getElementById('print-subtitle');
+            
+            if (lang === 'de') {
+                printTitle.textContent = 'Allgemeine Geschäftsbedingungen';
+                printSubtitle.textContent = 'Triple C Labs GmbH i.G. – CoCoCo Platform';
+            } else {
+                printTitle.textContent = 'Terms of Service';
+                printSubtitle.textContent = 'Triple C Labs GmbH i.G. – CoCoCo Platform';
+            }
+            
             // Update page title and subtitle dynamically
             const titles = {
                 de: {
@@ -593,7 +751,7 @@
                 },
                 en: {
                     title: 'Terms of Service',
-                    subtitle: 'General Terms and Conditions (AGB) for Business Customers'
+                    subtitle: 'General Terms and Conditions (T&C) for Business Customers'
                 }
             };
             

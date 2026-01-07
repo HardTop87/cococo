@@ -270,7 +270,40 @@
   box-sizing: border-box;
 }
 
+/* Mobile Optimization for Banner */
 @media (max-width: 768px) {
+  #silktide-banner {
+    padding: 20px;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+    width: calc(100% - 24px);
+    left: 12px;
+    right: 12px;
+    transform: none;
+  }
+  
+  #silktide-banner.bottomCenter {
+    left: 12px;
+    right: 12px;
+    transform: none;
+  }
+  
+  #silktide-banner p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  #silktide-banner .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  #silktide-banner .st-button {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+  
   #silktide-modal {
     padding: 20px;
     max-height: 95vh;
@@ -317,6 +350,30 @@
 }
 
 @media (max-width: 480px) {
+  #silktide-banner {
+    padding: 16px;
+    bottom: 8px;
+    max-width: calc(100% - 16px);
+    width: calc(100% - 16px);
+    left: 8px;
+    right: 8px;
+  }
+  
+  #silktide-banner.bottomCenter {
+    left: 8px;
+    right: 8px;
+  }
+  
+  #silktide-banner p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  
+  #silktide-banner .st-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
   #silktide-modal {
     padding: 16px;
   }

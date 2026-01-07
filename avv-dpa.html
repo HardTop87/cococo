@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo Platform AVV / DPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --berry: #4D2B41;
+            --pig: #FF79C9;
+            --text: #222;
+            --grey: #666;
+            --border: #ccc;
+        }
+
+        body {
+            font-family: "Sofia Sans", Arial, sans-serif;
+            font-size: 9.5pt; /* Leicht verkleinert für bessere Passform */
+            line-height: 1.4;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        .page-container {
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 1.5cm;
+            background: white;
+        }
+
+        /* Header Bereich */
+        header {
+            border-bottom: 2px solid var(--berry);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            font-size: 18pt;
+            color: var(--berry);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 11pt;
+            color: var(--grey);
+            margin-top: 5px;
+        }
+
+        /* GRID SYSTEM FÜR PERFEKTE AUSRICHTUNG */
+        /* Wir nutzen Flexbox pro Zeile, damit Höhen gleich sind */
+        .row {
+            display: flex;
+            flex-direction: row;
+            border-bottom: 1px solid #f0f0f0; /* Hilfslinie (optional, sehr dezent) */
+            page-break-inside: avoid; /* Absatz nicht zerreißen */
+        }
+
+        .row.header-row {
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+            margin-top: 15px;
+            page-break-after: avoid;
+        }
+
+        .col {
+            width: 50%;
+            padding: 8px 12px;
+            text-align: justify;
+        }
+
+        .col.left {
+            border-right: 1px solid var(--border);
+        }
+
+        /* Typografie */
+        h2 {
+            font-size: 11pt;
+            color: var(--berry);
+            margin: 0;
+            padding: 5px 0;
+            border-left: 4px solid var(--pig);
+            padding-left: 10px;
+        }
+
+        h3 {
+            font-size: 10pt;
+            font-weight: 700;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        p { margin: 0; }
+        
+        ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+        li { margin-bottom: 4px; }
+
+        /* Metadaten Box */
+        .meta-box {
+            border: 1px solid var(--berry);
+            margin-bottom: 20px;
+        }
+        .meta-box .row { border-bottom: 1px solid #eee; }
+        .meta-box .row:last-child { border-bottom: none; }
+        .label { font-weight: bold; display: block; margin-bottom: 2px; font-size: 8pt; color: var(--grey); }
+
+        /* TABELLEN (Anlage 2) */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.5pt;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            vertical-align: top;
+            text-align: left;
+        }
+        th { background-color: #eee; font-weight: bold; color: var(--berry); }
+
+        .page-break {
+            page-break-before: always;
+            margin-top: 2cm;
+            padding-top: 2cm;
+            border-top: 1px dotted #ccc;
+        }
+
+        @media print {
+            .print-btn { display: none; }
+            .page-container { width: 100%; max-width: none; padding: 0; margin: 0; }
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .row { page-break-inside: avoid; }
+        }
+
+        /* Button styling */
+        .print-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--pig); color: white; padding: 12px 24px;
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="window.print()" class="print-btn">Als PDF speichern / Save as PDF</button>
+
+    <div class="page-container">
+        
+        <header>
+            <div>
+                <h1>Auftragsverarbeitung</h1>
+                <div class="subtitle">Data Processing Agreement (DPA)</div>
+            </div>
+            <div style="text-align: right; font-size: 9pt;">
+                <strong>Triple C Labs GmbH i.G.</strong><br>
+                Rev: 07.01.2026
+            </div>
+        </header>
+
+        <div class="meta-box">
+            <div class="row">
+                <div class="col left">
+                    <span class="label">Auftragnehmer (Auftragsverarbeiter)</span>
+                    Triple C Labs GmbH i.G., Campus Starterzentrum, Geb. A1 2, 66123 Saarbrücken
+                </div>
+                <div class="col">
+                    <span class="label">Contractor (Processor)</span>
+                    Triple C Labs GmbH i.G. (Address as stated left)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <span class="label">Auftraggeber (Verantwortlicher)</span>
+                    Der im Hauptvertrag (Bestellung/Account) bezeichnete Kunde
+                </div>
+                <div class="col right">
+                    <span class="label">Client (Controller)</span>
+                    The Customer designated in the Main Agreement (Order/Account)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <span class="label">Gegenstand</span>
+                    Vereinbarung zur Auftragsverarbeitung gemäß Art. 28 DSGVO
+                </div>
+                <div class="col right">
+                    <span class="label">Subject</span>
+                    Agreement on Data Processing pursuant to Art. 28 GDPR
+                </div>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>1. Präambel & Geltung</h2></div>
+            <div class="col right"><h2>1. Preamble & Scope</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Diese Vereinbarung gilt für alle Tätigkeiten, bei denen der Auftragsverarbeiter personenbezogene Daten im Auftrag des Verantwortlichen verarbeitet. Sie ist Bestandteil der Allgemeinen Geschäftsbedingungen (AGB).</p>
+            </div>
+            <div class="col right">
+                <p>This Agreement applies to all activities in which the Processor processes personal data on behalf of the Controller. It forms an integral part of the Terms of Service (ToS).</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>2. Gegenstand & Dauer</h2></div>
+            <div class="col right"><h2>2. Subject Matter & Duration</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Zweck:</strong> Bereitstellung einer Integration Platform as a Service (iPaaS) zur Automatisierung von Produktionsprozessen.</p></div>
+            <div class="col right"><p><strong>Purpose:</strong> Provision of an Integration Platform as a Service (iPaaS) for automating production processes.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Dauer:</strong> Entspricht der Laufzeit des Hauptvertrags.</p></div>
+            <div class="col right"><p><strong>Duration:</strong> Corresponds to the term of the Main Agreement.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>3. Art der Daten & Betroffene</h2></div>
+            <div class="col right"><h2>3. Types of Data & Subjects</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Datenarten:</strong> Stammdaten (z.B. Namen, E-Mail), Protokolldaten (Logs, IP) sowie auftragsbezogene Produktionsdaten mit Personenbezug.</p></div>
+            <div class="col right"><p><strong>Data Types:</strong> Master data (e.g. names, email), log data (logs, IP), and job-related production data containing personal references.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Betroffene:</strong> Beschäftigte des Kunden, Kunden des Kunden, Lieferanten.</p></div>
+            <div class="col right"><p><strong>Data Subjects:</strong> Employees of the Customer, customers of the Customer, suppliers.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Ausschluss besonderer Kategorien:</strong> Besondere Kategorien personenbezogener Daten gemäß Art. 9 DSGVO sind nicht Gegenstand der Verarbeitung, sofern nicht ausdrücklich schriftlich zwischen den Parteien vereinbart.</p></div>
+            <div class="col right"><p><strong>Exclusion of Special Categories:</strong> Special categories of personal data pursuant to Art. 9 GDPR are not processed unless explicitly agreed in writing between the parties.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>4. Weisungsbefugnis</h2></div>
+            <div class="col right"><h2>4. Instructions</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Der Auftragsverarbeiter verarbeitet Daten nur auf dokumentierte Weisung des Verantwortlichen. Weisungen bedürfen der Textform.</p></div>
+            <div class="col right"><p>The Processor processes data exclusively on documented instructions from the Controller. Instructions must be in text form.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Remonstrationsrecht:</strong> Hält der Auftragsverarbeiter eine Weisung für rechtswidrig (Verstoß gegen die DSGVO oder andere anwendbare Datenschutz- oder Aufbewahrungsvorschriften), informiert er den Verantwortlichen unverzüglich. Er darf die Ausführung aussetzen, bis die Weisung bestätigt oder geändert wurde.</p></div>
+            <div class="col right"><p><strong>Right to Remonstrate:</strong> If the Processor considers an instruction to be unlawful (violation of the GDPR or other applicable data protection or statutory retention regulations), he shall inform the Controller immediately. He may suspend execution until the instruction is confirmed or modified.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>5. Pflichten des Auftragsverarbeiters</h2></div>
+            <div class="col right"><h2>5. Obligations of the Processor</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <ul>
+                    <li><strong>Vertraulichkeit:</strong> Alle Personen sind vor Aufnahme ihrer Tätigkeit zur Vertraulichkeit verpflichtet. Die Verpflichtung besteht auch nach Vertragsende fort.</li>
+                    <li><strong>Meldepflicht:</strong> Meldung von Schutzverletzungen an den Verantwortlichen unverzüglich (i.d.R. binnen 48h).</li>
+                    <li><strong>Schulung:</strong> Mitarbeiter werden regelmäßig in Datenschutz & Sicherheit geschult.</li>
+                    <li><strong>Sicherheit:</strong> Umsetzung der TOMs gemäß Anlage 1.</li>
+                </ul>
+            </div>
+            <div class="col right">
+                <ul>
+                    <li><strong>Confidentiality:</strong> All persons are bound to confidentiality prior to commencement of their activities. Such obligation survives termination of the contract.</li>
+                    <li><strong>Notification:</strong> Reporting of data breaches to the Controller without undue delay (usually within 48h).</li>
+                    <li><strong>Training:</strong> Employees receive regular training on data protection & security.</li>
+                    <li><strong>Security:</strong> Implementation of TOMs per Annex 1.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>6. Unterauftragsverhältnisse</h2></div>
+            <div class="col right"><h2>6. Sub-processing</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Der Verantwortliche genehmigt die in <strong>Anlage 2</strong> gelisteten Sub-Dienstleister.</p></div>
+            <div class="col right"><p>The Controller authorizes the sub-processors listed in <strong>Annex 2</strong>.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Änderungen:</strong> Der Auftragsverarbeiter informiert den Verantwortlichen mit angemessener Frist (in der Regel mindestens 14 Tage) vor der Beauftragung neuer Sub-Dienstleister. Bei Widerspruch aus wichtigem Grund und fehlender Einigung hat der Kunde ein Sonderkündigungsrecht.</p></div>
+            <div class="col right"><p><strong>Changes:</strong> The Processor shall inform the Controller within a reasonable period (usually at least 14 days) prior to engaging new sub-processors. In case of objection for good cause and lack of agreement, the Controller has a special right of termination.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Haftung:</strong> Der Auftragsverarbeiter haftet voll für seine Sub-Dienstleister (Art. 28 Abs. 4 DSGVO).</p></div>
+            <div class="col right"><p><strong>Liability:</strong> The Processor remains fully liable for its sub-processors (Art. 28 para 4 GDPR).</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>7. Rechte des Verantwortlichen & Audit</h2></div>
+            <div class="col right"><h2>7. Rights of the Controller & Audit</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Nachweis:</strong> Der Auftragsverarbeiter stellt alle nötigen Informationen zum Nachweis der Einhaltung der Pflichten bereit.</p></div>
+            <div class="col right"><p><strong>Evidence:</strong> The Processor provides all information necessary to demonstrate compliance with obligations.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Audit:</strong> Kontrollen erfolgen primär über Zertifikate. Vor-Ort-Prüfungen sind nur bei begründetem Verdacht und nach vorheriger Abstimmung zulässig.</p></div>
+            <div class="col right"><p><strong>Audit:</strong> On-site inspections are permitted only in case of substantiated suspicion and following prior coordination.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Kosten:</strong> Soweit Audits über das gesetzlich Erforderliche hinausgehen, trägt der Verantwortliche die Kosten zu üblichen Stundensätzen.</p></div>
+            <div class="col right"><p><strong>Costs:</strong> Insofar as audits go beyond statutory requirements, the Controller shall bear the costs at standard hourly rates.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>8. Drittländer & Unterstützung</h2></div>
+            <div class="col right"><h2>8. Third Countries & Assistance</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Drittländer:</strong> Transfer nur bei angemessenem Schutzniveau (z.B. EU-US DPF, SCCs). Unterstützung bei Transfer Impact Assessments (TIA) wird zugesichert.</p></div>
+            <div class="col right"><p><strong>Third Countries:</strong> Transfer only with adequate protection level (e.g., EU-US DPF, SCCs). Assistance with Transfer Impact Assessments (TIA) is assured.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Betroffenenrechte:</strong> Die Unterstützung erfolgt, soweit dies dem Auftragsverarbeiter technisch möglich und zumutbar ist.</p></div>
+            <div class="col right"><p><strong>Data Subject Rights:</strong> Assistance shall be provided insofar as this is technically feasible and reasonable for the Processor.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Vergütung:</strong> Für Unterstützungsleistungen, die nicht auf ein Fehlverhalten des Auftragsverarbeiters zurückzuführen sind, kann eine angemessene Vergütung verlangt werden.</p></div>
+            <div class="col right"><p><strong>Remuneration:</strong> Reasonable remuneration may be charged for assistance services that are not attributable to misconduct by the Processor.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>9. Löschung & Rückgabe</h2></div>
+            <div class="col right"><h2>9. Deletion & Return</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Die Löschung erfolgt auf Weisung des Verantwortlichen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p></div>
+            <div class="col right"><p>Deletion shall be carried out upon instruction of the Controller, unless statutory retention obligations apply.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Backups:</strong> Daten in Backups werden im regulären Zyklus überschrieben und bis dahin logisch gesperrt, nicht produktiv genutzt und ausschließlich zu Wiederherstellungszwecken vorgehalten.</p></div>
+            <div class="col right"><p><strong>Backups:</strong> Data contained in backups is overwritten in the regular cycle and, until then, logically restricted, not used productively, and retained solely for recovery purposes.</p></div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>10. Schlussbestimmungen</h2></div>
+            <div class="col right"><h2>10. Final Provisions</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Maßgebliche Fassung:</strong> Im Falle von Abweichungen zwischen der deutschen und der englischen Sprachfassung ist die deutsche Fassung maßgeblich.</p></div>
+            <div class="col right"><p><strong>Prevailing Version:</strong> In case of discrepancies between the German and English versions, the German version shall prevail.</p></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p><strong>Rechtsnachfolge:</strong> Diese Vereinbarung gilt auch im Falle einer Umwandlung, Verschmelzung oder sonstigen Gesamtrechtsnachfolge des Auftragsverarbeiters fort.</p></div>
+            <div class="col right"><p><strong>Legal Succession:</strong> This Agreement shall continue to apply in the event of a transformation, merger, or other universal legal succession of the Processor.</p></div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>Anlage 1: TOMs (Sicherheit)</h2></div>
+            <div class="col right"><h2>Annex 1: TOMs (Security)</h2></div>
+        </div>
+        
+        <div class="row">
+            <div class="col left"><h3>1. Zutritt & Zugang (Remote-First)</h3></div>
+            <div class="col right"><h3>1. Physical & System Access</h3></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Keine eigenen Rechenzentren (Nutzung zertifizierter Provider wie OVH, AWS). Kein öffentlicher Zutritt zu Home-Office Arbeitsplätzen. Starke Passwortrichtlinien, zwingende 2FA, Festplattenverschlüsselung.</p></div>
+            <div class="col right"><p>No own data centers (Usage of certified providers like OVH, AWS). No public access to home offices. Strong password policies, mandatory 2FA, Full Disk Encryption.</p></div>
+        </div>
+
+        <div class="row">
+            <div class="col left"><h3>2. Zugriff & Weitergabe</h3></div>
+            <div class="col right"><h3>2. Data Access & Transfer</h3></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Rollenkonzept (Need-to-know). Verschlüsselung (TLS 1.2+). Pseudonymisierung/Datenminimierung wo möglich. Verbot von Daten auf USB-Sticks.</p></div>
+            <div class="col right"><p>Role-based access (Need-to-know). Encryption (TLS 1.2+). Pseudonymization/Minimization where feasible. Prohibition of data on USB drives.</p></div>
+        </div>
+
+        <div class="row">
+            <div class="col left"><h3>3. Verfügbarkeit & Notfall</h3></div>
+            <div class="col right"><h3>3. Availability & Emergency</h3></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Tägliche Backups (Geo-Redundant), DDoS-Schutz. Dokumentierter Incident-Response-Prozess.</p></div>
+            <div class="col right"><p>Daily Backups (Geo-redundant), DDoS protection. Documented Incident Response Process.</p></div>
+        </div>
+
+        <div class="row">
+            <div class="col left"><h3>4. Eingabe & Trennung</h3></div>
+            <div class="col right"><h3>4. Input & Separation</h3></div>
+        </div>
+        <div class="row">
+            <div class="col left"><p>Git-Versionskontrolle für Code, Audit-Logs. Logische Mandantentrennung (Multi-Tenancy). Trennung von Test/Prod.</p></div>
+            <div class="col right"><p>Git version control, Audit logs. Logical tenant separation (Multi-Tenancy). Separation of Test/Prod.</p></div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2>Anlage 2: Unterauftragsverarbeiter / Annex 2: Sub-Processors</h2>
+        <p style="font-size: 9pt; color: #666;">Stand / As of: 07.01.2026</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%">Firma / Company</th>
+                    <th style="width: 40%">Dienstleistung / Service</th>
+                    <th style="width: 30%">Ort / Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>OVH Groupe SAS</strong></td>
+                    <td>Hosting & Infrastructure</td>
+                    <td>EU, US, CA (Customer Choice)</td>
+                </tr>
+                <tr>
+                    <td><strong>Magic Labs Inc.</strong></td>
+                    <td>Identity & Login (Auth)</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td><strong>HubSpot Inc.</strong></td>
+                    <td>CRM & Marketing</td>
+                    <td>EU (Data Residency)</td>
+                </tr>
+                <tr>
+                    <td><strong>Google Ireland Ltd.</strong><br>(Workspace)</td>
+                    <td>Internal Communication<br><em>(Email Support)</em></td>
+                    <td>EU / Global</td>
+                </tr>
+                <tr>
+                    <td><strong>Freshworks Inc.</strong></td>
+                    <td>Customer Support System</td>
+                    <td>USA / India (Global)</td>
+                </tr>
+                <tr>
+                    <td><strong>Stripe Payments Ltd.</strong></td>
+                    <td>Payment Processing<br><em>(Controller & Processor)</em></td>
+                    <td>Ireland / USA</td>
+                </tr>
+                <tr>
+                    <td><strong>Google Ireland Ltd.</strong><br>(Analytics)</td>
+                    <td>Web Analytics<br><em>(Usage optional)</em></td>
+                    <td>Ireland / USA</td>
+                </tr>
+                <tr>
+                    <td><strong>Haufe-Lexware</strong><br>(LexOffice)</td>
+                    <td>Accounting<br><em>(No Production Data)</em></td>
+                    <td>Germany</td>
+                </tr>
+                <tr>
+                    <td><strong>[OpenAI / LLM Provider]</strong></td>
+                    <td>AI Processing<br><em>(Controller-controlled, no training, no persistent storage beyond processing duration)</em></td>
+                    <td>USA / EU</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

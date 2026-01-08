@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCoCo Annex 1: Self-Hosted Terms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --berry: #4D2B41;
+            --pig: #FF79C9;
+            --text: #222;
+            --grey: #666;
+            --border: #ccc;
+        }
+
+        body {
+            font-family: "Sofia Sans", Arial, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.4;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        .page-container {
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 1.5cm;
+            background: white;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 2px solid var(--berry);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            font-size: 18pt;
+            color: var(--berry);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 11pt;
+            color: var(--grey);
+            margin-top: 5px;
+        }
+
+        /* Grid System */
+        .row {
+            display: flex;
+            flex-direction: row;
+            border-bottom: 1px solid #f0f0f0;
+            page-break-inside: avoid;
+        }
+
+        .row.header-row {
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+            margin-top: 15px;
+            page-break-after: avoid;
+        }
+
+        .col {
+            width: 50%;
+            padding: 8px 12px;
+            text-align: justify;
+        }
+
+        .col.left {
+            border-right: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 11pt;
+            color: var(--berry);
+            margin: 0;
+            padding: 5px 0;
+            border-left: 4px solid var(--pig);
+            padding-left: 10px;
+        }
+
+        p, ul, ol { margin: 0; }
+        ul, ol { padding-left: 18px; }
+        li { margin-bottom: 4px; }
+
+        .meta-box {
+            border: 1px solid var(--berry);
+            margin-bottom: 20px;
+        }
+        .label { font-weight: bold; display: block; margin-bottom: 2px; font-size: 8pt; color: var(--grey); }
+
+        @media print {
+            .print-btn { display: none; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page-container { margin: 0; padding: 0; width: 100%; max-width: none; }
+        }
+
+        .print-btn {
+            position: fixed; top: 20px; right: 20px;
+            background: var(--pig); color: white; padding: 12px 24px;
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="window.print()" class="print-btn">Als PDF speichern / Save as PDF</button>
+
+    <div class="page-container">
+        
+        <header>
+            <div>
+                <h1>Anlage 1: Self-Hosted & BYOC</h1>
+                <div class="subtitle">Annex 1: Special Terms for Self-Hosted & BYOC</div>
+            </div>
+            <div style="text-align: right; font-size: 9pt;">
+                <strong>Triple C Labs GmbH i.G.</strong><br>
+                Zusatzvereinbarung zu den AGB<br>
+                Rev: 07.01.2026
+            </div>
+        </header>
+
+        <div class="meta-box">
+            <div class="row">
+                <div class="col left">
+                    <span class="label">Dokumententyp</span>
+                    Ergänzende Lizenzbedingungen für On-Premise / Private Cloud Nutzung
+                </div>
+                <div class="col">
+                    <span class="label">Document Type</span>
+                    Supplementary License Terms for On-Premise / Private Cloud Usage
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <span class="label">Geltungsbereich</span>
+                    Gilt für Kunden, die Software in eigener Verantwortung betreiben (On-Premise oder eigener Cloud-Account).
+                </div>
+                <div class="col">
+                    <span class="label">Scope</span>
+                    Applies to customers operating software under their own responsibility (On-Premise or own Cloud Account).
+                </div>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>1. Geltungsbereich & Rangfolge</h2></div>
+            <div class="col"><h2>1. Scope & Ranking</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Diese Anlage gilt ergänzend zu den Allgemeinen Geschäftsbedingungen (AGB) ausschließlich für Vertragsverhältnisse, bei denen der Kunde die Software auf eigener Infrastruktur, angemieteter Hardware oder in <strong>eigenen Cloud-Umgebungen</strong> betreibt („Self-Hosted“, „Bring Your Own Cloud“ in AWS/Azure/UpCloud, „Customer Hosted“).</p>
+            </div>
+            <div class="col">
+                <p>This Annex applies in addition to the General Terms and Conditions (Terms) exclusively to contractual relationships where the Customer operates the Software on their own infrastructure, rented hardware, or in <strong>own cloud environments</strong> ("Self-Hosted", "Bring Your Own Cloud" in AWS/Azure/UpCloud, "Customer Hosted").</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Für reine Cloud-Kunden, die unsere Managed SaaS nutzen, findet diese Anlage keine Anwendung. Im Widerspruchsfall gehen die Regelungen dieser Anlage den allgemeinen AGB vor.</p>
+            </div>
+            <div class="col">
+                <p>This Annex does not apply to pure Cloud customers using our Managed SaaS. In the event of a conflict, the provisions of this Annex shall prevail over the general Terms.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>2. Erweiterte Nutzungsrechte & Installation</h2></div>
+            <div class="col"><h2>2. Extended Usage Rights & Installation</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Zusätzlich zu den in den AGB gewähren Rechten erhält der Kunde das Recht, die bereitgestellten Software-Container (z.B. Docker Images, Agenten) in der im Bestellformular vereinbarten Anzahl von Produktionsumgebungen („Sites“) zu installieren und auszuführen.</p>
+            </div>
+            <div class="col">
+                <p>In addition to the rights granted in the Terms, the Customer is granted the right to install and execute the provided software containers (e.g., Docker images, agents) in the number of production environments ("Sites") agreed upon in the Order Form.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Kopien:</strong> Zulässig nur für Backup-, Test- und Staging-Umgebungen, sofern diese nicht produktiv genutzt werden.</p>
+            </div>
+            <div class="col">
+                <p><strong>Copies:</strong> Permitted only for backup, test, and staging environments, provided they are not used productively.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Verbot:</strong> Jede Umgehung technischer Schutzmaßnahmen, Lizenzschlüssel-Prüfungen oder die Dekompilierung des Codes ist streng untersagt.</p>
+            </div>
+            <div class="col">
+                <p><strong>Prohibition:</strong> Any circumvention of technical protection measures, license key checks, or decompilation of the code is strictly prohibited.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Cloud-Infrastruktur-Kosten (BYOC):</strong> Bei der Nutzung in eigenen Cloud-Accounts (z.B. AWS, Azure) trägt der Kunde sämtliche Kosten für Compute, Storage und Traffic selbst. Triple C Labs haftet nicht für Kostenüberschreitungen beim Cloud-Provider.</p>
+            </div>
+            <div class="col">
+                <p><strong>Cloud Infrastructure Costs (BYOC):</strong> When using own cloud accounts (e.g., AWS, Azure), the Customer bears all costs for compute, storage, and traffic. Triple C Labs is not liable for cost overruns with the cloud provider.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>3. Site Count & Lizenzparameter</h2></div>
+            <div class="col"><h2>3. Site Count & License Parameters</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Die Lizenzgebühr bemisst sich nach der Anzahl der physischen Produktionsstandorte („Sites“) und Module, wie im Bestellformular definiert.</p>
+            </div>
+            <div class="col">
+                <p>The license fee is based on the number of physical production locations ("Sites") and modules, as defined in the Order Form.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Erweiterungspflicht:</strong> Fügt der Kunde weitere Sites hinzu, ist er verpflichtet, dies unverzüglich mitzuteilen. Wir behalten uns vor, die entsprechenden Gebühren rückwirkend ab Nutzungsbeginn nachzuberechnen.</p>
+            </div>
+            <div class="col">
+                <p><strong>Duty to Report:</strong> If the Customer adds additional Sites, they are obliged to notify us immediately. We reserve the right to back-charge the corresponding fees starting from the commencement of usage.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>4. Technischer Lizenz-Check („Phone Home“)</h2></div>
+            <div class="col"><h2>4. Technical License Check ("Phone Home")</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Die Software enthält Funktionen, die in regelmäßigen Abständen eine gesicherte Verbindung zu unserem Lizenzserver aufnehmen, um die Gültigkeit der Lizenz und die Einhaltung der Parameter (z.B. Site Count) zu verifizieren.</p>
+                <p>Die Verarbeitung dieser technischen Metadaten erfolgt durch Triple C Labs als eigener Verantwortlicher gemäß Art. 4 Nr. 7 DSGVO ausschließlich zum Zweck der Lizenzprüfung und Missbrauchsprävention.</p>
+            </div>
+            <div class="col">
+                <p>The Software contains functions that periodically establish a secure connection to our license server to verify the validity of the license and compliance with parameters (e.g., Site Count).</p>
+                <p>The processing of these technical metadata is carried out by Triple C Labs as an independent controller pursuant to Art. 4(7) GDPR solely for the purpose of license verification and abuse prevention.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <ul>
+                    <li><strong>Daten:</strong> Hierbei werden ausschließlich technische Metadaten (z.B. IP, Version, Site-ID) und der Lizenzschlüssel übertragen. Es werden <strong>keine Inhaltsdaten</strong> (Produktionsdaten) übertragen.</li>
+                    <li><strong>Pflicht:</strong> Der Kunde stellt sicher, dass die Software eine ausgehende HTTPS-Verbindung zum Lizenzserver aufbauen kann.</li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                    <li><strong>Data:</strong> Only technical metadata (e.g., IP, version, Site ID) and the license key are transmitted. <strong>No content data</strong> (production data) is transmitted.</li>
+                    <li><strong>Obligation:</strong> The Customer ensures that the Software can establish an outbound HTTPS connection to the license server.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>4a. Audit-Rechte</h2></div>
+            <div class="col"><h2>4a. Audit Rights</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Triple C Labs behält sich das Recht vor, einmal jährlich (mit 14 Tagen Vorlauf) die Einhaltung der Lizenzparameter zu prüfen. Dies erfolgt primär remote durch Einsichtnahme in anonymisierte System-Logs. Anonymisiert im Sinne dieser Regelung bedeutet, dass keine Rückschlüsse auf einzelne natürliche Personen möglich sind. Bei begründetem Verdacht auf Manipulation ist eine Vor-Ort-Prüfung zulässig. Ergibt das Audit eine Unterlizenzierung von mehr als 5%, trägt der Kunde die Kosten des Audits sowie die Nachlizenzierung.</p>
+                <p>Die Prüfung beschränkt sich ausschließlich auf solche Logs und Informationen, die zur Verifikation der Lizenzparameter erforderlich sind. Der Zugriff auf personenbezogene Daten oder Geschäftsgeheimnisse des Kunden ist ausgeschlossen.</p>
+            </div>
+            <div class="col">
+                <p>Triple C Labs reserves the right to audit compliance with license parameters once per year (with 14 days' notice). This is primarily done remotely via review of anonymized system logs. For the purposes of this provision, anonymized means that no conclusions can be drawn about individual natural persons. In case of substantiated suspicion of manipulation, an on-site audit is permitted. If the audit reveals under-licensing of more than 5%, the Customer bears the costs of the audit and the retroactive licensing fees.</p>
+                <p>The audit shall be limited exclusively to logs and information required to verify license parameters. Access to personal data or the Customer’s trade secrets is excluded.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>5. Warnprozess & Funktionsbeschränkung</h2></div>
+            <div class="col"><h2>5. Warning Process & Enforcement</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Sollte die Lizenzprüfung fehlschlagen (z. B. aufgrund einer Firewall-Blockade, einer abgelaufenen Lizenz oder eines Zahlungsverzugs), findet der nachfolgend beschriebene abgestufte Prozess Anwendung, der darauf ausgelegt ist, Beeinträchtigungen des laufenden Geschäftsbetriebs des Kunden so gering wie möglich zu halten.</p>
+                <p>Unberührt bleiben sämtliche gesetzlichen Aufbewahrungs-, Dokumentations- oder Nachweispflichten des Kunden.</p>
+            </div>
+            <div class="col">
+                <p>If the license check fails (e.g. due to firewall blocking, an expired license, or payment default), the staged process set out below shall apply, which is designed to minimize any impact on the Customer’s ongoing business operations.</p>
+                <p>All statutory retention, documentation, or record-keeping obligations of the Customer remain unaffected.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <ol>
+                    <li><strong>Karenzzeit (Grace Period):</strong> Die Software bleibt zunächst voll funktionsfähig, auch wenn der Lizenzserver nicht erreichbar ist.</li>
+                    <li><strong>Warnstufe 1:</strong> Sie erhalten eine Benachrichtigung (E-Mail/Dashboard) mit der Aufforderung zur Behebung.</li>
+                    <li><strong>Warnstufe 2:</strong> Erfolgt nach 7 Tagen keine Klärung, erfolgt eine zweite Warnung.</li>
+                    <li><strong>Einschränkung:</strong> Erfolgt nach weiteren 7 Tagen keine Klärung, sind wir berechtigt, den Funktionsumfang technisch einzuschränken (z.B. Sperre neuer Deployments, Read-Only-Modus), bis der Lizenzstatus bestätigt ist.</li>
+                    <li><strong>Abschaltung:</strong> Erfolgt nach weiteren 7 Tagen im eingeschränkten Modus keine Klärung, wird die Software vollständig deaktiviert. Bereits verarbeitete Daten bleiben für 30 Tage zum Export via API/Datenbank-Dump verfügbar, bevor der Zugriff endgültig erlischt.</li>
+                </ol>
+            </div>
+            <div class="col">
+                <ol>
+                    <li><strong>Grace Period:</strong> The Software initially remains fully functional, even if the license server is unreachable.</li>
+                    <li><strong>Warning Level 1:</strong> You will receive a notification (email/dashboard) requesting resolution.</li>
+                    <li><strong>Warning Level 2:</strong> If no clarification occurs after 7 days, a second warning will be issued.</li>
+                    <li><strong>Restriction:</strong> If no clarification occurs after another 7 days, we are entitled to technically restrict functionality (e.g., blocking new deployments, Read-Only mode) until the license status is confirmed.</li>
+                    <li><strong>Deactivation:</strong> If no clarification occurs after another 7 days in restricted mode, the Software will be fully deactivated. Processed data remains available for export via API/Database Dump for 30 days before access is permanently revoked.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Umgehung:</strong> Jeder Versuch, diesen Mechanismus zu manipulieren, berechtigt uns zur außerordentlichen Kündigung.</p>
+            </div>
+            <div class="col">
+                <p><strong>Circumvention:</strong> Any attempt to manipulate this mechanism entitles us to extraordinary termination.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>6. Gewährleistungsausschluss für Infrastruktur</h2></div>
+            <div class="col"><h2>6. Warranty Exclusion for Infrastructure</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p>Für Self-Hosted-Deployments übernehmen wir keine Gewährleistung für die Verfügbarkeit Ihrer Infrastruktur, Ihres Betriebssystems oder der Container-Laufzeitumgebung. Die SLA-Regelungen der AGB (Managed Cloud) finden keine Anwendung. Sie sind für Patch-Management und Sicherheit Ihrer Server selbst verantwortlich.</p>
+                <p style="margin-top:10px;"><strong>Backup-Pflicht:</strong> Der Kunde ist verpflichtet, täglich Backups seiner Konfigurationen und Datenbanken zu erstellen. Wir haften nicht für Datenverluste, die durch fehlende oder fehlerhafte Backups des Kunden entstanden sind.</p>
+                <p>Dies gilt nicht, soweit der Datenverlust auf einer vorsätzlichen oder grob fahrlässigen Pflichtverletzung von Triple C Labs beruht.</p>
+            </div>
+            <div class="col">
+                <p>For Self-Hosted deployments, we assume no warranty for the availability of your infrastructure, operating system, or container runtime environment. The SLA provisions of the Terms (Managed Cloud) do not apply. You are solely responsible for patch management and the security of your servers.</p>
+                <p style="margin-top:10px;"><strong>Backup Duty:</strong> The Customer is obliged to perform daily backups of configurations and databases. We are not liable for data loss caused by missing or defective backups on the Customer's side.</p>
+                <p>This does not apply insofar as the data loss is caused by willful misconduct or gross negligence of Triple C Labs.</p>
+            </div>
+        </div>
+
+        <div class="row header-row">
+            <div class="col left"><h2>7. Updates & Lifecycle</h2></div>
+            <div class="col"><h2>7. Updates & Lifecycle</h2></div>
+        </div>
+        <div class="row">
+            <div class="col left">
+                <p><strong>Bereitstellung:</strong> Updates werden über unsere Container Registry bereitgestellt. Der Kunde ist für die zeitnahe Installation verantwortlich.</p>
+                <ul style="margin-top:5px;">
+                    <li><strong>Kritische Sicherheitspatches:</strong> Müssen binnen 48 Stunden installiert werden, um Support-Anspruch zu wahren.</li>
+                    <li><strong>Support-Zeitraum:</strong> Wir leisten Support ausschließlich für die aktuelle Major-Version und die direkte Vorgängerversion (N-1). Ältere Versionen erreichen den „End of Life" (EOL) Status und erhalten keine Sicherheitsupdates mehr.</li>
+                </ul>
+            </div>
+            <div class="col">
+                <p><strong>Provisioning:</strong> Updates are provided via our Container Registry. The Customer is responsible for timely installation.</p>
+                <ul style="margin-top:5px;">
+                    <li><strong>Critical Security Patches:</strong> Must be installed within 48 hours to maintain support eligibility.</li>
+                    <li><strong>Support Lifecycle:</strong> We provide support exclusively for the current Major Version and the immediate predecessor (N-1). Older versions reach "End of Life" (EOL) status and will no longer receive security updates.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

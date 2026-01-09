@@ -14468,6 +14468,20 @@ body.landing-page {
     font-size: 1.1rem;
 }
 
+.who-for-item .feature-icon {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .who-for-item .feature-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
 .who-for-item p {
     margin: 0;
     font-size: 1rem;
@@ -14780,6 +14794,37 @@ body.landing-page {
     box-shadow: 0 12px 48px rgba(77, 43, 65, 0.15);
 }
 
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.event-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--pig) 0%, var(--berry) 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(255, 121, 201, 0.3);
+}
+
+.event-date-badge .date-icon {
+    font-size: 1.1rem;
+}
+
+.event-date-badge strong {
+    font-weight: 700;
+}
+
 .event-badge {
     display: inline-block;
     background: var(--pig);
@@ -14798,8 +14843,47 @@ body.landing-page {
     font-weight: 800;
     font-size: 1.8rem;
     color: var(--berry);
-    margin-bottom: 1rem;
+    margin: 0;
     line-height: 1.3;
+    flex: 1;
+}
+
+/* Topics Grid Layout */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.topic-item {
+    padding: 1.5rem;
+    background: rgba(255, 121, 201, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid var(--pig);
+    transition: all 0.3s ease;
+}
+
+.topic-item:hover {
+    background: rgba(255, 121, 201, 0.1);
+    border-left-color: var(--berry);
+    transform: translateX(4px);
+}
+
+.topic-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--berry);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+}
+
+.topic-description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    opacity: 0.9;
 }
 
 .powered-by {
@@ -14845,12 +14929,102 @@ body.landing-page {
 
 .event-topics li strong {
     color: var(--berry);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.event-topics li br {
+    display: block;
+    content: "";
+    margin-top: 0.5rem;
 }
 
 /* Offer Section - Highlighted */
 .offer-section {
     background: var(--berry);
     color: white;
+}
+
+.offer-section .section-subtitle {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Offer Steps Layout */
+.offer-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 3rem auto 0;
+}
+
+.offer-step {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.offer-step:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: #FF79C9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(255, 121, 201, 0.4);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.step-subtitle {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #FF79C9;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+}
+
+.step-description {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
 .offer-layout {
@@ -14945,6 +15119,21 @@ body.landing-page {
 }
 
 @media (max-width: 968px) {
+    .offer-steps {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .offer-step {
+        padding: 2rem;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.75rem;
+    }
+    
     .offer-layout {
         flex-direction: column;
         gap: 3rem;
@@ -15131,6 +15320,34 @@ body.landing-page {
 
     .event-timeline.single-event {
         max-width: 100%;
+    }
+    
+    .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .event-date-badge {
+        font-size: 0.85rem;
+        padding: 0.6rem 1.2rem;
+    }
+    
+    .topics-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .topic-item {
+        padding: 1.25rem;
+    }
+    
+    .topic-title {
+        font-size: 1.05rem;
+    }
+    
+    .topic-description {
+        font-size: 0.9rem;
     }
 
     .offer-benefits {

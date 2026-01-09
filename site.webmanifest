@@ -1,6 +1,7 @@
 {
-  "name": "CoCoCo Platform",
+  "name": "CoCoCo Platform by Triple C Labs",
   "short_name": "CoCoCo",
+  "description": "Collaborative Content Coordination Platform - Streamline your production workflows",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#FFFFFF",

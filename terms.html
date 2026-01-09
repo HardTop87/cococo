@@ -375,7 +375,7 @@
                             <li>Ein Unternehmen muss ein legitimes Geschäft sein. Wir behalten uns das Recht vor, einen Nachweis Ihres Geschäftsstatus anzufordern (z.B. Gewerbeschein, USt-IdNr.).</li>
                             <li>Sie sichern zu, dass Sie berechtigt sind, Ihr Unternehmen zu vertreten und im Namen des Unternehmens verbindliche Entscheidungen zu treffen.</li>
                             <li><strong>Rechtsnachfolge:</strong> Triple C Labs ist derzeit „in Gründung" (i.G.). Mit Eintragung ins Handelsregister wird dieser Vertrag automatisch mit der eingetragenen GmbH als Rechtsnachfolgerin fortgesetzt, ohne dass der Kunde weitere Maßnahmen ergreifen muss.</li>
-                            <li><strong>Referenznennung:</strong> Mit Vertragsabschluss stimmen Sie zu, dass wir den Namen und das Logo Ihres Unternehmens auf unserer Website, in Präsentationen und Marketing-Materialien als Referenzkunden nennen dürfen, sofern dem keine berechtigten Interessen des Kunden entgegenstehen. Diese Einwilligung können Sie jederzeit schriftlich (E-Mail genügt) widerrufen.</li>
+                            <li><strong>Referenznennung (Opt-In):</strong> Wir nutzen Ihren Firmennamen und Ihr Logo zu Marketingzwecken (z.B. als Referenzkunde auf unserer Website) nur, wenn Sie uns hierzu Ihre <strong>ausdrückliche Zustimmung</strong> erteilt haben (z.B. durch Ankreuzen im Bestellformular oder per E-Mail). Eine einmal erteilte Zustimmung können Sie jederzeit schriftlich für die Zukunft widerrufen.</li>
                         </ul>
                     </article>
 
@@ -385,7 +385,8 @@
                             <li><strong>Richtigkeit & Sicherheit:</strong> Alle bereitgestellten Informationen müssen wahrheitsgemäß sein. Sie sind für die Sicherheit Ihrer Zugangsdaten voll verantwortlich.</li>
                             <li><strong>Compliance:</strong> Sie müssen bei der Nutzung von CoCoCo Platform alle anwendbaren Gesetze und Vorschriften einhalten.</li>
                             <li><strong>Kein Weiterverkauf (Reselling):</strong> Es ist Ihnen untersagt, CoCoCo Platform ohne unsere schriftliche Zustimmung weiterzuverkaufen, zu vermieten oder als Teil eines Managed Service an Dritte anzubieten („White Labeling").</li>
-                            <li><strong>Fair Use Policy:</strong> Sofern in Ihrem Bestellformular nicht anders geregelt, gilt für Cloud-Konten ein Soft-Limit von 10 Millionen API-Aufrufen pro Monat. Für Self-Hosted-Instanzen gelten keine harten Limits, jedoch darf die Nutzung die Stabilität des Gesamtprodukts (z.B. Lizenzserver) nicht gefährden. Wir behalten uns vor, Konten, die das normale Nutzungsvolumen signifikant (z.B. 5x des Durchschnitts vergleichbarer Kunden) überschreiten, nach Vorwarnung zu drosseln oder Upgrade-Optionen anzubieten.</li>
+                            <li><strong>Fair Use Policy:</strong> Sofern nicht anders vereinbart, gilt für Cloud-Konten ein Soft-Limit von 10 Millionen API-Aufrufen pro Monat. "Soft-Limit" bedeutet, wir behalten uns bei Überschreitung das Recht vor, den Kunden zu informieren, gemeinsam ein Upgrade zu prüfen oder eine technische Drosselung einzusetzen, sofern dies für die Stabilität der Plattform erforderlich ist. Eine API-Anfrage ist jeder technische Request an unsere Endpunkte, unabhängig von der Datengröße.</li>
+                            <li><strong>Kundeneigene Apps (Custom Apps):</strong> Der Kunde kann eigene Anwendungen, Skripte oder Konnektoren mit CoCoCo Platform nutzen. Der Kunde ist allein verantwortlich für Entwicklung, Sicherheit und Rechtskonformität dieser Custom Apps. Sie dürfen die Stabilität der Plattform nicht beeinträchtigen. Der Kunde haftet für Schäden, die durch seine Custom Apps an der Plattform oder Dritten entstehen. Bei Sicherheitsrisiken dürfen wir Custom Apps isolieren oder sperren.</li>
                         </ul>
                     </article>
 
@@ -440,9 +441,10 @@
                         
                         <p><strong>A. Managed Cloud Hosting SLA</strong></p>
                         <div class="highlight-box">
-                            <p>Wenn Sie unseren <strong>Managed Cloud</strong> Service abonnieren, garantieren wir eine <strong>Verfügbarkeit von 99,5%</strong> im monatlichen Durchschnitt. Ausgenommen sind geplante Wartungsfenster und höhere Gewalt.</p>
+                            <p>Für <strong>Managed Cloud</strong> Services garantieren wir eine Verfügbarkeit von 99,5% im Monatsdurchschnitt unter Berücksichtigung der nachstehenden Ausnahmen.</p>
                         </div>
-                        <p>Falls die Verfügbarkeit unter 99,5% fällt, können Sie eine Service-Gutschrift von 5% Ihrer monatlichen Gebühr für jedes zusätzliche 1% Ausfallzeit beantragen (max. 50%). Dies ist Ihr einziges Rechtsmittel bei Ausfällen, außer bei Vorsatz oder grober Fahrlässigkeit.</p>
+                        <p><strong>Berechnung & Gutschriften:</strong> Fällt die Verfügbarkeit unter 99,5%, können Sie eine Service-Gutschrift von 5% der Monatsgebühr pro 1% Ausfallzeit beantragen (max. 50%). Der Antrag muss binnen 30 Tagen schriftlich erfolgen.</p>
+                        <p><strong>Ausschluss (Exclusions):</strong> Nicht als Ausfallzeit gelten: Geplante Wartung (48h Vorankündigung), höhere Gewalt, Probleme in kundenseitigen Netzwerken, Ausfälle von Drittsystemen (Third Party Systems) sowie Probleme, die durch Custom Apps des Kunden verursacht wurden.</p>
 
                         <p><strong>B. Self-Hosted / On-Premise</strong></p>
                         <p>Wenn Sie CoCoCo Platform selbst hosten („Self-Hosted"), <strong>sind Sie allein verantwortlich für die Verfügbarkeit, Sicherheit und Wartung Ihrer zugrunde liegenden Infrastruktur</strong> (Server, Netzwerk, Betriebssystem). Folglich gelten die oben beschriebene Verfügbarkeitsgarantie und Service-Gutschriften nicht für selbst gehostete Instanzen.</p>
@@ -475,7 +477,7 @@
                         <h2>11. Datenschutz & KI</h2>
                         <p>Wir verarbeiten personenbezogene Daten gemäß der <strong>DSGVO</strong>. Detaillierte Informationen finden Sie in unserer <a href="privacy.html">Datenschutzerklärung</a>.</p>
                         
-                        <p><strong>Subunternehmer:</strong> Wir nutzen Drittanbieter (z.B. für Hosting, Zahlungsabwicklung) zur Erbringung der Dienste. Durch die Nutzung der Dienste stimmen Sie der Einbindung dieser Subunternehmer zu.</p>
+                        <p><strong>Subunternehmer & AVV:</strong> Eine aktuelle Liste der eingesetzten Subunternehmer finden Sie in Anlage 2 unseres <a href="avv-dpa.html" target="_blank">Auftragsverarbeitungsvertrags (AVV)</a>. Wir informieren Sie über wesentliche Änderungen dieser Liste. Der AVV ist fester Bestandteil dieser AGB.</p>
                         
                         <p><strong>KI & Datennutzung:</strong> Wir verwenden Ihre Kundendaten <strong>nicht</strong>, um allgemeine Machine-Learning-Modelle für andere Kunden zu trainieren. Alle KI-Funktionen innerhalb von CoCoCo Platform nutzen Ihre Daten ausschließlich, um Vorhersagen oder Automatisierungen für Ihr spezifisches Konto bereitzustellen.</p>
 
@@ -490,6 +492,8 @@
                         <h2>12. Geografische Beschränkungen</h2>
                         <p>Unsere Dienste unterliegen Exportkontrollgesetzen und internationalen Sanktionen. Kunden aus Ländern, die EU- oder US-Sanktionen oder Embargos unterliegen, dürfen CoCoCo Platform nicht nutzen. Dies umfasst derzeit unter anderem Russland, Nordkorea, Iran, Syrien und andere von zuständigen Behörden benannte Rechtsgebiete.</p>
                         <p>Wir behalten uns das Recht vor, diese Liste gemäß geltendem Recht zu aktualisieren.</p>
+                        
+                        <p><strong>Hosting Regionen:</strong> Für Managed Cloud Services wird die Hosting-Region (z.B. EU, US, APAC) im Commercial Package festgelegt. Wir garantieren, dass Kundendaten primär in der gewählten Region gespeichert werden (Data Residency), vorbehaltlich der im AVV genannten globalen Sub-Prozessoren (z.B. für Support).</p>
                     </article>
 
                     <article class="terms-section">
@@ -520,7 +524,9 @@
                         
                         <p><strong>Gerichtsstand:</strong> Ausschließlicher Gerichtsstand ist <strong>Saarbrücken, Deutschland</strong>.</p>
                         
-                        <p class="revision-date"><em>Letzte Revision: 7. Januar 2026</em></p>
+                        <p><strong>Sprachfassung:</strong> Diese AGB sind in deutscher und englischer Sprache verfasst. Im Zweifel ist die deutsche Fassung maßgeblich und rechtlich bindend.</p>
+                        
+                        <p class="revision-date"><em>Letzte Revision: 8. Januar 2026</em></p>
                     </article>
                 </div>
 
@@ -542,10 +548,12 @@
                         
                         <div class="highlight-box">
                             <h3>Legal Notice: Status "in formation"</h3>
-                            <p>We are <strong>Triple C Labs GmbH i.G.</strong> (in formation), Campus Starterzentrum, 66123 Saarbrücken, Germany. Until registration in the Commercial Register, the company is liable exclusively with company assets. Personal liability of the acting persons (founders/managing directors) is — to the extent legally permissible — expressly excluded.</p>
+                            <p>We are <strong>Triple C Labs GmbH i.G.</strong> (in formation). Until registration in the Commercial Register, the company is in the formation stage. Personal liability of acting individuals cannot be completely excluded by law in certain constellations. However, to the extent legally permissible, personal liability is not intended and is not contractually extended. Until registration occurs, it is recommended to limit contractual obligations to the Commercial Package. After registration in the Commercial Register, the GmbH is liable with its company assets.</p>
                         </div>
                         
                         <p><strong>Definition of "Site":</strong> A "Site" is generally a single physical production facility at a distinct postal address. However, adjacent buildings or facilities within the same immediate campus that share a unified network infrastructure and a central MIS instance are considered one Site. Geographically separate locations (e.g., in different cities or regions) with independent production capabilities always require separate subscriptions, unless explicitly bundled in an Enterprise agreement.</p>
+                        
+                        <p><strong>Definition "Commercial Package":</strong> Refers to the contractual data confirmed during the payment process, specifically Site Count, modules, deployment type, billing interval, and hosting region. This is confirmed by, for example, a Stripe Quote, Stripe Checkout, an invoice, or a written offer. The contract is concluded as soon as the Customer confirms the Commercial Package and initiates payment.</p>
                     </article>
 
                     <article class="terms-section">
@@ -575,7 +583,7 @@
                             <li>A Company must be a legitimate business. We reserve the right to request proof of your business status (e.g., trade license, VAT ID).</li>
                             <li>You warrant that you are authorized to represent your Company and make binding decisions on its behalf.</li>
                             <li><strong>Legal Succession:</strong> Triple C Labs is currently "in formation" (i.G.). Upon registration in the commercial register, this Agreement will automatically continue with the registered GmbH as the legal successor without requiring any further action by the Customer.</li>
-                            <li><strong>Publicity:</strong> By entering into this Agreement, you consent to our use of your company name and logo on our website, in presentations, and in marketing materials as a reference customer, provided this does not conflict with your legitimate interests. You may revoke this consent in writing (email suffices) at any time.</li>
+                            <li><strong>Publicity (Opt-In):</strong> We will use your company name and logo for marketing purposes (e.g., as a reference customer on our website) only if you have granted us your <strong>express consent</strong> (e.g., by checking a box in the Order Form or via email). You may revoke any consent granted at any time in writing for the future.</li>
                         </ul>
                     </article>
 
@@ -585,7 +593,8 @@
                             <li><strong>Accuracy & Security:</strong> All information provided must be true and accurate. You are fully responsible for maintaining the confidentiality of your login credentials.</li>
                             <li><strong>Compliance:</strong> You must comply with all applicable laws and regulations when using CoCoCo Platform.</li>
                             <li><strong>No Reselling:</strong> You are prohibited from reselling, renting, or offering CoCoCo Platform as part of a managed service to third parties ("White Labeling") without our prior written consent.</li>
-                            <li><strong>Fair Use Policy:</strong> Unless otherwise stated in your Order Form, Cloud accounts are subject to a soft limit of 10 million API calls per month. For Self-Hosted instances, no hard limits apply, but usage must not jeopardize the stability of the overall product (e.g., license servers). We reserve the right to throttle accounts that significantly exceed normal usage volumes (e.g., 5x the average of comparable customers) after a warning or to offer upgrade options.</li>
+                            <li><strong>Fair Use Policy:</strong> Unless agreed otherwise, Cloud accounts are subject to a soft limit of 10 million API calls per month. "Soft Limit" means we reserve the right to inform the customer upon exceedance, verify an upgrade together, or apply technical throttling if necessary for platform stability. An API call is defined as any technical request to our endpoints, regardless of payload size.</li>
+                            <li><strong>Customer Apps (Custom Apps):</strong> The Customer may use their own applications, scripts, or connectors with CoCoCo Platform. The Customer is solely responsible for the development, security, and legal compliance of these Custom Apps. They must not impair platform stability. The Customer is liable for damages caused by their Custom Apps to the platform or third parties. We reserve the right to isolate or block Custom Apps in case of security risks.</li>
                         </ul>
                     </article>
 
@@ -640,9 +649,10 @@
                         
                         <p><strong>A. Managed Cloud Hosting SLA</strong></p>
                         <div class="highlight-box">
-                            <p>If you subscribe to our <strong>Managed Cloud</strong> service, we guarantee <strong>99.5% uptime</strong> on a monthly average. This excludes scheduled maintenance windows and force majeure events.</p>
+                            <p>For <strong>Managed Cloud</strong> services, we guarantee an availability of 99.5% on a monthly average, taking into account the exclusions listed below.</p>
                         </div>
-                        <p>If availability falls below 99.5%, you may request a service credit of 5% of your monthly fee for every additional 1% of downtime (capped at 50%). This is your sole remedy for availability issues, except in cases of intent or gross negligence.</p>
+                        <p><strong>Calculation & Credits:</strong> If availability falls below 99.5%, you may request a service credit of 5% of the monthly fee per 1% of downtime (capped at 50%). Claims must be submitted in writing within 30 days.</p>
+                        <p><strong>Exclusions:</strong> Downtime does not include: Scheduled maintenance (48h notice), force majeure, issues in customer-side networks, failures of Third Party Systems, or issues caused by the Customer's Custom Apps.</p>
 
                         <p><strong>B. Self-Hosted / On-Premise</strong></p>
                         <p>If you choose to host CoCoCo Platform yourself ("Self-Hosted"), <strong>you are solely responsible for the availability, security, and maintenance of your underlying infrastructure</strong> (server, network, operating system). Consequently, the uptime guarantee and service credits described above do not apply to self-hosted instances.</p>
@@ -675,7 +685,7 @@
                         <h2>11. Data Protection & AI</h2>
                         <p>We process personal data in accordance with the <strong>GDPR</strong>. Detailed information can be found in our <a href="privacy.html">Privacy Policy</a>.</p>
                         
-                        <p><strong>Subprocessors:</strong> We use third-party service providers (e.g., for hosting, payment) to provide the Services. By using the Services, you agree to the engagement of these subprocessors.</p>
+                        <p><strong>Subprocessors & DPA:</strong> A current list of utilized subprocessors can be found in Annex 2 of our <a href="avv-dpa.html" target="_blank">Data Processing Agreement (DPA)</a>. We will inform you of material changes to this list. The DPA is an integral part of these Terms.</p>
                         
                         <p><strong>AI & Data Usage:</strong> We do <strong>not</strong> use your Customer Data to train general-purpose machine learning models for other customers. Any AI features within CoCoCo Platform use your data solely to provide predictions or automations for your specific account.</p>
 
@@ -690,6 +700,8 @@
                         <h2>12. Geographic Restrictions</h2>
                         <p>Our services are subject to export control laws and international sanctions. Customers from countries subject to EU or US sanctions or embargoes are not permitted to use CoCoCo Platform. This currently includes, but is not limited to, Russia, North Korea, Iran, Syria, and other jurisdictions as designated by relevant authorities.</p>
                         <p>We reserve the right to update this list in accordance with applicable law.</p>
+                        
+                        <p><strong>Hosting Regions:</strong> For Managed Cloud Services, the hosting region (e.g., EU, US, APAC) is defined in the Commercial Package. We guarantee that Customer Data is primarily stored in the selected region (Data Residency), subject to global subprocessors listed in the DPA (e.g., for support).</p>
                     </article>
 
                     <article class="terms-section">
@@ -708,19 +720,6 @@
                         <p>Each party agrees to protect the other party's Confidential Information with the same degree of care it uses to protect its own confidential information of a similar nature, but in no event less than reasonable care. Confidential Information includes business secrets, technical data, and the terms of any Order Form. It does not include information that is publicly known without breach of this agreement.</p>
                     </article>
 
-                    <hr style="margin: 40px 0; border: none; border-top: 2px solid #e0e0e0;">
-                    
-                    <article class="terms-section">
-                        <h3 style="color: #4D2B41; font-size: 1.3em; margin-bottom: 15px;">Anhänge & Weitere Dokumente / Annexes & Related Documents</h3>
-                        <ul style="list-style-type: none; padding-left: 0;">
-                            <li style="margin-bottom: 10px;"><a href="avv-dpa.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Auftragsverarbeitungsvertrag (AVV / DPA)</a> – Data Processing Agreement</li>
-                            <li style="margin-bottom: 10px;"><a href="terms_annex_selfhosted.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Anlage 1: Bedingungen für Self-Hosted & BYOC</a> – Annex 1: Terms for Self-Hosted & BYOC</li>
-                            <li style="margin-bottom: 10px;"><a href="privacy.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Datenschutzerklärung / Privacy Policy</a></li>
-                        </ul>
-                    </article>
-
-                    <hr style="margin: 40px 0; border: none; border-top: 2px solid #e0e0e0;">
-
                     <article class="terms-section">
                         <h2>16. Final Provisions</h2>
                         <p><strong>Assignment:</strong> You may not assign or transfer this Agreement without our prior written consent (not to be unreasonably withheld). We may assign this Agreement to an affiliate or in connection with a merger, acquisition, or sale of assets. A change of control at Triple C Labs does not entitle the Customer to extraordinary termination.</p>
@@ -733,10 +732,26 @@
                         
                         <p><strong>Jurisdiction:</strong> The exclusive place of jurisdiction is <strong>Saarbrücken, Germany</strong>.</p>
                         
-                        <p class="revision-date"><em>Last Revision: January 7, 2026</em></p>
+                        <p><strong>Prevailing Language:</strong> These Terms are provided in two languages. In case of discrepancies or questions of interpretation, the German version shall apply exclusively.</p>
+                        
+                        <p class="revision-date"><em>Last Revision: January 8, 2026</em></p>
                     </article>
                 </div>
             </div>
+            
+            <!-- Anhänge-Liste (außerhalb der Sprach-Divs, immer sichtbar) -->
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e0e0e0;">
+            
+            <article class="terms-section">
+                <h3 style="color: #4D2B41; font-size: 1.3em; margin-bottom: 15px;">Anhänge & Weitere Dokumente / Annexes & Related Documents</h3>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;"><a href="avv-dpa.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Auftragsverarbeitungsvertrag (AVV / DPA)</a> – Data Processing Agreement</li>
+                    <li style="margin-bottom: 10px;"><a href="terms_annex_selfhosted.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Anlage 1: Bedingungen für Self-Hosted & BYOC</a> – Annex 1: Terms for Self-Hosted & BYOC</li>
+                    <li style="margin-bottom: 10px;"><a href="privacy.html" target="_blank" style="font-weight: 600; color: #4D2B41; text-decoration: underline;">Datenschutzerklärung / Privacy Policy</a></li>
+                </ul>
+            </article>
+            
+            <hr style="margin: 40px 0; border: none; border-top: 2px solid #e0e0e0;">
         </div>
     </section>
 

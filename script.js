@@ -24,7 +24,7 @@ window.toggleMobileDropdown = function(toggle) {
 
 // Load HTML partials (header, footer)
 function loadPartial(url, targetId) {
-    fetch(url)
+    return fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Failed to load ${url}`);

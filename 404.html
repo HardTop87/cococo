@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | CoCoCo Platform</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="The page you're looking for doesn't exist. Return to CoCoCo Platform homepage.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="stylesheet" href="style.css?v=1.0.9">
+    <link rel="icon" href="images/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="images/icons/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#FF79C9">
+    
+    <style>
+        /* 404 Specific Styles */
+        .error-404-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFEFF8 0%, #FFFFFF 50%, #FFEFF8 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated background elements */
+        .error-404-section::before,
+        .error-404-section::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .error-404-section::before {
+            width: 400px;
+            height: 400px;
+            background: var(--pig);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .error-404-section::after {
+            width: 300px;
+            height: 300px;
+            background: var(--moss);
+            bottom: -80px;
+            right: -80px;
+            animation-delay: 5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(40px, 10px) scale(1.05); }
+        }
+        
+        .error-404-container {
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 4rem 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(77, 43, 65, 0.08);
+        }
+        
+        .error-404-number {
+            font-size: 10rem;
+            font-weight: 900;
+            font-family: 'Sofia Sans Condensed', sans-serif;
+            background: linear-gradient(135deg, var(--pig) 0%, var(--berry) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: glitch 3s ease-in-out infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+            98% { transform: translate(2px, 2px); }
+        }
+        
+        .error-404-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Sofia Sans Condensed', sans-serif;
+            color: var(--berry);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .error-404-message {
+            font-size: 1.2rem;
+            color: var(--moss);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .error-404-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        
+        .error-404-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(77, 43, 65, 0.1);
+        }
+        
+        .error-404-links a {
+            color: var(--pig);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+        
+        .error-404-links a:hover {
+            color: var(--berry);
+        }
+        
+        /* Fix hover state for primary button */
+        .error-404-buttons .btn-primary:hover {
+            background: var(--white);
+            color: var(--pig);
+            border: 2px solid var(--pig);
+        }
+        
+        /* Pulse animation for icon */
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        .error-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 12px rgba(255, 121, 201, 0.3));
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .error-404-container {
+                padding: 3rem 2rem;
+                margin: 1rem;
+            }
+            
+            .error-404-number {
+                font-size: 6rem;
+            }
+            
+            .error-404-title {
+                font-size: 1.8rem;
+            }
+            
+            .error-404-message {
+                font-size: 1rem;
+            }
+            
+            .error-404-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .error-404-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .error-404-section::before,
+            .error-404-section::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 404 Error Section -->
+    <section class="error-404-section">
+        <div class="error-404-container">
+            <!-- Icon -->
+            <div class="error-icon">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" stroke="#FF79C9" stroke-width="4" fill="none" opacity="0.3"/>
+                    <path d="M35 40 L45 50 L35 60" stroke="#FF79C9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M65 40 L55 50 L65 60" stroke="#FF79C9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="50" cy="75" r="3" fill="#4D2B41"/>
+                </svg>
+            </div>
+            
+            <!-- Error Number -->
+            <div class="error-404-number">404</div>
+            
+            <!-- Title -->
+            <h1 class="error-404-title">Page Not Found</h1>
+            
+            <!-- Message -->
+            <p class="error-404-message">
+                The page you're looking for seems to have wandered off into the digital void. 
+                Don't worry—our system is precise, even when URLs aren't.
+            </p>
+            
+            <!-- Primary Actions -->
+            <div class="error-404-buttons">
+                <a href="index.html" class="btn btn-primary btn-large">
+                    Return to Homepage
+                </a>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="error-404-links">
+                <a href="platform.html">Platform</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="solutions_leadership.html">Solutions</a>
+                <a href="about_us.html">About Us</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

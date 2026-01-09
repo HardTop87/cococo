@@ -7,13 +7,7 @@ Allow: /
 # Disallow pricing during beta/development phase
 Disallow: /pricing.html
 
-# Disallow old/backup/test files
-Disallow: /*copy*.html
-Disallow: /*BACKUP*.html
-Disallow: /openinfra_demo*.html
-Disallow: /hero-bg.html
-
-# Disallow demo pages (optional - remove if you want them indexed)
+# Disallow demo pages (internal use only)
 Disallow: /platform_whitelabel_demo.html
 Disallow: /custom_apps_simulation.html
 

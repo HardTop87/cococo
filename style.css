@@ -14576,13 +14576,13 @@ body.landing-page {
 .ipn-logo {
     object-fit: cover;
     object-position: center;
-    height: 60px;
-    width: 200px;
+    height: 75px;
+    width: 220px;
 }
 
 /* CoCoCo Logo - Match height */
 .cococo-logo {
-    height: 60px;
+    height: 75px;
     width: auto;
 }
 
@@ -15059,11 +15059,11 @@ body.landing-page {
 
     .ipn-logo,
     .cococo-logo {
-        height: 45px;
+        height: 55px;
     }
 
     .ipn-logo {
-        width: 150px;
+        width: 170px;
     }
 
     .logo-separator {
